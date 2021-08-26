@@ -642,8 +642,8 @@ JuvOut4 %>%
     labels = scales::percent_format(accuracy = 1L),
     limits = c(0, .5),
     breaks = 0:10 / 10) +
-  scale_alpha_manual(values = c(0.5, 1, 1), guide = FALSE) +
-  scale_color_manual(values = c_pop, guide = FALSE) +
+  scale_alpha_manual(values = c(0.5, 1, 1), guide = "none") +
+  scale_color_manual(values = c_pop, guide = "none") +
   labs(title = bquote('Maximum growth rate (' * lambda[max] * ')'),
        y = NULL, x = NULL)
 
@@ -662,6 +662,6 @@ JuvOut4 %>%
     labels = scales::percent_format(accuracy = 1L),
     limits = c(0, 1),
     breaks = 0:10 / 10) +
-  scale_color_manual(values = c_met, guide = FALSE) +
+  scale_color_manual(values = c_met, guide = "none") +
 labs(title = "Adult survival rate",
        y = NULL, x = NULL)
