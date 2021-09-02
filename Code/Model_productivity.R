@@ -16,7 +16,7 @@ require(tls) # total least squares regression
 
 tibble(id = 1:20) %>% 
   ggplot(aes(x = 1, y = id, color = factor(id))) +
-  geom_point(size = 10) + scale_y_continuous(aes(breaks = id)) -> p ; p
+  geom_point(size = 10) + scale_y_continuous(aes(breaks = id)) -> p; p
 
 ggplot_build(p)$data
 
@@ -50,7 +50,7 @@ raw_plot <- function(para,
   JuvOut4 %>%
     filter(par == as_name(para)) %>% 
     ggplot(aes(x = year, y = `50%`, color = method, fill = method)) +
-    facet_wrap(~ pop, nrow = 1, scales = "free_x") +
+    facet_wrap(~ sub_pop, nrow = 1, scales = "free_x") +
     geom_line(linetype = "dashed", alpha = .5) +
     geom_point() +
     geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`), alpha = .5) +
@@ -194,7 +194,6 @@ frag %>%
 
 # Lambda max formatting ------------------------------------------------------------
 
-
 # estimatation of lambda_max to test productivity reliability
 # when ruddy ducks start to be permanently seen?
 counts_1 %>% 
@@ -302,7 +301,7 @@ counts_1 %>%
   scale_shape_manual(values = c(16, 16, 16), guide = "none") +
   scale_alpha_manual(values = c(0.5, 1, 1), guide = "none") +
   scale_color_manual(values = c_pop, guide = "none") +
-  labs(y = "Population size") -> raw ; raw
+  labs(y = "Population size") -> raw_pop; raw_pop
 
 # Combined dataset ------------------------------------------------------------------
 
@@ -585,33 +584,25 @@ bind_rows(JuvOut3, survival_avg) -> JuvOut4
 
 # Output plot -----------------------------------------------------------------------
 
-raw_plot(p_juv, title = "Juvenile proportion", percent = TRUE)
-raw_plot(productivity, title = "Productivity : recruits per breeder") + 
-  scale_y_continuous(breaks = 0:9 / 10)
-raw_plot(recruits, title = "Recruit number") + 
-  facet_wrap(~ pop, nrow = 1, scales = "free")
-
+raw_plot(p_juv, title = "Proportion of recruits in the population", 
+         percent = TRUE) -> raw_prop; raw_prop
+raw_plot(productivity, title = "Productivity: recruits per breeder") + 
+  scale_y_continuous(breaks = 0:9 / 10) -> raw_prod; raw_prod
+raw_plot(recruits, title = "Number of recruits") + 
+  facet_wrap(~ pop, nrow = 1, scales = "free") -> raw_recruit; raw_recruit
 
 JuvOut4 %>% 
-  filter(!is.na(method), par == "p_juv") %>% 
+  filter(!is.na(method), par == "productivity") %>% 
   select(year, pop, method, `50%`) %>% 
   pivot_wider(names_from = method, values_from = `50%`) %>% 
   filter(!is.na(sampling)) -> tls_ds
 
 xx <- tls(counting ~ 0 + sampling, data = tls_ds)$coefficient
 
-cor_plot(col = "p_juv", title = "Juvenile proportion", limits = c(0, 1)) +
-  geom_segment(x = .7, y = .7, xend = .7, yend = xx * .7,
-               arrow = arrow(type = "closed", length = unit(0.3, "cm")),
-               size = .5, color = "#de2d26") +
-  geom_text(x = .9, y = .95, 
-            label = "1:1", 
-            color = "black",
-            hjust = 1) +
-  geom_text(x = .7, y = .6, 
-            label = str_c(" - ", round(1e2 * (1 - xx), 1), "% "), 
-            color = "#de2d26",
-            hjust = 0) +
+
+cor_plot(col = "p_juv", 
+         title = "Proportion of recruits in the population", 
+         limits = c(0, 1)) +
   scale_y_continuous(
     labels = scales::percent_format(accuracy = 1L),
     limits = c(0, 1),
@@ -622,15 +613,27 @@ cor_plot(col = "p_juv", title = "Juvenile proportion", limits = c(0, 1)) +
       limits = c(0, 1),
       breaks = 0:10 / 10, 
       expand = c(0, 0)) +  
-  guides(x =  guide_axis(angle = 45))
+  guides(x =  guide_axis(angle = 45)) -> cor_prop; cor_prop
 
-cor_plot(col = "productivity", title = "Juveniles per breeder : productivity")
-cor_plot(col = "recruits", title = "Recruits")
+cor_plot(col = "productivity", 
+         title = "Productivity: recruits per breeder") +
+  geom_segment(x = .375, y = .375, xend = .375, yend = xx2 * .375,
+               arrow = arrow(type = "closed", length = unit(0.3, "cm")),
+               size = .5, color = "#de2d26") +
+  geom_text(x = .4, y = .42, 
+            label = "1:1", 
+            color = "black",
+            hjust = 1) +
+  geom_text(x = .375, y = .30, 
+            label = str_c(" - ", round(1e2 * (1 - xx2), 1), "% "), 
+            color = "#de2d26",
+            hjust = 0) -> cor_prod; cor_prod
+cor_plot(col = "recruits", title = "Recruits") -> cor_recr; cor_recr
 
 raw_plot(survival, title = "Survival") + 
   geom_hline(yintercept = 1, linetype = "dashed")
 
-raw
+pop_plot
 
 JuvOut4 %>%
   filter(par == "lambda_max") %>% 
@@ -644,17 +647,18 @@ JuvOut4 %>%
     breaks = 0:10 / 10) +
   scale_alpha_manual(values = c(0.5, 1, 1), guide = "none") +
   scale_color_manual(values = c_pop, guide = "none") +
-  labs(title = bquote('Maximum growth rate (' * lambda[max] * ')'),
-       y = NULL, x = NULL)
+  labs(title = bquote('Annual population growth rate (' * lambda * ')'),
+       y = NULL, x = NULL) -> lambda_plot; lambda_plot
 
 JuvOut4 %>%
   filter(par == "survival_avg") %>% 
-  bind_rows(tibble(pop = "FR", sub_pop = "FR small pop", 
+  bind_rows(tibble(pop = "FR", sub_pop = "FR small pop.", 
                    par = "survival_avg", method = "sampling")) %>% 
-  mutate(pop = as_factor(pop) %>% fct_relevel(levels(ds$pop)),
-         txt = if_else(pop == "FR" & method == "sampling", "NO DATA", NA_character_)) %>% 
-  ggplot(aes(x = method, y = `50%`, group = pop, color = method)) +
-  facet_wrap(~ pop, nrow = 1, scales = "free_x") +
+  mutate(txt = if_else(pop == "FR" & method == "sampling", "NO DATA", NA_character_),
+         sub_pop = as_factor(sub_pop) %>% 
+           fct_relevel("UK large pop.", "FR small pop.")) %>% 
+  ggplot(aes(x = method, y = `50%`, group = sub_pop, color = method)) +
+  facet_wrap(~ sub_pop, nrow = 1, scales = "free_x") +
   geom_point() +
   geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`)) +
   geom_text(aes(x = method, y = .5, label = txt), color = "#de2d26", angle = -90) +
@@ -663,6 +667,6 @@ JuvOut4 %>%
     limits = c(0, 1),
     breaks = 0:10 / 10) +
   scale_color_manual(values = c_met, guide = "none") +
-labs(title = "Adult survival rate",
-       y = NULL, x = NULL)
+labs(title = "Annual adult survival rate",
+       y = NULL, x = NULL) -> surviv_plot; surviv_plot 
 

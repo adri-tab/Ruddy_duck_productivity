@@ -3,7 +3,12 @@ lang: en-EN
 bibliography: ../../../../Biblio/JabRef/Library_OFB/Library_OFB.bib
 csl: ../../../../Biblio/JabRef/Library_OFB/Styles/ecology.csl
 title: "Productivity estimation in waterfowl using a non-invasive method"
-author: "Adrien"
+author: 
+- Adrien Tableau^[Office Français de la Biodiversité, France - adrien.tableau@ofb.gouv.fr - contribution in data analyses & writing]
+- Iain Henderson^[Animal and Plant Health Agency, United Kingdom - iain.henderson@apha.gov.uk - contribution in data collection]
+- Sébastien Reeber^[Société Nationale pour la Protection de la Nature, France - sebastien.reeber@snpn.fr - contribution in data collection]
+- Alain Caizergues^[Office Français de la Biodiversité, France - alain.caizergues@ofb.gouv.fr - contribution in writing]
+
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::pdf_document2:
@@ -14,7 +19,7 @@ output:
 knitr::opts_chunk$set(echo = FALSE, 
                       warning = FALSE, 
                       message = FALSE, 
-                      out.width = "70%", 
+                      out.width = "100%", 
                       fig.align = "center") # , fig.pos = 'H' pour tenir la position
 
 Sys.setlocale("LC_ALL", "English")
@@ -25,32 +30,64 @@ Sys.setlocale("LC_ALL", "English")
 
 # Abstract {-}
 
-The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key to describe the renewal of a population. The productivity, i.e. the number of recruits per breeder, is even more informative because it is independant of the population size and allows a comparison over time. The proportion of young adults in a waterfowl population is often estimated from game-hunting samples. However, this proportion, which is a main step to estimate the productivity, is not accessible on the years without harvest, or with a low harvest rate. The age-structure in the harvest samples, also called the hunting bag, does not necessary reflect the underlying age-structure of the population. It is often skewed towards juveniles and might lead to an overestimation of the productivity. In waterfowl, the adult males displays often brighter colors than juveniles and females. This dichromatism can be easily characterized and monitored from count surveys. Such information can be used to estimate the proportion of young adults, and consequently the productivity. In using two populations of ruddy duck, this study develops a bayesian method to estimate the productivity from count surveys. To judge the accuracy of this approach, the results are compared to productivity estimates from samples. Since the adult survival is commonly estimated in the litterature and can be estimated from the counting and the sampling methods, the consistency of the two approaches is discussed. 
+The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key indicator to describe the renewal of a population, and therefore an essential tool in population management. The productivity, i.e. the number of recruits per breeder, is even more informative because it is independent of the population size and allows a comparison over time and between species. The proportion of young adults in a waterfowl population is often estimated from game-hunting samples. However, this proportion, which is a main step in estimating productivity, is not accessible in years without harvest, or with a low harvest rate. Moreover, the age-structure in the harvest samples, commonly called hunting bag, does not necessarily reflect the underlying age-structure of the population. It is often skewed towards juveniles and can lead to an overestimation of the productivity. In waterfowl, adult males usually display brighter colours than juveniles and females. This dichromatism can be characterized and monitored from count surveys, a non-invasive method. Such information can be used to infer the proportion of young adults, and consequently the productivity. In using two populations of ruddy duck, this study develops a Bayesian method to estimate the productivity from count data. To judge the accuracy of this approach, the results are compared to productivity estimates from samples. The adult survival can be estimated from both the counting and the sampling methods and is commonly found in the literature. The consistency of the two approaches is thus discussed by comparing the survival estimates with the literature values.
 
 # Introduction
 
-breeding/reproduction success good but not enough because variable survival of juveniles
+## The use of productivity in population management
 
+The management of an exploited population generally aims at...
+
+The productivity of a population is the average number of recruits produced per breeder. If one considers a species reaching the sexual maturity as early as its first year, all the population is mature just before the reproduction season. The productivity is thus the ratio of the number of young adults at the reproduction season the year *n* on the number of all adults at the reproduction season the year *n - 1*.
+
+The productivity is closely related to recruitment. When combined with the adult survival, the recruitment determines the population growth rate and consequently the evolution of the population size. 
+
+This parameter is complex because it is composed of two sub-parameters: the reproduction success and the youth survival. 
+
+## The variability of the productivity
+
+A waterfowl species that is released in a favourable habitat will naturally expand (malthus). The growth of such a population can be explained by its productivity parameter that is higher than its adult mortality. This expansion is limited by the carrying capacity of the habitat (ref). When a waterfowl species is endemic of an ecosystem and evolves in stable environmental conditions, the population size varies around the carrying capacity without because the individuals compete for space or/and food (ref). This competition commonly induces a lower reproduction success or/and a higher youth mortality (ref). The productivity then decreases because it is dampened by density-dependent effects (holt). For an endemic species evolving in stable environmental conditions, the productivity and the adult mortality are balanced, which explains the stabilization of the number of individuals. 
+
+Hunted waterfowl species can experience high harvest rate. Such high harvest pressure increases adult and juvenile mortality (ref). Paradoxically, this high juvenile mortality does not induce a decrease of productivity (ref). Indeed, one expects that a population with a high adult mortality combined to a low productivity would rapidly extinct. However, hunting waterfowl has a long history, and most of these species have persisted over time. The reason is that high harvest pressure reduces the competition for space and food. The density-dependent effects affecting the productivity in case of high population density are dampened by the harvest mortality. The exploitation of a population thus increases adult mortality and productivity. These two parameters can reach a new equilibrium if the population is exploited. The size of a newly exploited population in stable environmental conditions should thus reach a new equilibrium, which is expected to be lower than the size without exploitation.
+
+Productivity is thus a varying parameter that reaches its highest values when no density-dependent effects occurs. Exploring the gradient of productivity, and defining the maximum productivity, and consequently the response of a population to a harvest pressure...
+
+## Is the variability of the productivity huge or not? What part of the productivity gradient should we know for population management? 
+
+
+
+## What is the ideal biological model to explore the gradient of the productivity?
+
+Hunting waterfowl has a long history, and few species have observed long-term moratorium
+Alien species colonizing new territories and then heavily controled are a good model to overcome density-dependent effects and explore the gradient productivity. These species are often introduced during unvoluntary release events.  and its presence causes some se species are often arrived because of undesired released 
+
+In Europe, 
+a population following its maximum growth rate is a perfect study model 
+
+## What are the limitations of the sampling method to estimate the productivity?
+
+- We cannot explore the productivity when there is no harvest, however, it is crucial to explore what happens when there is no harvest in a scenario where we suggest a moratorium to let the population recover.
+
+- Biais because hunting like any predation action is selective. Often towards the weakest individuals. So overstimation of productivity, and potentially maximum sustainable harvest rate overestimated and consequently depletion of the managed population.
+
+## Why counting data is a potential tool to estimate the productivity?
+
+Long time series, easy access, no need of samples
+
+## What is the methodology of this study?
+
+
+Nichols -> il faut compter de la façon dont on demande
+
+idée: estimer l'age moyen de la pop grâce la vulnerabilité et le sexe ratio chez les adultes
+
+breeding/reproduction success good but not enough because variable survival of juveniles
 
 Introduction: 
 
 productivity often defined as Jt/At
 but more realistic to defined as Jt/At-1
 
-The carrying capacity of a habitat determines the maximum number of individuals of a species. When a population has occupied a habitat for a long while, its size varies around the carrying capacity because the lack of space and ressources induce a lower reproduction success and a higher youth mortality. The productivity of such population is thus dampened by density dependant effects. When considering a population colonising a new habitat, its size increases close to its maximum growth rate because the realized productivity approaches its maximum potential. Such populations are thus a good model to estimate this maximum productivity rate. This is the case of the alien species colonizing new territories. These species are often introduced by a human release and its presence causes some se species are often arrived because of undesired released 
-
-In Europe, 
-a population following its maximum growth rate is a perfect study model 
-
-productivity is more closely related to recruitment, which defined with the adult survival the population growth rate and consequently the evolution of the population size and the maximum sustainable catch rate
-we defined productivity as the number of recruits per their breeders
-
-
-This parameter is complex because it is composed of two sub-parameters, the reproduction success, and the youth survival. 
-
-Nichols -> il faut compter de la façon dont on demande
-
-idée: estimer l'age moyen de la pop grâce la vulnerabilité et le sexe ratio chez les adultes
 
 # Materials & methods
 
@@ -75,6 +112,12 @@ blabla
 # Discussion
 
 blabla
+
+Nichols -> il faut compter de la façon dont on demande
+
+# Aknowledgements {-}
+
+This work was partly funded by the LIFE Oxyura project (LIFE17 NAT/FR/000942) through the LIFE program. This work was carried on with the impulse of Jean-François Maillard, and Jean-Baptiste Mouronval from the Office Français de la Biodiversité, and Jean-Marc Gillier from the Société Nationale pour la Protection de la Nature. The authors aknowledge all the contributors of the data collection in the UK and in France, especially: **UK names**, Vincent Fontaine, Denis Lacourpaille, Jules Joly, Justin Potier, Valentin Boniface, Alexis Laroche, and Médéric Lortion, **other names**.    
 
 # References {-}
 
