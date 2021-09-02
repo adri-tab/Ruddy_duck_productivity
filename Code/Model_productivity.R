@@ -140,7 +140,7 @@ frag %>%
   scale_color_manual(values = c_pop, guide = "none") +
   scale_y_percent +
   scale_x_date_own(5e-2) +
-  guides(size = guide_legend(title = "Total counts")) +
+  guides(size = guide_legend(title = "Samples")) +
   labs(y = "Male proportion")
 
 read_rds("../Ruddy_duck_data/Data/Ruddy_duck_data.rds") %>% pluck(2) %>% 
@@ -665,3 +665,4 @@ JuvOut4 %>%
   scale_color_manual(values = c_met, guide = "none") +
 labs(title = "Adult survival rate",
        y = NULL, x = NULL)
+

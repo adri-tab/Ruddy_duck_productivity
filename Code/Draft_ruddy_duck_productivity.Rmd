@@ -1,0 +1,82 @@
+---
+lang: en-EN
+bibliography: ../../../../Biblio/JabRef/Library_OFB/Library_OFB.bib
+csl: ../../../../Biblio/JabRef/Library_OFB/Styles/ecology.csl
+title: "Productivity estimation in waterfowl using a non-invasive method"
+author: "Adrien"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::pdf_document2:
+    latex_engine: pdflatex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      out.width = "70%", 
+                      fig.align = "center") # , fig.pos = 'H' pour tenir la position
+
+Sys.setlocale("LC_ALL", "English")
+
+```
+
+\newpage
+
+# Abstract {-}
+
+The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key to describe the renewal of a population. The productivity, i.e. the number of recruits per breeder, is even more informative because it is independant of the population size and allows a comparison over time. The proportion of young adults in a waterfowl population is often estimated from game-hunting samples. However, this proportion, which is a main step to estimate the productivity, is not accessible on the years without harvest, or with a low harvest rate. The age-structure in the harvest samples, also called the hunting bag, does not necessary reflect the underlying age-structure of the population. It is often skewed towards juveniles and might lead to an overestimation of the productivity. In waterfowl, the adult males displays often brighter colors than juveniles and females. This dichromatism can be easily characterized and monitored from count surveys. Such information can be used to estimate the proportion of young adults, and consequently the productivity. In using two populations of ruddy duck, this study develops a bayesian method to estimate the productivity from count surveys. To judge the accuracy of this approach, the results are compared to productivity estimates from samples. Since the adult survival is commonly estimated in the litterature and can be estimated from the counting and the sampling methods, the consistency of the two approaches is discussed. 
+
+# Introduction
+
+breeding/reproduction success good but not enough because variable survival of juveniles
+
+
+Introduction: 
+
+productivity often defined as Jt/At
+but more realistic to defined as Jt/At-1
+
+The carrying capacity of a habitat determines the maximum number of individuals of a species. When a population has occupied a habitat for a long while, its size varies around the carrying capacity because the lack of space and ressources induce a lower reproduction success and a higher youth mortality. The productivity of such population is thus dampened by density dependant effects. When considering a population colonising a new habitat, its size increases close to its maximum growth rate because the realized productivity approaches its maximum potential. Such populations are thus a good model to estimate this maximum productivity rate. This is the case of the alien species colonizing new territories. These species are often introduced by a human release and its presence causes some se species are often arrived because of undesired released 
+
+In Europe, 
+a population following its maximum growth rate is a perfect study model 
+
+productivity is more closely related to recruitment, which defined with the adult survival the population growth rate and consequently the evolution of the population size and the maximum sustainable catch rate
+we defined productivity as the number of recruits per their breeders
+
+
+This parameter is complex because it is composed of two sub-parameters, the reproduction success, and the youth survival. 
+
+Nichols -> il faut compter de la façon dont on demande
+
+idée: estimer l'age moyen de la pop grâce la vulnerabilité et le sexe ratio chez les adultes
+
+# Materials & methods
+
+develop the counting method :
+
+
+2 ways to check the method : 
+
+sampling method?
+Ok but few data as poorly harvested
+
+realistic survival? 
+if > 1, estimated productivity is too low to support the maximum growth rate
+in the range of similar species in litterature -> satisfying 
+
+blabla
+
+# Results
+
+blabla
+
+# Discussion
+
+blabla
+
+# References {-}
+
+<div id="refs"></div>
+
