@@ -50,7 +50,7 @@ raw_plot <- function(para,
   JuvOut4 %>%
     filter(par == as_name(para)) %>% 
     ggplot(aes(x = year, y = `50%`, color = method, fill = method)) +
-    facet_wrap(~ sub_pop, nrow = 1, scales = "free_x") +
+    facet_wrap(~ pop, nrow = 1, scales = "free_x") +
     geom_line(linetype = "dashed", alpha = .5) +
     geom_point() +
     geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`), alpha = .5) +
@@ -306,8 +306,12 @@ counts_1 %>%
 # Combined dataset ------------------------------------------------------------------
 
 ds_1 %>% 
-  left_join(counts_2 %>% select(year, pop, sub_pop)) -> ds
-
+  left_join(counts_2 %>% select(year, pop, sub_pop)) %>% 
+  mutate(pop_title = case_when(
+    pop == "FR" ~ "FR small pop.",
+    pop == "UK" & year(year) < 1981 ~ "UK small pop.",
+    pop == "UK" & year(year) > 1980 ~ "UK large pop.",
+    TRUE ~ NA_character_) %>% as_factor()) -> ds
 
 # Data formatting function ----------------------------------------------------------
 
@@ -479,11 +483,11 @@ nimbleMCMC(
 
 # Output check ----------------------------------------------------------------------
 
-# vérif autorcorrélation et burning
+# autocorrelation and burning check
 mcmcplot(mcmcout = JuvOut,
          parms = JuvMon[6]) 
 
-# verif convergence + visualisation update des priors
+# convergence check + vizualisation of prior update
 MCMCtrace(object = JuvOut, 
           params = JuvMon[6], 
           iter = nsample_1,
@@ -499,6 +503,7 @@ MCMCplot(JuvOut,
          ylim = c(0, 1.5))
 
 # Output formatting -----------------------------------------------------------------
+
 MCMCsummary(object = JuvOut, 
             Rhat = TRUE, 
             n.eff = TRUE)
@@ -534,8 +539,8 @@ JuvOut2 %>%
                         rep("sampling", dis(spl_tot, pop, id, TRUE)))[id],
     par == "lambda_max" ~ levels(dis(sub_pop, sub_pop, sub_pop))[id],
     TRUE ~ NA_character_)) %>% 
-  left_join(ds %>% select(rowid, year, pop, sub_pop)) %>% 
-  select(year, pop, sub_pop, par, method, `2.5%`, `50%`, `97.5%`) %>% 
+  left_join(ds %>% select(rowid, year, pop, sub_pop, pop_title)) %>% 
+  select(year, pop, sub_pop, pop_title, par, method, `2.5%`, `50%`, `97.5%`) %>% 
   mutate(across(c(pop, sub_pop), as.character)) %>% 
   mutate(sub_pop = if_else(par == "lambda_max", method, sub_pop),
          pop = if_else(par == "lambda_max", str_trunc(method, 2, "right", ellipsis = ""), 
@@ -589,7 +594,7 @@ raw_plot(p_juv, title = "Proportion of recruits in the population",
 raw_plot(productivity, title = "Productivity: recruits per breeder") + 
   scale_y_continuous(breaks = 0:9 / 10) -> raw_prod; raw_prod
 raw_plot(recruits, title = "Number of recruits") + 
-  facet_wrap(~ pop, nrow = 1, scales = "free") -> raw_recruit; raw_recruit
+  facet_wrap(~ pop_title, nrow = 1, scales = "free") -> raw_recruit; raw_recruit
 
 JuvOut4 %>% 
   filter(!is.na(method), par == "productivity") %>% 
@@ -633,7 +638,7 @@ cor_plot(col = "recruits", title = "Recruits") -> cor_recr; cor_recr
 raw_plot(survival, title = "Survival") + 
   geom_hline(yintercept = 1, linetype = "dashed")
 
-pop_plot
+raw_pop
 
 JuvOut4 %>%
   filter(par == "lambda_max") %>% 
