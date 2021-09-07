@@ -1,7 +1,7 @@
 ---
 lang: en-EN
-bibliography: ../../../../Biblio/JabRef/Library_OFB/Library_OFB.bib
-csl: ../../../../Biblio/JabRef/Library_OFB/Styles/ecology.csl
+bibliography: ../../../Dropbox/Biblio/Library_OFB.bib
+csl: ../../../Dropbox/Biblio/Styles/ecology.csl
 title: "Productivity estimation in waterfowl using a non-invasive method"
 author: 
 - Adrien Tableau^[Office Français de la Biodiversité, France - adrien.tableau@ofb.gouv.fr - contribution in data analyses & writing]
