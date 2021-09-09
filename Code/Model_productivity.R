@@ -12,7 +12,7 @@ require(MCMCvis)
 require(mcmcplots)
 require(tls) # total least squares regression
 
-# Colors selection -------------------------------------------------------------------
+# Colours selection -------------------------------------------------------------------
 
 tibble(id = 1:20) %>% 
   ggplot(aes(x = 1, y = id, color = factor(id))) +
@@ -194,7 +194,7 @@ frag %>%
 
 # Lambda max formatting ------------------------------------------------------------
 
-# estimatation of lambda_max to test productivity reliability
+# estimation of lambda_max to test productivity reliability
 # when ruddy ducks start to be permanently seen?
 counts_1 %>% 
   ggplot(aes(x = year, y = n_pop, color = pop)) + 
@@ -335,7 +335,7 @@ dis <- function(fil = NA, gp = NA, col = NA, size = FALSE) {
 
 JuvCode <- nimbleCode(
   {
-    # conjugate posterior for the mal proportion (adult only)
+    # conjugate posterior for the male proportion (adult only)
     p_mal ~ dbeta(mal_ad + 1, fem_ad + 1)
     
     # parameter estimation from apparent population structure

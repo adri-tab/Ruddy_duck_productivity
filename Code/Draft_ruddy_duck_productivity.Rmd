@@ -1,7 +1,7 @@
 ---
 lang: en-EN
-bibliography: ../../../Dropbox/Biblio/Library_OFB.bib
-csl: ../../../Dropbox/Biblio/Styles/ecology.csl
+bibliography: ../../../../Dropbox/Biblio/Library_OFB.bib
+csl: ../../../../Dropbox/Biblio/Styles/ecology.csl
 title: "Productivity estimation in waterfowl using a non-invasive method"
 author: 
 - Adrien Tableau^[Office Français de la Biodiversité, France - adrien.tableau@ofb.gouv.fr - contribution in data analyses & writing]
@@ -58,7 +58,6 @@ Hunted waterfowl species can experience high harvest rate. Such high harvest pre
 Productivity is thus a varying parameter that reaches its highest values when no density-dependent effects occurs. Exploring the gradient of productivity, and defining the maximum productivity to predict the response of a population to different harvest rates is a challenge in population management. 
 
 ## What part of the productivity gradient should we know for population management? {-} 
-
 
 
 ## What is the ideal biological model to explore the gradient of the productivity? {-}
