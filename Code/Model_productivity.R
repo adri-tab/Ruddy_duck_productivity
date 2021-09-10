@@ -11,6 +11,7 @@ require(nimble)
 require(MCMCvis)
 require(mcmcplots)
 require(tls) # total least squares regression
+library(scales)
 
 # Colours selection -------------------------------------------------------------------
 
@@ -65,7 +66,7 @@ raw_plot <- function(para,
   if (percent == TRUE) {tmp + scale_y_percent} else {tmp}
 }
 
-cor_plot <- function(col, title = NULL, limits = NA) {
+cor_plot <- function(col, title = NULL, limits = NA, breaks = NA) {
   
   col2 <- str_c(col, c("2.5%", "50%", "97.5%"), sep = "_")
   col_s <- str_c(col2, "sampling", sep = "_")
@@ -105,11 +106,17 @@ cor_plot <- function(col, title = NULL, limits = NA) {
     scale_x_continuous(expand = expansion(mult = c(0, 0)), 
                        limits = if (is.na(limits)) {
                          c(0, 1.1 * max(unlist(tmp[-1])))
-                       } else {limits}) +
+                       } else {limits}, 
+                       breaks = if (is.na(breaks)) {
+                         pretty_breaks()
+                       } else {breaks_extended(n = breaks)}) +
     scale_y_continuous(expand = expansion(mult = c(0, 0)), 
                        limits = if (is.na(limits)) {
                          c(0, 1.1 * max(unlist(tmp[-1])))
-                       } else {limits})
+                       } else {limits}, 
+                       breaks = if (is.na(breaks)) {
+                         pretty_breaks()
+                       } else {breaks_extended(n = breaks)})
 }
 
 # Data import -----------------------------------------------------------------------
@@ -201,7 +208,7 @@ frag %>%
          spl_tot = ad + no_ad) %>% 
   rowid_to_column() -> ds_1
 
-# Lambda max formatting ------------------------------------------------------------
+# Lambda formatting ------------------------------------------------------------
 
 # estimation of lambda_max to test productivity reliability
 # when ruddy ducks start to be permanently seen?
@@ -228,7 +235,7 @@ frag %>%
 
 counts_1 %>% 
   left_join(frag %>% 
-              filter(!(age %in% c("no_ad", "ind") & repro == "after_rep")) %>% 
+              filter(!(age %in% c("no_ad", "ind") & repro == "after_rep")) %>% # 
               group_by(year, pop) %>% 
               summarize(across(shot, sum)) %>% 
               ungroup() %>% 
@@ -244,12 +251,12 @@ counts_1 %>%
   scale_x_date_own(1e-2) +
   scale_color_manual(values = c_pop)
 # from 1999 in UK, and from 1996 in FR si 0%
-# from 1999 in UK, and from 1999 in FR si 10%
+# from 1999 in UK, and from 2004 in FR si 10%
 # from 2006 in UK, and from 2008 in FR si 20%
 
 counts_1 %>% 
   filter(!(pop == "UK" & year(year) > 1998), !(pop == "UK" & year(year) < 1961),
-         !(pop == "FR" & year(year) > 1998), !(pop == "FR" & year(year) < 1994)) %>% 
+         !(pop == "FR" & year(year) > 2003), !(pop == "FR" & year(year) < 1994)) %>% 
   mutate(size_pop = case_when(
     pop == "FR" ~ "small pop.",
     pop == "UK" & year(year) < 1981 ~ "small pop.",
@@ -609,10 +616,9 @@ JuvOut4 %>%
   filter(!is.na(method), par == "productivity") %>% 
   select(year, pop, method, `50%`) %>% 
   pivot_wider(names_from = method, values_from = `50%`) %>% 
-  filter(!is.na(sampling)) -> tls_ds
+  filter(!is.na(sampling), !is.na(counting)) -> tls_ds
 
 xx <- tls(counting ~ 0 + sampling, data = tls_ds)$coefficient
-
 
 cor_plot(col = "p_juv", 
          title = "Proportion of recruits in the population", 
@@ -630,16 +636,17 @@ cor_plot(col = "p_juv",
   guides(x =  guide_axis(angle = 45)) -> cor_prop; cor_prop
 
 cor_plot(col = "productivity", 
-         title = "Productivity: recruits per breeder") +
-  geom_segment(x = .375, y = .375, xend = .375, yend = xx2 * .375,
+         title = "Productivity: recruits per breeder",
+         limits = c(0, 1.1)) +
+  geom_segment(x = .9, y = .9, xend = .9, yend = xx * .9,
                arrow = arrow(type = "closed", length = unit(0.3, "cm")),
                size = .5, color = "#de2d26") +
-  geom_text(x = .4, y = .42, 
+  geom_text(x = 1, y = 1.05, 
             label = "1:1", 
             color = "black",
             hjust = 1) +
-  geom_text(x = .375, y = .30, 
-            label = str_c(" - ", round(1e2 * (1 - xx2), 1), "% "), 
+  geom_text(x = .9, y = .75, 
+            label = str_c(" - ", round(1e2 * (1 - xx), 1), "% "), 
             color = "#de2d26",
             hjust = 0) -> cor_prod; cor_prod
 cor_plot(col = "recruits", title = "Recruits") -> cor_recr; cor_recr
