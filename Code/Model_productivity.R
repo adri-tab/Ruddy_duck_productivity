@@ -151,25 +151,33 @@ read_rds("../Ruddy_duck_data/Output/Ruddy_duck_data.rds") %>% pluck(2) %>%
 # one keeps only counts from Dec and Jan
 # one keeps only samples when total > 100
 counts %>% 
-  unnest(age) %>% 
   unnest(sex_app) %>% 
   filter(obs_type_mal + obs_type_fem > 0, month(date) %in% c(12, 1)) %>% 
-  group_by(across(c(year:no_ad, pop))) %>% 
+  group_by(across(c(year, pop))) %>% 
   summarize(across(starts_with("obs"), sum)) %>% 
   ungroup() %>% 
-  filter(obs_type_mal + obs_type_fem > 100) %>% 
-  mutate(across(c(ad, no_ad), ~ if_else(ad + no_ad > 100, .x, NA_real_))) %>% 
-  left_join(
-    counts %>% 
-      mutate(year = year + years(1),
-             n_breed = count - killed_before_rep) %>% 
-      select(year, pop, n_breed = count)) %>% 
-  full_join(counts %>% select(year, count, pop)) %>% 
-  rename(n_pop = count) %>% 
+  filter(obs_type_mal + obs_type_fem > 100) -> count_sex_app
+
+counts %>% 
+  unnest(age) %>% 
+  filter(ad + no_ad > 100) %>% 
+  select(year, pop, ad, no_ad) -> sample_recruit
+
+counts %>% 
+  mutate(year = year + years(1),
+         killed_before_rep = killed_before_rep %>% replace_na(0),
+         n_breed = count - killed_before_rep) %>% 
+  select(year, pop, n_breed) -> count_breed
+
+counts %>% 
+  select(year, n_pop = count, pop) %>% 
+  left_join(count_breed) %>% 
+  left_join(count_sex_app) %>% 
+  left_join(sample_recruit) %>% 
   arrange(pop, year) -> counts_1
 
 # male and female proportion in samples
-# one keeps only years with only few unidentified sex
+# one keeps only years with only few unidentified individuals
 # when regulation starts and prevents from estimating r_max?
 
 frag %>% 
@@ -182,7 +190,7 @@ frag %>%
 
 frag %>%  
   filter(age == "ad", sex != "ind") %>% 
-  filter(!(pop == "FR" & year(year) < 2011), !(pop == "UK" & year(year) < 2002)) %>%
+  filter(!(pop == "FR" & year(year) < 2011), !(pop == "UK" & year(year) > 2009)) %>%
   group_by(sex) %>% 
   summarize(across(shot, sum)) %>% 
   pivot_wider(names_from = sex, values_from = shot) %>% 
@@ -220,7 +228,7 @@ frag %>%
 
 counts_1 %>% 
   left_join(frag %>% 
-              filter(age == "ad") %>% 
+              filter(!(age %in% c("no_ad", "ind") & repro == "after_rep")) %>% 
               group_by(year, pop) %>% 
               summarize(across(shot, sum)) %>% 
               ungroup() %>% 
@@ -235,13 +243,13 @@ counts_1 %>%
   scale_y_percent +
   scale_x_date_own(1e-2) +
   scale_color_manual(values = c_pop)
-# To 1998 in UK, and to 1995 in FR si 0%
-# To 1998 in UK, and to 2003 in FR si 10%
-# To 2005 in UK, and to 2007 in FR si 20%
+# from 1999 in UK, and from 1996 in FR si 0%
+# from 1999 in UK, and from 1999 in FR si 10%
+# from 2006 in UK, and from 2008 in FR si 20%
 
 counts_1 %>% 
   filter(!(pop == "UK" & year(year) > 1998), !(pop == "UK" & year(year) < 1961),
-         !(pop == "FR" & year(year) > 2003), !(pop == "FR" & year(year) < 1994)) %>% 
+         !(pop == "FR" & year(year) > 1998), !(pop == "FR" & year(year) < 1994)) %>% 
   mutate(size_pop = case_when(
     pop == "FR" ~ "small pop.",
     pop == "UK" & year(year) < 1981 ~ "small pop.",
