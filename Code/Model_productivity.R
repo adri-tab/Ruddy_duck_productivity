@@ -114,7 +114,7 @@ cor_plot <- function(col, title = NULL, limits = NA) {
 
 # Data import -----------------------------------------------------------------------
 
-read_rds("../Ruddy_duck_data/Data/Ruddy_duck_data.rds") %>% pluck(1) %>% 
+read_rds("../Ruddy_duck_data/Output/Ruddy_duck_data.rds") %>% pluck(1) %>% 
   mutate(across(pop, as_factor)) %>% arrange(pop) -> frag
 
 frag %>% 
@@ -143,7 +143,7 @@ frag %>%
   guides(size = guide_legend(title = "Samples")) +
   labs(y = "Male proportion")
 
-read_rds("../Ruddy_duck_data/Data/Ruddy_duck_data.rds") %>% pluck(2) %>% 
+read_rds("../Ruddy_duck_data/Output/Ruddy_duck_data.rds") %>% pluck(2) %>% 
   mutate(across(pop, as_factor)) %>% arrange(pop) -> counts
 
 # Count and sample formatting ------------------------------------------------------
@@ -161,7 +161,8 @@ counts %>%
   mutate(across(c(ad, no_ad), ~ if_else(ad + no_ad > 100, .x, NA_real_))) %>% 
   left_join(
     counts %>% 
-      mutate(year = year + years(1)) %>% 
+      mutate(year = year + years(1),
+             n_breed = count - killed_before_rep) %>% 
       select(year, pop, n_breed = count)) %>% 
   full_join(counts %>% select(year, count, pop)) %>% 
   rename(n_pop = count) %>% 
