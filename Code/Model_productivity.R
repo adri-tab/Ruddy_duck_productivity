@@ -246,10 +246,12 @@ counts_1 %>%
   geom_hline(yintercept = c(.1, .2), linetype = "dashed") +
   geom_point() +
   geom_line() +
-  facet_wrap( ~ pop, nrow = 2) +
-  scale_y_percent +
+  facet_wrap(~ pop, nrow = 2) +
   scale_x_date_own(1e-2) +
-  scale_color_manual(values = c_pop)
+  scale_color_manual(values = c_pop) +
+  scale_y_continuous(labels = scales::percent, 
+                     breaks = scales::pretty_breaks(), 
+                     limits = c(0, 1.1))
 # from 1999 in UK, and from 1996 in FR si 0%
 # from 1999 in UK, and from 2004 in FR si 10%
 # from 2006 in UK, and from 2008 in FR si 20%
