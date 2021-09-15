@@ -211,7 +211,7 @@ frag %>%
 # Lambda formatting ------------------------------------------------------------
 
 # estimation of lambda_max to test productivity reliability
-# when ruddy ducks start to be permanently seen?
+# when ruddy ducks start to be permanently seen and growing?
 counts_1 %>% 
   ggplot(aes(x = year, y = n_pop, color = pop)) + 
   geom_line() +
@@ -221,8 +221,8 @@ counts_1 %>%
   scale_y_log10() +
   scale_x_date_own(1e-2)
 
-# from 1961 in UK, from 1994 in FR
-# growth shift from 1981 in UK
+# from 1972 in UK, from 1994 in FR
+# growth shift from 1981 in UK when pop > 1000
 
 # when exploitation starts and prevents from estimating lambda_max
 frag %>% 
@@ -243,7 +243,7 @@ counts_1 %>%
   mutate(across(shot, replace_na, 0),
          exploitation_rate = (shot / n_pop) %>% replace_na(0)) %>% 
   ggplot(aes(x = year, y = exploitation_rate, color = pop)) +
-  geom_hline(yintercept = c(.1, .2), linetype = "dashed") +
+  geom_hline(yintercept = c(.1), linetype = "dashed") +
   geom_point() +
   geom_line() +
   facet_wrap(~ pop, nrow = 2) +
@@ -253,37 +253,95 @@ counts_1 %>%
                      breaks = scales::pretty_breaks(), 
                      limits = c(0, 1.1))
 # from 1999 in UK, and from 1996 in FR si 0%
-# from 1999 in UK, and from 2004 in FR si 10%
+# from 1999 in UK, and from 2004 in FR si 10% 
+# but remove lambda on year 2000 & 2001 because high exploitation in year 1999 & 2000
 # from 2006 in UK, and from 2008 in FR si 20%
 
+
+
+
 counts_1 %>% 
-  filter(!(pop == "UK" & year(year) > 1998), !(pop == "UK" & year(year) < 1961),
-         !(pop == "FR" & year(year) > 2003), !(pop == "FR" & year(year) < 1994)) %>% 
+  group_by(pop) %>% 
+  nest() %>% 
+  mutate(data = data %>% 
+           map(~ .x %>% mutate(n_pop_prev = c(0, .$n_pop[-length(.$n_pop)])))) %>% 
+  unnest(data) %>% 
+  filter(!(pop == "UK" & year(year) > 1999), !(pop == "UK" & year(year) < 1973),
+         !(pop == "FR" & year(year) > 2004), !(pop == "FR" & year(year) < 1995),
+         !(pop == "FR" & year(year) %in% c(2000:2001))) %>% 
   mutate(size_pop = case_when(
     pop == "FR" ~ "small pop.",
-    pop == "UK" & year(year) < 1981 ~ "small pop.",
-    pop == "UK" & year(year) > 1980 ~ "large pop.",
+    pop == "UK" & year(year) < 1982 ~ "small pop.",
+    pop == "UK" & year(year) > 1981 ~ "large pop.",
     TRUE ~ NA_character_),
     sub_pop = str_c(pop, " ", size_pop) %>% as_factor()) %>% 
   group_by(sub_pop) %>% 
-  mutate(explo = max(year) + years(1))  %>% 
+  mutate(explo = max(year))  %>% 
   group_by(pop) %>% 
   mutate(explo = max(explo)) %>% 
   ungroup() %>% 
-  select(year, n_pop, pop, size_pop, sub_pop, explo) %>% 
+  select(year, n_pop, n_pop_prev, pop, size_pop, sub_pop, explo) %>% 
+  arrange(sub_pop, year) -> counts_2
+
+
+
+counts_1 %>% 
+  left_join(frag %>% 
+              filter(!(age %in% c("no_ad", "ind") & repro == "after_rep")) %>% # 
+              group_by(year, pop) %>% 
+              summarize(across(shot, sum)) %>% 
+              ungroup() %>% 
+              filter(shot > 0)) %>%
+  mutate(across(shot, replace_na, 0),
+         exploitation_rate = (shot / n_pop) %>% replace_na(0)) %>% 
+  mutate() %>% 
+  filter(year(year) != 2021) %>% -> counts_2
+
+counts_2 %>% 
+  ggplot(aes(x = year, y = pop_prop, color = pop)) +
+  geom_point() +
+  geom_line() +
+  ggplot(aes(x = year, y = exploitation_rate, color = pop)) +
+  geom_hline(yintercept = c(.1), linetype = "dashed") +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~ pop, nrow = 2) +
+  scale_x_date_own(1e-2) +
+  scale_color_manual(values = c_pop) +
+  scale_y_continuous(labels = scales::percent, 
+                     breaks = scales::pretty_breaks(), 
+                     limits = c(0, 1.1))
+# from 1999 in UK, and from 1996 in FR si 0%
+# from 1999 in UK, and from 2004 in FR si 10% 
+# but remove lambda on year 2000 & 2001 because high exploitation in year 1999 & 2000
+# from 2006 in UK, and from 2008 in FR si 20%
+
+counts_1 %>% 
+  group_by(pop) %>% 
+  nest() %>% 
+  mutate(data = data %>% 
+           map(~ .x %>% mutate(n_pop_prev = c(0, .$n_pop[-length(.$n_pop)])))) %>% 
+  unnest(data) %>% 
+  filter(!(pop == "UK" & year(year) > 1999), !(pop == "UK" & year(year) < 1973),
+         !(pop == "FR" & year(year) > 2004), !(pop == "FR" & year(year) < 1995),
+         !(pop == "FR" & year(year) %in% c(2000:2001))) %>% 
+  mutate(size_pop = case_when(
+    pop == "FR" ~ "small pop.",
+    pop == "UK" & year(year) < 1982 ~ "small pop.",
+    pop == "UK" & year(year) > 1981 ~ "large pop.",
+    TRUE ~ NA_character_),
+    sub_pop = str_c(pop, " ", size_pop) %>% as_factor()) %>% 
+  group_by(sub_pop) %>% 
+  mutate(explo = max(year))  %>% 
+  group_by(pop) %>% 
+  mutate(explo = max(explo)) %>% 
+  ungroup() %>% 
+  select(year, n_pop, n_pop_prev, pop, size_pop, sub_pop, explo) %>% 
   arrange(sub_pop, year) -> counts_2
 
 # lambda
 counts_2 %>% 
-  mutate(log_N = log(n_pop)) %>% 
-  group_by(sub_pop) %>% 
-  nest() %>% 
-  mutate(data = data %>% 
-           map(~ .x %>% 
-                 mutate(log_N_prev = c(NA_real_, .x$log_N[-nrow(.x)])))) %>% 
-  unnest(data) %>% 
-  ungroup() %>% 
-  mutate(lambda = log_N - log_N_prev) %>%
+  mutate(lambda = log(n_pop) - log(n_pop_prev)) %>%
   group_by(sub_pop) %>% 
   mutate(avg = mean(lambda, na.rm = TRUE)) %>%
   ggplot(aes(x = year, y = lambda, group = sub_pop, color = pop, shape = sub_pop, 
@@ -300,18 +358,18 @@ counts_2 %>%
 counts_1 %>% 
   ggplot(aes(x = year, y = n_pop)) + 
   facet_wrap( ~ pop, ncol = 1) +
-  geom_vline(data = counts_2, aes(xintercept = explo), linetype = "dashed", 
-             color = "#de2d26") +
+  # geom_vline(data = counts_2, aes(xintercept = explo), linetype = "dashed", 
+  #            color = "#de2d26") +
   geom_line(alpha = 0.5, linetype = "dashed") +
   geom_point(shape = 16, color = "gray") +
   scale_y_log10(minor_breaks = NULL) +
   annotation_logticks(side = "l", color = "grey") +
-  geom_text(data = counts_2, label = "control\nstart", 
-            aes(x = explo + years(1)), y = 0.5, hjust = 0, 
-            size = 3, color = "#de2d26") +
-  geom_line(stat = "smooth", data = counts_2, 
-            aes(x = year, y = n_pop, group = sub_pop, color = pop, alpha = sub_pop),
-            method = "lm") +
+  # geom_text(data = counts_2, label = "control\nstart", 
+  #           aes(x = explo + years(1)), y = 0.5, hjust = 0, 
+  #           size = 3, color = "#de2d26") +
+  # geom_line(stat = "smooth", data = counts_2, 
+  #           aes(x = year, y = n_pop, group = sub_pop, color = pop, alpha = sub_pop),
+  #           method = "lm") +
   geom_point(data = counts_2, 
              aes(x = year, y = n_pop, group = sub_pop, color = pop, shape = sub_pop, 
                  alpha = sub_pop)) +
