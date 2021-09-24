@@ -11,7 +11,7 @@ require(nimble)
 require(MCMCvis)
 require(mcmcplots)
 require(tls) # total least squares regression
-library(scales)
+require(scales)
 
 # Colours selection -------------------------------------------------------------------
 
@@ -306,16 +306,6 @@ ds %>%
   scale_color_manual(values = c_pop, guide = "none") +
   labs(y = "Population size") -> raw_pop; raw_pop
 
-# Combined dataset ------------------------------------------------------------------
-
-# ds_1 %>% 
-#   left_join(counts_3 %>% select(year, pop, sub_pop)) %>% 
-#   mutate(pop_title = case_when(
-#     pop == "FR" ~ "FR small pop.",
-#     pop == "UK" & year(year) <= 1981 ~ "UK small pop.",
-#     pop == "UK" & year(year) > 1981 ~ "UK large pop.",
-#     TRUE ~ NA_character_) %>% as_factor()) -> ds
-
 # Data formatting function ----------------------------------------------------------
 
 dis <- function(fil = NA, gp = NA, col = NA, size = FALSE) {
@@ -460,7 +450,6 @@ JuvConst <- list(C = dis(obs_tot, pop, id, TRUE),
                  Z_id = lambda_ds %>% 
                    filter(sub_pop %in% c("UK decrease", "FR constant")) %>% 
                    pull(sub_ts))
-)
 
 JuvData <- list(mal_ad = unique(ds$kill_m),
                 fem_ad = unique(ds$kill_f),
@@ -580,29 +569,36 @@ JuvOut2 %>%
 
 # average survival
 JuvOut3 %>% 
-  filter(par == "productivity") %>% 
-  rowid_to_column("id") %>% 
-  filter((year(year) <= 2008 & pop == "FR") | 
-           (year(year) %in% c(2006:2010) & pop == "UK")) %>% 
-  mutate(name = str_c(par, "[", id, "]"), 
-         gp = str_c(pop, "_", method),
-         gth = if_else(gp == "FR_counting", 
-                       "lambda[3]", 
-                       "lambda[1]")) -> survival_sel
+  filter(par == "lambda") %>% 
+  rowid_to_column() %>% 
+  mutate(slope = str_c(par, "[", rowid, "]")) %>% 
+  select(method, slope) %>% 
+  mutate(data = JuvOut3 %>% 
+           filter(par == "productivity") %>% 
+           rowid_to_column("id") %>% 
+           mutate(name = str_c(par, "[", id, "]")) %>% 
+           select(year, pop, gp = method, name) %>% 
+           list()) %>% 
+  mutate(data = case_when(
+           method %>% str_detect("UK") ~ data %>% map(~ .x %>% filter(
+             pop == "UK", year(year) >= 2006, year(year) <= 2010)),
+           method == "FR constant" ~ data %>% map(~ .x %>% filter(
+             pop == "FR", year(year) >= 2004, year(year) <= 2018)),
+           method == "FR small pop." ~ data %>% map(~ .x %>% filter(
+             pop == "FR", year(year) <= 2008))
+  )) %>% 
+  unnest(data) -> sel
 
-# survival estimation 
-survival_sel %>% 
-  split(.$gp) %>% 
+sel %>% 
+  group_split(method, gp) %>% 
   map(function(x) {
     prod = as_tibble(JuvOut) %>%
       select(x %>% pull(name)) %>%
       rowMeans()
-    lambda = as_tibble(JuvOut) %>% pull(unique(x$gth))
+    lambda = as_tibble(JuvOut) %>% pull(unique(x$slope))
     survival = quantile(lambda - prod, c(.025, .5, .975))
     out = x %>% 
-      distinct(pop, method) %>%
-      mutate(sub_pop = if_else(unique(x$pop) == "FR", 
-                               "FR small pop.", "UK large pop.")) %>% 
+      distinct(pop, gp, method) %>% 
       bind_cols(tibble(survival, name = names(survival)) %>% 
                   pivot_wider(names_from = name, values_from = survival)) %>% 
       mutate(par = "survival_avg")
@@ -610,14 +606,7 @@ survival_sel %>%
   }) %>% 
   bind_rows() -> survival_avg
 
-bind_rows(JuvOut3, survival_avg) %>% 
-  mutate(sub_pop = if_else(par == "lambda", method, sub_pop),
-         sub_pop = as_factor(sub_pop),
-         pop = if_else(par == "lambda",
-                         str_trunc(method, 2, ellipsis = "") %>% 
-                         as_factor(), pop)) -> JuvOut4
-
-# Output plot -----------------------------------------------------------------------
+bind_rows(JuvOut3, survival_avg) -> JuvOut4
 
 lambda_ds %>% 
   left_join(JuvOut3 %>% 
@@ -633,10 +622,12 @@ lambda_ds %>%
          sub_pop = sub_pop %>% as_factor()) %>% 
   ungroup() -> lambda_ds_2
 
+# Output plot -----------------------------------------------------------------------
+
 raw_pop +
   geom_line(data = lambda_ds_2, 
             aes(x = year, y = exp(y), 
-                group = sub_ts, color = pop, shape = sub_pop, alpha = sub_pop))
+                group = sub_ts, color = pop))
 
 raw_plot(p_juv, title = "Proportion of recruits in the population", 
          percent = TRUE) -> raw_prop; raw_prop
@@ -686,11 +677,17 @@ cor_plot(col = "productivity",
             hjust = 0) -> cor_prod; cor_prod
 cor_plot(col = "recruits", title = "Recruits") -> cor_recr; cor_recr
 
+
+
+# Survival plot ---------------------------------------------------------------------
+
 raw_plot(survival, title = "Survival") + 
   geom_hline(yintercept = 1, linetype = "dashed")
 
 JuvOut4 %>% 
-  filter(par == "lambda") %>% 
+  filter(par == "lambda", str_detect(method, "pop.")) %>% 
+  mutate(pop = as_factor(str_trunc(method, 2, ellipsis = "")),
+         sub_pop = as_factor(method)) %>% 
   ggplot(aes(x = sub_pop, y = `50%` - 1, group = sub_pop, color = pop, alpha = sub_pop)) +
   geom_line(linetype = "dashed", alpha = .5) +
   geom_point() +
@@ -699,28 +696,48 @@ JuvOut4 %>%
     labels = scales::percent_format(accuracy = 1L),
     limits = c(0, .8),
     breaks = 0:10 / 10) +
-  scale_alpha_manual(values = c(0.5, 1, 1), guide = "none") +
+  scale_alpha_manual(values = c(.5, 1, 1), guide = "none") +
   scale_color_manual(values = c_pop, guide = "none") +
-  labs(title = bquote('Annual population growth rate (' * lambda * ')'),
+  labs(title = bquote(
+    'Annual population growth rate without harvest pressure (' * lambda * ')'),
        y = NULL, x = NULL) -> lambda_plot; lambda_plot
 
 JuvOut4 %>%
-  filter(par == "survival_avg") %>% 
-  bind_rows(tibble(pop = "FR", sub_pop = "FR small pop.", 
-                   par = "survival_avg", method = "sampling")) %>% 
+  filter(par == "survival_avg", !str_detect(method, "pop.")) %>% 
+  mutate(method = gp) %>% 
+  bind_rows(tibble(pop = "FR", par = "survival_avg", method = "sampling")) %>% 
   mutate(txt = if_else(pop == "FR" & method == "sampling", "NO DATA", NA_character_),
-         sub_pop = as_factor(sub_pop) %>% 
-           fct_relevel("UK large pop.", "FR small pop.")) %>% 
-  ggplot(aes(x = method, y = `50%`, group = sub_pop, color = method)) +
-  facet_wrap(~ sub_pop, nrow = 1, scales = "free_x") +
+         pop = factor(pop, levels = c("UK", "FR"))) %>% 
+  ggplot(aes(x = method, y = `50%`, group = pop, color = method)) +
+  facet_wrap(~ pop, nrow = 1, scales = "free_x") +
   geom_point() +
   geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`)) +
   geom_text(aes(x = method, y = .5, label = txt), color = "#de2d26", angle = -90) +
   scale_y_continuous(
     labels = scales::percent_format(accuracy = 1L),
-    limits = c(0, 1.3),
-    breaks = 0:13 / 10) +
+    limits = c(-.04, 1),
+    breaks = 0:10 / 10) +
   scale_color_manual(values = c_met, guide = "none") +
 labs(title = "Annual adult survival rate",
        y = NULL, x = NULL) -> surviv_plot; surviv_plot 
+
+JuvOut4 %>%
+  filter(par == "survival_avg", str_detect(method, "small")) %>% 
+  mutate(method = gp) %>% 
+  bind_rows(tibble(pop = "FR", par = "survival_avg", method = "sampling")) %>% 
+  mutate(txt = if_else(pop == "FR" & method == "sampling", "NO DATA", NA_character_),
+         pop = factor(pop, levels = c("UK", "FR"))) %>% 
+  ggplot(aes(x = method, y = `50%`, group = pop, color = method)) +
+  facet_wrap(~ pop, nrow = 1, scales = "free_x") +
+  geom_point() +
+  geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`)) +
+  geom_text(aes(x = method, y = .5, label = txt), color = "#de2d26", angle = -90) +
+  scale_y_continuous(
+    labels = scales::percent_format(accuracy = 1L),
+    limits = c(-.04, 1.5),
+    breaks = 0:15 / 10) +
+  scale_color_manual(values = c_met, guide = "none") +
+  labs(title = "Annual adult survival rate",
+       y = NULL, x = NULL) -> surviv_max_plot; surviv_max_plot 
+
 
