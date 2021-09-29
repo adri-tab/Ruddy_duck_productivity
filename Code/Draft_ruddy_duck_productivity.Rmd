@@ -9,8 +9,6 @@ author:
 - Iain Henderson^[Animal and Plant Health Agency, United Kingdom - iain.henderson@apha.gov.uk - contribution in data collection]
 - Sébastien Reeber^[Société Nationale pour la Protection de la Nature, France - sebastien.reeber@snpn.fr - contribution in data collection]
 - Matthieu Guillemain^[Office Français de la Biodiversité, France -  matthieu.guillemain@ofb.gouv.fr - contribution in writing]
-
-
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::pdf_document2:
@@ -116,8 +114,36 @@ Pictures of male in winter
 
 The French and the UK wintering populations have been monitored since the presence of the first individuals was validated. 
 
-```{r Harv, fig.cap = "blabla"}
+|Name|Description|
+|:--|:----------------------------|
+|$N_{t}$|Number of individuals in year $t$|
+|$D_{t}$|Number of individuals removed in year $t$|
+|$R_{t}$|Number of recruits in year $t$|
+|$S_{t}$|Adult survival rate, i.e. proportion of breeder in year $t-1$ still alive in year $t$|
+|$P_{t}$|Number of recruits in year $t$ produced per breeder in year $t - 1$|
+
+The proportion of males in the adult part of a population at its equilibrium is inferred from the samples. 
+
+Indeed, the available French samples were insufficient to get Since the . Age in samples  to 2003 to 2020 for the United Kingdom and  
+
+\begin{align} 
+N_{t} & = N_{t-1} - D_{t-1} + R_{t} \\
+N_{t} & = N_{t-1} - (1 - S_{t}).N_{t-1} + P_{t}.N_{t-1} \notag \\
+N_{t} & = S_{t}.N_{t-1} + P_{t}.N_{t-1} \notag \\
+\frac{N_{t}}{N_{t-1}} & = S_{t} + P_{t} \notag \\
+\lambda_{t} & = S_{t} + P_{t} 
+(\#eq:GR)
+\end{align}
+
+
+$PR_{i, t}$ estimation by the counting method
+
+```{r MM1, fig.cap = "(ref:MM1cap)"}
 knitr::include_graphics("../Output/plot_1.png")
+```
+
+```{r MM2, fig.cap = "(ref:MM2cap)"}
+knitr::include_graphics("../Output/plot_2.png")
 ```
 
 ## Model {-}
@@ -137,12 +163,14 @@ knitr::include_graphics("../Output/plot_1.png")
 |$P_{i, t}$|Parameter|Number of recruits in population $i$ in year $t$ per breeder in year $t - 1$|
 |$N0_{j}$|Parameter|Intercept of the regression model, the $j$ index refers to a restricted time period for a single population|
 |$SD_{j}$|Parameter|Standard deviation of the regression model, the $j$ index refers to a restricted time period for a single population|
-|$\lambda_{j}$|Parameter|Average annual growth rate, the $j$ index refers to a restricted time period for a single population|
-|$S_{j}$|Parameter|Average annual growth rate, the $j$ index refers to a restricted time period for a single population|
+|$\lambda_{j}$|Parameter|Population growth rate (in $year^{-1}$), the $j$ index refers to a restricted time period for a single population|
+|$S_{j}$|Parameter|Adult survival rate (in $year^{-1}$), the $j$ index refers to a restricted time period for a single population|
 
 The proportion of males in the adult part of a population at its equilibrium is inferred from the samples. 
 
 Indeed, the available French samples were insufficient to get Since the . Age in samples  to 2003 to 2020 for the United Kingdom and  
+
+
 
 \begin{equation}
 PM \sim {\sf Beta}(SM, SF)
@@ -162,7 +190,6 @@ $PR_{i, t}$ estimation by the sampling method
 SJ_{i, t} \sim {\sf Binom}(PR_{i, t}, S_{i, t})
 (\#eq:PRS)
 \end{equation}
-
 
 From $PR_{i, t}$ estimates, $R_{i, t}$ and $P_{i, t}$ are expressed as: 
 
@@ -189,6 +216,7 @@ S_{j} = \lambda_{j} - \overline{P_{i, t}}
 \end{equation}
 
 
+
 ## Survival estimation {-}
 
 
@@ -209,6 +237,22 @@ blabla
 # Results
 
 blabla
+
+```{r R1, fig.cap = "(ref:R1cap)"}
+knitr::include_graphics("../Output/plot_3.png")
+```
+
+```{r R2, fig.cap = "(ref:R2cap)"}
+knitr::include_graphics("../Output/plot_4.png")
+```
+
+```{r R3, fig.cap = "(ref:R3cap)"}
+knitr::include_graphics("../Output/plot_5.png")
+```
+
+```{r R4, fig.cap = "(ref:R4cap)"}
+knitr::include_graphics("../Output/plot_6.png")
+```
 
 # Discussion
 
@@ -231,3 +275,28 @@ This work was partly funded by the LIFE Oxyura project (LIFE17 NAT/FR/000942) th
 
 <div id="refs"></div>
 
+\newpage
+
+# Supplement 1 {-}
+
+```{r S1, fig.cap = "(ref:S1cap)"}
+knitr::include_graphics("../Output/plot_7.png")
+```
+
+Comments?
+
+
+
+(ref:MM1cap) Evolution of the size of the two Ruddy duck populations in light of the harvest pressure; on time periods without harvest, population growth rates can be estimated (slopes in red for the UK and in blue for France)
+
+(ref:MM2cap) Evolution of the size of the two Ruddy duck populations in light of the data time series; on restricted time periods with available data, population growth rates can be estimated (slopes in red for the UK and in blue for France)
+
+(ref:R1cap) (A) Estimates of productivity, i.e. average number of recruits produced per breeder; (B) Comparison of the productivity values between the two estimation methods; bars define the 95% confidence intervals
+
+(ref:R2cap) (A) Estimates of the population growth rate without harvest; two estimates were produced for the UK population because the growth rate dropped significantly when its size reached more than 1000 individuals; (B) Growth rate estimates, bars define the 95\\% confidence intervals
+
+(ref:R3cap) (A) Estimates of the population growth rate on time intervals with data availability. This aims at producing survival estimates to discuss the reliability of the methods to estimate productivity; (B) Growth rate estimates, bars define the 95% confidence intervals
+
+(ref:R4cap) (A) Average productivity estimates on the time intervals defined for survival analysis
+
+(ref:S1cap) (A1) Estimates of the number of recruits, i.e. the young adults reproducing for their first time; (B1) estimates of the proportion of recruits in the population at the reproduction period; (A2) & (B2) comparison of the values between the two estimation methods; bars define the 95% confidence intervals
