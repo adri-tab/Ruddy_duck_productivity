@@ -730,7 +730,6 @@ JuvOut4 %>%
   labs(title = "Annual adult survival rate",
        y = NULL, x = NULL) -> surviv_max_plot; surviv_max_plot 
 
-
 # True survival ---------------------------------------------------------------------
 
 # avg lambda plotting
@@ -886,7 +885,6 @@ JuvOut4 %>%
   labs(title = bquote(
     'Annual population growth rate with harvest pressure (' * lambda * ')'),
     y = NULL, x = NULL) -> lambda_plot_2; lambda_plot_2
-
 
 # Save ------------------------------------------------------------------------------
 
