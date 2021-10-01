@@ -96,45 +96,21 @@ Introduction:
 productivity often defined as Jt/At
 but more realistic to defined as Jt/At-1
 
-
 # Materials & methods
 
-
-## Few words on the species {-}
+## The studied species
 
 The ruddy duck is a species introduced in the United Kingdom in the 50's. The first reproduction was observed in the 60's. The population rapidely grew until reaching about more than 5000 individuals spread over the entire country. A new population set up in France from the 90's, likely because of an arrival of few individuals from the United Kingdom. This population set up around a single wintering spot, the Grand Lieu Lake. 
 Since this species is considered as a major threat to the white-headed duck because of the risk of hybridization (AEWA report), a European plan of eradication has been concluded (EU report). Control measures were taken in both countries from 1999 in the UK and 2004 in France. 
 
-## Dichromatism characterization {-}
+## Dichromatism characterization
 
 Pictures of male juvenile in winter
 Pictures of male in winter
 
-## Time series {-}
+## Data time series
 
 The French and the UK wintering populations have been monitored since the presence of the first individuals was validated. 
-
-|Name|Description|
-|:--|:----------------------------|
-|$N_{t}$|Number of individuals in year $t$|
-|$D_{t}$|Number of individuals removed in year $t$|
-|$R_{t}$|Number of recruits in year $t$|
-|$S_{t}$|Adult survival rate, i.e. proportion of breeder in year $t-1$ still alive in year $t$|
-|$P_{t}$|Number of recruits in year $t$ produced per breeder in year $t - 1$|
-
-The proportion of males in the adult part of a population at its equilibrium is inferred from the samples. 
-
-Indeed, the available French samples were insufficient to get Since the . Age in samples  to 2003 to 2020 for the United Kingdom and  
-
-\begin{align} 
-N_{t} & = N_{t-1} - D_{t-1} + R_{t} \\
-N_{t} & = N_{t-1} - (1 - S_{t}).N_{t-1} + P_{t}.N_{t-1} \notag \\
-N_{t} & = S_{t}.N_{t-1} + P_{t}.N_{t-1} \notag \\
-\frac{N_{t}}{N_{t-1}} & = S_{t} + P_{t} \notag \\
-\lambda_{t} & = S_{t} + P_{t} 
-(\#eq:GR)
-\end{align}
-
 
 $PR_{i, t}$ estimation by the counting method
 
@@ -142,11 +118,7 @@ $PR_{i, t}$ estimation by the counting method
 knitr::include_graphics("../Output/plot_1.png")
 ```
 
-```{r MM2, fig.cap = "(ref:MM2cap)"}
-knitr::include_graphics("../Output/plot_2.png")
-```
-
-## Model {-}
+## Model
 
 |Name|Class|Description|
 |:--|:----|:----------------------------|
@@ -169,8 +141,6 @@ knitr::include_graphics("../Output/plot_2.png")
 The proportion of males in the adult part of a population at its equilibrium is inferred from the samples. 
 
 Indeed, the available French samples were insufficient to get Since the . Age in samples  to 2003 to 2020 for the United Kingdom and  
-
-
 
 \begin{equation}
 PM \sim {\sf Beta}(SM, SF)
@@ -215,9 +185,28 @@ S_{j} = \lambda_{j} - \overline{P_{i, t}}
 (\#eq:S)
 \end{equation}
 
+## Result validation using survival analysis
 
+|Name|Description|
+|:--|:----------------------------|
+|$N_{t}$|Number of breeders in year $t$|
+|$D_{t}$|Number of breeders removed in year $t$|
+|$R_{t}$|Number of recruits in year $t$|
+|$S_{t}$|Adult survival rate, i.e. proportion of breeder in year $t-1$ still alive in year $t$|
+|$P_{t}$|Number of recruits in year $t$ produced per breeder in year $t - 1$|
 
-## Survival estimation {-}
+The proportion of males in the adult part of a population at its equilibrium is inferred from the samples. 
+
+Indeed, the available French samples were insufficient to get Since the . Age in samples  to 2003 to 2020 for the United Kingdom and  
+
+\begin{align} 
+N_{t} & = N_{t-1} - D_{t-1} + R_{t} \\
+N_{t} & = N_{t-1} - (1 - S_{t}).N_{t-1} + P_{t}.N_{t-1} \notag \\
+N_{t} & = S_{t}.N_{t-1} + P_{t}.N_{t-1} \notag \\
+\frac{N_{t}}{N_{t-1}} & = S_{t} + P_{t} \notag \\
+\lambda_{t} & = S_{t} + P_{t} 
+(\#eq:GR)
+\end{align}
 
 
 develop the counting method :
@@ -234,13 +223,21 @@ in the range of similar species in litterature -> satisfying
 
 blabla
 
+## Result validation by comparison to maximum productivity
+
+```{r MM2, fig.cap = "(ref:MM2cap)"}
+knitr::include_graphics("../Output/plot_2.png")
+```
+
 # Results
 
-blabla
+## Productivity estimates
 
 ```{r R1, fig.cap = "(ref:R1cap)"}
 knitr::include_graphics("../Output/plot_3.png")
 ```
+
+## Result validation using survival analysis
 
 ```{r R2, fig.cap = "(ref:R2cap)"}
 knitr::include_graphics("../Output/plot_4.png")
@@ -249,6 +246,8 @@ knitr::include_graphics("../Output/plot_4.png")
 ```{r R3, fig.cap = "(ref:R3cap)"}
 knitr::include_graphics("../Output/plot_5.png")
 ```
+
+## Result validation by comparison to maximum productivity
 
 ```{r R4, fig.cap = "(ref:R4cap)"}
 knitr::include_graphics("../Output/plot_6.png")
@@ -285,18 +284,16 @@ knitr::include_graphics("../Output/plot_7.png")
 
 Comments?
 
+(ref:MM1cap) Evolution of the size of the two Ruddy duck populations in light of the data time series; on restricted time periods with available data, population growth rates can be estimated (slopes in red for the UK and in blue for France)
 
-
-(ref:MM1cap) Evolution of the size of the two Ruddy duck populations in light of the harvest pressure; on time periods without harvest, population growth rates can be estimated (slopes in red for the UK and in blue for France)
-
-(ref:MM2cap) Evolution of the size of the two Ruddy duck populations in light of the data time series; on restricted time periods with available data, population growth rates can be estimated (slopes in red for the UK and in blue for France)
+(ref:MM2cap) Evolution of the size of the two Ruddy duck populations in light of the harvest pressure; on time periods without harvest, population growth rates can be estimated (slopes in red for the UK and in blue for France)
 
 (ref:R1cap) (A) Estimates of productivity, i.e. average number of recruits produced per breeder; (B) Comparison of the productivity values between the two estimation methods; bars define the 95% confidence intervals
 
-(ref:R2cap) (A) Estimates of the population growth rate without harvest; two estimates were produced for the UK population because the growth rate dropped significantly when its size reached more than 1000 individuals; (B) Growth rate estimates, bars define the 95\\% confidence intervals
+(ref:R2cap) (A) Estimates of the population growth rate on time intervals with data availability. This aims at producing survival estimates to discuss the reliability of the methods to estimate productivity; (B) Growth rate estimates, bars define the 95% confidence intervals
 
-(ref:R3cap) (A) Estimates of the population growth rate on time intervals with data availability. This aims at producing survival estimates to discuss the reliability of the methods to estimate productivity; (B) Growth rate estimates, bars define the 95% confidence intervals
+(ref:R3cap) (A) Average productivity estimates on the time intervals defined for survival analysis; (B) Underlying average survival estimates
 
-(ref:R4cap) (A) Average productivity estimates on the time intervals defined for survival analysis
+(ref:R4cap) (A) Estimates of the population growth rate without harvest; two estimates were produced for the UK population because the growth rate dropped significantly when its size reached more than 1000 individuals; (B) Growth rate estimates, bars define the 95% confidence intervals
 
 (ref:S1cap) (A1) Estimates of the number of recruits, i.e. the young adults reproducing for their first time; (B1) estimates of the proportion of recruits in the population at the reproduction period; (A2) & (B2) comparison of the values between the two estimation methods; bars define the 95% confidence intervals

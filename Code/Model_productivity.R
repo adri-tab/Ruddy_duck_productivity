@@ -264,7 +264,7 @@ counts_1 %>%
 #lambda dataset formatting
 
 counts_1 %>% 
-  mutate(plot1 = if_else(pop == "UK" & year(year) >= 2006 & year(year) <= 2014, 
+  mutate(plot1 = if_else(pop == "UK" & year(year) >= 2006 & year(year) <= 2013, 
                          "UK decrease", NA_character_),
          plot2 = if_else(pop == "FR" & year(year) >= 2004 & year(year) <= 2018, 
                          "FR constant", NA_character_),
@@ -761,6 +761,70 @@ JuvOut4 %>%
 
 # Plots for article ------------------------------------------------------------------
 
+# Time series
+JuvOut3 %>%
+  filter(par == "productivity") %>% 
+  group_split(pop, method) %>% 
+  map(~ .x %>% 
+        mutate(diff = c(1, diff(year(year))) - 1, 
+               diff = if_else(diff != 0, 1, 0), 
+               diff = cumsum(diff)) %>% 
+        group_by(pop, method, diff) %>% 
+        summarize(xmin = min(year) - months(6),
+                  xmax = max(year) + months(6)) %>% 
+        ungroup()) %>%
+  bind_rows() %>% 
+  mutate(label = str_c(method, " time series")) %>% 
+  select(pop, label, xmin, xmax) %>% 
+  bind_rows(
+    ds %>% 
+      mutate(
+        rec = case_when(
+          pop == "UK" & year(year) < 1999 ~ 1,
+          pop == "UK" & year(year) >= 1999 ~ 2,
+          pop == "FR" & year(year) < 1999 ~ 3, 
+          pop == "FR" & year(year) %in% c(1999:2000) ~ 4,
+          pop == "FR" & year(year) %in% c(2001:2003) ~ 5,
+          pop == "FR" & year(year) >= 2004 ~ 6),  
+        label = if_else(rec %in% c(1, 3, 5), 
+                        "no harvest", 
+                        "harvest pressure")) %>% 
+      group_by(rec, label, pop) %>% 
+      summarize(xmin = min(year),
+                xmax = max(year) + years(1)) %>% 
+      rowwise() %>% 
+      mutate(xmax = min(xmax, ymd(20210101))) %>% 
+      ungroup() %>% 
+      select(pop, label, xmin, xmax)) %>% 
+  rowwise() %>% 
+  mutate(label = factor(label, 
+                        levels = c("counting time series", 
+                                   "sampling time series",
+                                   "harvest pressure",
+                                   "no harvest")),
+         ymin = 10^(log10(6.5e3) + 0.1 * min(c(2, (as.numeric(label) - 1)))),
+         ymax = 10^(log10(ymin) + 0.1)) -> time_series
+
+
+ds %>% 
+  ggplot(aes(x = year, y = n_pop)) + 
+  facet_wrap( ~ pop, ncol = 1) +
+  geom_line(alpha = 0.5, linetype = "dashed") +
+  geom_point(shape = 16, color = "gray") +
+  scale_y_log10(minor_breaks = NULL) +
+  annotation_logticks(side = "l", color = "grey") +
+  scale_x_date_own(1e-2) +
+  scale_shape_manual(values = 16, guide = "none") +
+  scale_color_manual(values = c_pop, guide = "none") +
+  labs(y = "Breeding population size") +
+  geom_rect(data = time_series,
+            aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = label), 
+            alpha = .8, 
+            inherit.aes = FALSE) + 
+  scale_fill_manual(values = c(c_met, "#333333", "#CCCCCC")) +
+  guides(fill = guide_legend(title = "")) +
+  theme(legend.position = "bottom") -> matmet; matmet
+
 # avg lambda plotting
 
 ds %>% 
@@ -781,28 +845,14 @@ ds %>%
   scale_x_date_own(1e-2) +
   scale_shape_manual(values = 16, guide = "none") +
   scale_color_manual(values = c_pop, guide = "none") +
-  labs(y = "Population size") +
-  geom_rect(data = 
-              JuvOut3 %>%
-              filter(par == "productivity") %>% 
-              group_split(pop, method) %>% 
-              map(~ .x %>% 
-                    mutate(diff = c(1, diff(year(year))) - 1, 
-                           diff = if_else(diff != 0, 1, 0), 
-                           diff = cumsum(diff)) %>% 
-                    group_by(pop, method, diff) %>% 
-                    summarize(xmin = min(year) - months(6),
-                              xmax = max(year) + months(6)) %>% 
-                    ungroup() %>% 
-                    mutate(ymin = if_else(method == "counting", 8e3, 6.5e3),
-                           ymax = if_else(method == "counting", 1e4, 8e3))) %>%
-              bind_rows(),
-            aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = method), 
-            alpha = .6, 
+  labs(y = "Breeding population size") +
+  geom_rect(data = time_series,
+            aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = label), 
+            alpha = .8, 
             inherit.aes = FALSE) + 
-  scale_fill_manual(values = c_met) +
-  guides(fill = guide_legend(title = "Data time series")) +
-  theme(legend.position = "bottom") -> raw_pop; raw_pop
+  scale_fill_manual(values = c(c_met, "#333333", "#CCCCCC")) +
+  guides(fill = guide_legend(title = "")) +
+  theme(legend.position = "bottom") -> lambda; lambda
 
 ds %>% 
   ggplot(aes(x = year, y = n_pop)) + 
@@ -823,32 +873,14 @@ ds %>%
   scale_shape_manual(values = 16, guide = "none") +
   scale_color_manual(values = c_pop, guide = "none") +
   scale_alpha_manual(values = c(1, .5, 1), guide = "none") +
-  labs(y = "Population size") +
-  geom_rect(data = 
-              ds %>% 
-              mutate(
-                rec = case_when(
-                  pop == "UK" & year(year) < 1999 ~ 1,
-                  pop == "UK" & year(year) >= 1999 ~ 2,
-                  pop == "FR" & year(year) < 1999 ~ 3, 
-                  pop == "FR" & year(year) %in% c(1999:2000) ~ 4,
-                  pop == "FR" & year(year) %in% c(2001:2003) ~ 5,
-                  pop == "FR" & year(year) >= 2004 ~ 6),  
-                harvest = if_else(rec %in% c(1, 3, 5), 
-                                  "no harvest", 
-                                  "harvest pressure")) %>% 
-              group_by(rec, harvest, pop) %>% 
-              summarize(xmin = min(year),
-                        xmax = max(year) + years(1)) %>% 
-              rowwise() %>% 
-              mutate(xmax = min(xmax, ymd(20210101))),
-            aes(xmin = xmin, xmax = xmax, ymin = 8e3, ymax = 1e4, fill = harvest), 
+  labs(y = "Breeding population size") +
+  geom_rect(data = time_series,
+            aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = label), 
             alpha = .8, 
             inherit.aes = FALSE) + 
-  scale_fill_manual(values = c("#333333", "#CCCCCC")) +
+  scale_fill_manual(values = c(c_met, "#333333", "#CCCCCC")) +
   guides(fill = guide_legend(title = "")) +
-  labs(y = "Population size") +
-  theme(legend.position = "bottom") -> raw_pop_2; raw_pop_2
+  theme(legend.position = "bottom") -> lambda_max; lambda_max
 
 JuvOut4 %>% 
   filter(par == "lambda", !str_detect(method, "pop.")) %>% 
@@ -880,7 +912,9 @@ JuvOut4 %>%
   scale_color_manual(values = c_pop, guide = "none") +
   labs(title = bquote(
     'Annual population growth rate without harvest pressure (' * lambda * ')'),
-    y = NULL, x = NULL) -> lambda_plot_2; lambda_plot_2
+    y = NULL, x = NULL) -> lambda_max_plot; lambda_max_plot
+
+
 
 # Save ------------------------------------------------------------------------------
 
@@ -896,7 +930,7 @@ grid.arrange(
 
 grid.arrange(
   grobs = list(
-    raw_pop +
+    lambda +
       geom_text(data = lambda_ds_2 %>%
                   filter(sub_ts %in% c(1:2)) %>%
                   group_by(pop, lambda) %>%
@@ -925,7 +959,7 @@ grid.arrange(
 
 grid.arrange(
   grobs = list(
-    raw_pop_2 + 
+    lambda_max + 
       geom_text(data = lambda_ds_2 %>%
                   filter(!sub_ts %in% c(1:2)) %>%
                   group_by(pop, lambda) %>%
@@ -939,7 +973,7 @@ grid.arrange(
                 aes(x = year, y = y, label = lambda, color = pop)) +
       theme(legend.position = "bottom") +
       labs(title = "A"), 
-    lambda_plot_2 + 
+    lambda_max_plot + 
       guides(x =  guide_axis(angle = 45)) +
       labs(title = "B",
            y = bquote(
@@ -950,12 +984,12 @@ grid.arrange(
                         c(1, NA))) -> raw_pop_2_res
 
 grid.arrange(
-  grobs = list(raw_recruit + theme(legend.position = "none") + 
-                 labs(title = "A1", y = "recruitment"),
-               cor_recruit + labs(title = "A2"),
-               raw_prop + theme(legend.position = "none") + 
-                 labs(title = "B1", y = "recruit proportion"),
-               cor_prop + labs(title = "B2"),
+  grobs = list(raw_prop + theme(legend.position = "none") + 
+                 labs(title = "A1", y = "Recruit proportion"),
+               cor_prop + labs(title = "A2"),
+               raw_recruit + theme(legend.position = "none") + 
+                 labs(title = "B1", y = "Recruitment"),
+               cor_recruit + labs(title = "B2"),
                get_legend(raw_recruit + theme(legend.position = "bottom"))),
   widths = c(5, 3),
   heights = c(6, 6, 1),
@@ -963,8 +997,9 @@ grid.arrange(
                         c(3, 4), 
                         c(5, NA))) -> annex
 
-list(raw_pop,
-     raw_pop_2,
+list(matmet,
+     lambda,
+     lambda_max, 
      prod_res,
      raw_pop_res,
      prod_surv_plot, 
@@ -972,6 +1007,7 @@ list(raw_pop,
      annex) -> plo
 
 list(c(7, 5),
+     c(7, 5),
      c(7, 5),
      c(9, 4.5),
      c(10, 5),
