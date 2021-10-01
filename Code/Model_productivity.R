@@ -125,7 +125,7 @@ cor_plot <- function(col, title = NULL, limits = NA, breaks = NA) {
 
 # Data import -----------------------------------------------------------------------
 
-read_rds("../Ruddy_duck_data/Output/Ruddy_duck_data.rds") %>% pluck(1) %>% 
+read_rds("./Data/Ruddy_duck_data.rds") %>% pluck(1) %>% 
   mutate(across(pop, as_factor)) %>% arrange(pop) -> frag
 
 frag %>% 
@@ -154,7 +154,7 @@ frag %>%
   guides(size = guide_legend(title = "Samples")) +
   labs(y = "Male proportion")
 
-read_rds("../Ruddy_duck_data/Output/Ruddy_duck_data.rds") %>% pluck(2) %>% 
+read_rds("./Data/Ruddy_duck_data.rds") %>% pluck(2) %>% 
   mutate(across(pop, as_factor)) %>% arrange(pop) -> counts
 
 # Count and sample formatting ------------------------------------------------------
@@ -181,7 +181,8 @@ counts %>%
   select(year, pop, n_breed) -> count_breed
 
 counts %>% 
-  select(year, n_pop = count, pop) %>% 
+  mutate(n_pop = count - killed_before_rep) %>% 
+  select(year, n_win = count, n_pop, pop) %>% 
   left_join(count_breed) %>% 
   left_join(count_sex_app) %>% 
   left_join(sample_recruit) %>% 
@@ -246,7 +247,7 @@ counts_1 %>%
               ungroup() %>% 
               filter(shot > 0)) %>%
   mutate(across(shot, replace_na, 0),
-         exploitation_rate = (shot / n_pop) %>% replace_na(0)) %>% 
+         exploitation_rate = (shot / n_win) %>% replace_na(0)) %>% 
   ggplot(aes(x = year, y = exploitation_rate, color = pop)) +
   geom_hline(yintercept = c(.1), linetype = "dashed") +
   geom_point() +
@@ -263,7 +264,7 @@ counts_1 %>%
 #lambda dataset formatting
 
 counts_1 %>% 
-  mutate(plot1 = if_else(pop == "UK" & year(year) >= 2006 & year(year) <= 2010, 
+  mutate(plot1 = if_else(pop == "UK" & year(year) >= 2006 & year(year) <= 2014, 
                          "UK decrease", NA_character_),
          plot2 = if_else(pop == "FR" & year(year) >= 2004 & year(year) <= 2018, 
                          "FR constant", NA_character_),
@@ -300,15 +301,9 @@ ds %>%
   scale_y_log10(minor_breaks = NULL) +
   annotation_logticks(side = "l", color = "grey") +
   geom_point(data = lambda_ds %>% 
-               filter(sub_pop %>% str_detect("pop.")) %>% 
-               mutate(n_pop = exp(n_pop)), 
-             aes(x = year, y = n_pop, 
-                 group = sub_pop, color = pop, shape = sub_pop, alpha = sub_pop)) +
- scale_x_date_own(1e-2) +
-  scale_shape_manual(values = c(16, 16, 16), guide = "none") +
-  scale_alpha_manual(values = c(0.5, 1, 1), guide = "none") +
-  scale_color_manual(values = c_pop, guide = "none") +
-  labs(y = "Population size") -> raw_pop; raw_pop
+               mutate(n_pop = exp(n_pop)),
+             aes(x = year, y = n_pop, color = sub_pop)) +
+  scale_x_date_own(1e-2)
 
 # Data formatting function ----------------------------------------------------------
 
@@ -400,7 +395,7 @@ JuvCode <- nimbleCode(
      
     for (r in 1:R_id_max) {
       
-      r_avg[r] ~ dnorm(0, sd = 1e2)
+      r_avg[r] ~ dunif(log(0.01), log(5))
       N_sd[r] ~ dunif(0, 1e3)
       log(lambda[r]) <- r_avg[r]
     }
@@ -430,7 +425,7 @@ JuvCode <- nimbleCode(
   })
 
 # set seed
-myseed <- 88
+myseed <- 1
 set.seed(myseed)
 
 # model data
@@ -479,7 +474,7 @@ JuvInit <- list(p_mal = 0.6,
                 prior = rep(.1, 3),
                 p_juv = rep(.1, JuvConst$C + JuvConst$S),
                 log_N_int = rep(0, 6),
-                r_avg = rep(.01, 5),
+                r_avg = rep(log(.5), 5),
                 N_sd = rep(1, 5))
 
 # node targets
@@ -635,11 +630,6 @@ lambda_ds %>%
 
 # Output plot -----------------------------------------------------------------------
 
-raw_pop +
-  geom_line(data = lambda_ds_2, 
-            aes(x = year, y = exp(y), 
-                group = sub_ts, color = pop))
-
 raw_plot(p_juv, title = "Proportion of recruits in the population", 
          percent = TRUE) -> raw_prop; raw_prop
 
@@ -674,92 +664,39 @@ cor_plot(col = "p_juv",
 
 cor_plot(col = "productivity", 
          title = "Productivity: number of recruits per breeder",
-         limits = c(0, 1.1)) +
-  geom_segment(x = .9, y = .9, xend = .9, yend = xx * .9,
+         limits = c(0, .7)) +
+  geom_segment(x = .55, y = .55, xend = .55, yend = xx * .55,
                arrow = arrow(type = "closed", length = unit(0.3, "cm")),
                size = .5, color = "#de2d26") +
-  geom_text(x = 1, y = 1.05, 
+  geom_text(x = .55, y = .65, 
             label = "1:1", 
             color = "black",
             hjust = 1) +
-  geom_text(x = .9, y = .75, 
+  geom_text(x = .55, y = .45, 
             label = str_c(" - ", round(1e2 * (1 - xx), 1), "% "), 
             color = "#de2d26",
             hjust = 0) -> cor_prod; cor_prod
 
 cor_plot(col = "recruits", title = "Number of recruits") -> cor_recruit; cor_recruit
 
-# Max survival ---------------------------------------------------------------------
-
-raw_plot(survival, title = "Survival") + 
-  geom_hline(yintercept = 1, linetype = "dashed")
-
-JuvOut4 %>% 
-  filter(par == "lambda", str_detect(method, "pop.")) %>% 
-  mutate(pop = as_factor(str_trunc(method, 2, ellipsis = "")),
-         sub_pop = as_factor(method)) %>% 
-  ggplot(aes(x = sub_pop, y = `50%` - 1, group = sub_pop, color = pop, alpha = sub_pop)) +
-  geom_point(size = 2) +
-  geom_linerange(aes(ymin = `2.5%` - 1, ymax = `97.5%` - 1), size = 1.2) +
-  scale_y_continuous(
-    labels = scales::percent_format(accuracy = 1L, prefix = "+"),
-    limits = c(0, .8),
-    breaks = 0:10 / 10) +
-  scale_alpha_manual(values = c(1, .5, 1), guide = "none") +
-  scale_color_manual(values = c_pop, guide = "none") +
-  labs(title = bquote(
-    'Annual population growth rate without harvest pressure (' * lambda * ')'),
-       y = NULL, x = NULL) -> lambda_plot; lambda_plot
-
-JuvOut4 %>%
-  filter(par == "survival_avg", str_detect(method, "small")) %>% 
-  mutate(method = gp) %>% 
-  bind_rows(tibble(pop = "FR", par = "survival_avg", method = "sampling")) %>% 
-  mutate(txt = if_else(pop == "FR" & method == "sampling", "NO DATA", NA_character_),
-         pop = factor(pop, levels = c("UK", "FR"))) %>% 
-  ggplot(aes(x = method, y = `50%`, group = pop, color = method)) +
-  facet_wrap(~ pop, nrow = 1, scales = "free_x") +
-  geom_point() +
-  geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`)) +
-  geom_text(aes(x = method, y = .5, label = txt), color = "#de2d26", angle = -90) +
-  scale_y_continuous(
-    labels = scales::percent_format(accuracy = 1L),
-    limits = c(-.04, 1.5),
-    breaks = 0:15 / 10) +
-  scale_color_manual(values = c_met, guide = "none") +
-  labs(title = "Annual adult survival rate",
-       y = NULL, x = NULL) -> surviv_max_plot; surviv_max_plot 
-
-# True survival ---------------------------------------------------------------------
-
-# avg lambda plotting
-
 ds %>% 
   ggplot(aes(x = year, y = n_pop)) + 
   facet_wrap( ~ pop, ncol = 1) +
-  geom_line(alpha = 0.2, linetype = "dashed") +
-  geom_line(data = lambda_ds_2 %>% filter(sub_ts %in% c(1:2)), 
-            aes(x = year, y = exp(y), color = pop), size = 2, alpha = .3) +
-  # geom_text(data = lambda_ds_2 %>% 
-  #             filter(sub_ts %in% c(1:2)) %>% 
-  #             group_by(pop, lambda) %>% 
-  #             summarize(across(year, mean),
-  #                       across(y, ~ exp(max(.)))) %>% 
-  #             mutate(lambda = round(1e2 * (lambda - 1)) %>% str_c(""," % per year"), 
-  #                    y = if_else(pop == "FR", y * 3, y * 1/2),
-  #                    year = if_else(pop == "FR", year, year + years(5))), 
-  #           aes(x = year, y = y, label = lambda, color = pop)) +
+  geom_line(alpha = 0.5, linetype = "dashed") +
   geom_point(shape = 16, color = "gray") +
   scale_y_log10(minor_breaks = NULL) +
   annotation_logticks(side = "l", color = "grey") +
   geom_point(data = lambda_ds %>% 
-               filter(!sub_pop %>% str_detect("pop.")) %>% 
                mutate(n_pop = exp(n_pop)), 
-             aes(x = year, y = n_pop, 
-                 group = pop, color = pop)) +
+             aes(x = year, y = n_pop, color = sub_pop)) +
   scale_x_date_own(1e-2) +
-  scale_color_manual(values = c_pop, guide = "none") +
-  labs(y = "Population size") -> raw_pop_true; raw_pop_true
+  geom_line(data = lambda_ds_2, 
+            aes(x = year, y = exp(y), 
+                group = sub_ts, color = sub_pop))
+
+# True survival ---------------------------------------------------------------------
+
+# avg lambda plotting
 
 JuvOut4 %>%
   filter(par == "productivity_avg", !str_detect(method, "pop.")) %>% 
@@ -771,10 +708,10 @@ JuvOut4 %>%
   facet_wrap(~ pop, nrow = 1, scales = "free_x") +
   geom_point() +
   geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`)) +
-  geom_text(aes(x = method, y = .64, label = txt), color = "#de2d26", angle = -90) +
+  geom_text(aes(x = method, y = .365, label = txt), color = "#de2d26", angle = -90) +
   scale_y_continuous(
-    limits = c(0, 1.2),
-    breaks = 0:12 / 10) +
+    limits = c(0, .7),
+    breaks = 0:7 / 10) +
   scale_color_manual(values = c_met, guide = "none") +
   labs(title = "Productivity: number of recruits per breeder",
        y = NULL, x = NULL) -> prod_plot; prod_plot 
@@ -798,9 +735,74 @@ JuvOut4 %>%
   labs(title = "Annual adult survival rate",
        y = NULL, x = NULL) -> surviv_plot; surviv_plot 
 
+# Max survival ---------------------------------------------------------------------
+
+raw_plot(survival, title = "Survival") + 
+  geom_hline(yintercept = 1, linetype = "dashed")
+
+JuvOut4 %>%
+  filter(par == "survival_avg", str_detect(method, "small")) %>% 
+  mutate(method = gp) %>% 
+  bind_rows(tibble(pop = "FR", par = "survival_avg", method = "sampling")) %>% 
+  mutate(txt = if_else(pop == "FR" & method == "sampling", "NO DATA", NA_character_),
+         pop = factor(pop, levels = c("UK", "FR"))) %>% 
+  ggplot(aes(x = method, y = `50%`, group = pop, color = method)) +
+  facet_wrap(~ pop, nrow = 1, scales = "free_x") +
+  geom_point() +
+  geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`)) +
+  geom_text(aes(x = method, y = .5, label = txt), color = "#de2d26", angle = -90) +
+  scale_y_continuous(
+    labels = scales::percent_format(accuracy = 1L),
+    limits = c(-.04, 1.5),
+    breaks = 0:15 / 10) +
+  scale_color_manual(values = c_met, guide = "none") +
+  labs(title = "Annual adult survival rate",
+       y = NULL, x = NULL) -> surviv_max_plot; surviv_max_plot 
+
 # Plots for article ------------------------------------------------------------------
 
 # avg lambda plotting
+
+ds %>% 
+  ggplot(aes(x = year, y = n_pop)) + 
+  facet_wrap( ~ pop, ncol = 1) +
+  geom_line(data = lambda_ds_2 %>% 
+              filter(!sub_pop %>% str_detect("pop.")),
+            aes(x = year, y = exp(y), 
+                group = sub_ts, color = pop), size = 2, alpha = 0.3) +
+  geom_line(alpha = 0.5, linetype = "dashed") +
+  geom_point(shape = 16, color = "gray") +
+  scale_y_log10(minor_breaks = NULL) +
+  annotation_logticks(side = "l", color = "grey") +
+  geom_point(data = lambda_ds %>% 
+               filter(!sub_pop %>% str_detect("pop.")) %>% 
+               mutate(n_pop = exp(n_pop)), 
+             aes(x = year, y = n_pop, color = pop)) +
+  scale_x_date_own(1e-2) +
+  scale_shape_manual(values = 16, guide = "none") +
+  scale_color_manual(values = c_pop, guide = "none") +
+  labs(y = "Population size") +
+  geom_rect(data = 
+              JuvOut3 %>%
+              filter(par == "productivity") %>% 
+              group_split(pop, method) %>% 
+              map(~ .x %>% 
+                    mutate(diff = c(1, diff(year(year))) - 1, 
+                           diff = if_else(diff != 0, 1, 0), 
+                           diff = cumsum(diff)) %>% 
+                    group_by(pop, method, diff) %>% 
+                    summarize(xmin = min(year) - months(6),
+                              xmax = max(year) + months(6)) %>% 
+                    ungroup() %>% 
+                    mutate(ymin = if_else(method == "counting", 8e3, 6.5e3),
+                           ymax = if_else(method == "counting", 1e4, 8e3))) %>%
+              bind_rows(),
+            aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = method), 
+            alpha = .6, 
+            inherit.aes = FALSE) + 
+  scale_fill_manual(values = c_met) +
+  guides(fill = guide_legend(title = "Data time series")) +
+  theme(legend.position = "bottom") -> raw_pop; raw_pop
 
 ds %>% 
   ggplot(aes(x = year, y = n_pop)) + 
@@ -816,12 +818,12 @@ ds %>%
   geom_point(data = lambda_ds %>% 
                filter(sub_pop %>% str_detect("pop.")) %>% 
                mutate(n_pop = exp(n_pop)), 
-             aes(x = year, y = n_pop, 
-                 group = sub_pop, color = pop, shape = sub_pop, alpha = sub_pop)) +
+             aes(x = year, y = n_pop, color = pop, alpha = sub_pop)) +
   scale_x_date_own(1e-2) +
-  scale_shape_manual(values = c(16, 16, 16), guide = "none") +
-  scale_alpha_manual(values = c(1, .5, 1), guide = "none") +
+  scale_shape_manual(values = 16, guide = "none") +
   scale_color_manual(values = c_pop, guide = "none") +
+  scale_alpha_manual(values = c(1, .5, 1), guide = "none") +
+  labs(y = "Population size") +
   geom_rect(data = 
               ds %>% 
               mutate(
@@ -846,29 +848,6 @@ ds %>%
   scale_fill_manual(values = c("#333333", "#CCCCCC")) +
   guides(fill = guide_legend(title = "")) +
   labs(y = "Population size") +
-  theme(legend.position = "bottom") -> raw_pop; raw_pop
-
-raw_pop_true +
-  geom_rect(data = 
-              JuvOut3 %>%
-              filter(par == "productivity") %>% 
-              group_split(pop, method) %>% 
-              map(~ .x %>% 
-                    mutate(diff = c(1, diff(year(year))) - 1, 
-                           diff = if_else(diff != 0, 1, 0), 
-                           diff = cumsum(diff)) %>% 
-                    group_by(pop, method, diff) %>% 
-                    summarize(xmin = min(year) - months(6),
-                              xmax = max(year) + months(6)) %>% 
-                    ungroup() %>% 
-                    mutate(ymin = if_else(method == "counting", 8e3, 6.5e3),
-                           ymax = if_else(method == "counting", 1e4, 8e3))) %>%
-              bind_rows(),
-            aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = method), 
-            alpha = .6, 
-            inherit.aes = FALSE) + 
-  scale_fill_manual(values = c_met) +
-  guides(fill = guide_legend(title = "Data time series")) +
   theme(legend.position = "bottom") -> raw_pop_2; raw_pop_2
 
 JuvOut4 %>% 
@@ -884,35 +863,26 @@ JuvOut4 %>%
   scale_color_manual(values = c_pop, guide = "none") +
   labs(title = bquote(
     'Annual population growth rate with harvest pressure (' * lambda * ')'),
+    y = NULL, x = NULL) -> lambda_plot; lambda_plot
+
+JuvOut4 %>% 
+  filter(par == "lambda", str_detect(method, "pop.")) %>% 
+  mutate(pop = as_factor(str_trunc(method, 2, ellipsis = "")),
+         sub_pop = as_factor(method)) %>% 
+  ggplot(aes(x = sub_pop, y = `50%` - 1, group = sub_pop, color = pop, alpha = sub_pop)) +
+  geom_point(size = 2) +
+  geom_linerange(aes(ymin = `2.5%` - 1, ymax = `97.5%` - 1), size = 1.2) +
+  scale_y_continuous(
+    labels = scales::percent_format(accuracy = 1L, prefix = "+"),
+    limits = c(0, .8),
+    breaks = 0:10 / 10) +
+  scale_alpha_manual(values = c(1, .5, 1), guide = "none") +
+  scale_color_manual(values = c_pop, guide = "none") +
+  labs(title = bquote(
+    'Annual population growth rate without harvest pressure (' * lambda * ')'),
     y = NULL, x = NULL) -> lambda_plot_2; lambda_plot_2
 
 # Save ------------------------------------------------------------------------------
-
-grid.arrange(
-  grobs = list(
-    raw_pop + 
-      geom_text(data = lambda_ds_2 %>%
-                  filter(!sub_ts %in% c(1:2)) %>%
-                  group_by(pop, lambda) %>%
-                  summarize(across(year, mean),
-                            across(y, ~ exp(max(.)))) %>%
-                  ungroup() %>% 
-                  mutate(lambda = round(1e2 * (lambda - 1)) %>% 
-                           str_c("+", ., "% per year"),
-                         y = c(6e3, 4e2, 5e2),
-                         year = ymd(c(19890101, 19680101, 19980101))),
-                aes(x = year, y = y, label = lambda, color = pop)) +
-      theme(legend.position = "bottom") +
-      labs(title = "A"), 
-    lambda_plot + 
-      guides(x =  guide_axis(angle = 45)) +
-      labs(title = "B",
-           y = bquote(
-             'Population growth rate (' * lambda * ')'))),
-  widths = c(5, 2),
-  heights = c(5, 3), 
-  layout_matrix = rbind(c(1, 2),
-                        c(1, NA))) -> raw_pop_res
 
 grid.arrange(
   grobs = list(raw_prod + 
@@ -926,7 +896,7 @@ grid.arrange(
 
 grid.arrange(
   grobs = list(
-    raw_pop_2 +
+    raw_pop +
       geom_text(data = lambda_ds_2 %>%
                   filter(sub_ts %in% c(1:2)) %>%
                   group_by(pop, lambda) %>%
@@ -938,7 +908,39 @@ grid.arrange(
                 aes(x = year, y = y, label = lambda, color = pop)) +
       theme(legend.position = "bottom") +
       labs(title = "A"), 
+    lambda_plot + 
+      labs(title = "B",
+           y = bquote(
+             'Population growth rate (' * lambda * ')'))),
+  widths = c(5, 2),
+  heights = c(5, 3), 
+  layout_matrix = rbind(c(1, 2),
+                        c(1, NA))) -> raw_pop_res
+
+grid.arrange(
+  grobs = list(
+    prod_plot + labs(title = "A", y = "productivity"),
+    surviv_plot + labs(title = "B", y = "survival")),
+  layout_matrix = rbind(c(1, 2))) -> prod_surv_plot
+
+grid.arrange(
+  grobs = list(
+    raw_pop_2 + 
+      geom_text(data = lambda_ds_2 %>%
+                  filter(!sub_ts %in% c(1:2)) %>%
+                  group_by(pop, lambda) %>%
+                  summarize(across(year, mean),
+                            across(y, ~ exp(max(.)))) %>%
+                  ungroup() %>% 
+                  mutate(lambda = round(1e2 * (lambda - 1)) %>% 
+                           str_c("+", ., "% per year"),
+                         y = c(6e3, 4e2, 5e2),
+                         year = ymd(c(19890101, 19680101, 19980101))),
+                aes(x = year, y = y, label = lambda, color = pop)) +
+      theme(legend.position = "bottom") +
+      labs(title = "A"), 
     lambda_plot_2 + 
+      guides(x =  guide_axis(angle = 45)) +
       labs(title = "B",
            y = bquote(
              'Population growth rate (' * lambda * ')'))),
@@ -946,12 +948,6 @@ grid.arrange(
   heights = c(5, 3), 
   layout_matrix = rbind(c(1, 2),
                         c(1, NA))) -> raw_pop_2_res
-
-grid.arrange(
-  grobs = list(
-    prod_plot + labs(title = "A", y = "productivity"),
-    surviv_plot + labs(title = "B", y = "survival")),
-  layout_matrix = rbind(c(1, 2))) -> prod_surv_plot
 
 grid.arrange(
   grobs = list(raw_recruit + theme(legend.position = "none") + 
@@ -971,18 +967,17 @@ list(raw_pop,
      raw_pop_2,
      prod_res,
      raw_pop_res,
-     raw_pop_2_res,
      prod_surv_plot, 
+     raw_pop_2_res,
      annex) -> plo
 
 list(c(7, 5),
      c(7, 5),
      c(9, 4.5),
      c(10, 5),
-     c(10, 5),
-     c(8, 4), 
+     c(8, 4),
+     c(10, 5), 
      c(9.5, 6)) -> plo_dim
-
 
 list(plo, c(1:length(plo)), plo_dim) %>% 
   pwalk(~ ggsave(str_c("./Output/plot_", ..2, ".png"),
