@@ -708,11 +708,12 @@ JuvOut4 %>%
   facet_wrap(~ pop, nrow = 1, scales = "free_x") +
   geom_point() +
   geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`)) +
-  geom_text(aes(x = method, y = .365, label = txt), color = "#de2d26", angle = -90) +
+  geom_text(aes(x = method, y = .365, label = txt), color = "#de2d26", angle = 90) +
   scale_y_continuous(
     limits = c(0, .7),
     breaks = 0:7 / 10) +
   scale_color_manual(values = c_met, guide = "none") +
+  guides(x = guide_axis(angle = 45)) +
   labs(title = "Productivity: number of recruits per breeder",
        y = NULL, x = NULL) -> prod_plot; prod_plot 
 
@@ -726,12 +727,13 @@ JuvOut4 %>%
   facet_wrap(~ pop, nrow = 1, scales = "free_x") +
   geom_point() +
   geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`)) +
-  geom_text(aes(x = method, y = .5, label = txt), color = "#de2d26", angle = -90) +
+  geom_text(aes(x = method, y = .5, label = txt), color = "#de2d26", angle = 90) +
   scale_y_continuous(
     labels = scales::percent_format(accuracy = 1L),
     limits = c(-.04, 1),
     breaks = 0:10 / 10) +
   scale_color_manual(values = c_met, guide = "none") +
+  guides(x = guide_axis(angle = 45)) +
   labs(title = "Annual adult survival rate",
        y = NULL, x = NULL) -> surviv_plot; surviv_plot 
 
@@ -750,14 +752,66 @@ JuvOut4 %>%
   facet_wrap(~ pop, nrow = 1, scales = "free_x") +
   geom_point() +
   geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`)) +
-  geom_text(aes(x = method, y = .5, label = txt), color = "#de2d26", angle = -90) +
+  geom_text(aes(x = method, y = .5, label = txt), color = "#de2d26", angle = 90) +
   scale_y_continuous(
     labels = scales::percent_format(accuracy = 1L),
     limits = c(-.04, 1.5),
     breaks = 0:15 / 10) +
   scale_color_manual(values = c_met, guide = "none") +
+  guides(x = guide_axis(angle = 45)) +
   labs(title = "Annual adult survival rate",
        y = NULL, x = NULL) -> surviv_max_plot; surviv_max_plot 
+
+JuvOut3 %>% 
+  filter(par == "productivity") %>% 
+  rowid_to_column("id") %>% 
+  mutate(name = str_c(par, "[", id, "]")) %>% 
+  select(year, pop, gp = method, name) %>% 
+  group_split(pop, gp) %>% 
+  map(function(x) {
+    prod = as_tibble(JuvOut) %>%
+      select(x %>% pull(name)) %>%
+      rowMeans()
+    prod_avg = quantile(prod, c(.025, .5, .975))
+    pro <- tibble(prod_avg, name = names(prod_avg)) %>% 
+      pivot_wider(names_from = name, values_from = prod_avg) %>% 
+      mutate(par = "productivity_avg")
+    out = x %>% 
+      distinct(pop, gp) %>% 
+      bind_cols(pro)
+    return(out)
+  }) %>% 
+  bind_rows(
+    JuvOut4 %>% 
+      filter(par == "lambda", str_detect(method, "small pop.")) %>% 
+      mutate(across(contains("%"), ~ .x - 1),
+             pop = str_trunc(method, 2, ellipsis = "")) %>% 
+      select(pop, par, contains("%"))) %>% 
+  mutate(pop = as_factor(pop), 
+         gp = if_else(is.na(gp), "max growth", gp),
+         gp = factor(gp, 
+                     levels = c("max growth", 
+                                "counting", "sampling"))) -> avg_full
+
+avg_full %>% 
+  bind_rows(tibble(pop = as_factor("FR"), gp = as_factor("sampling"))) %>% 
+  arrange(gp) %>%
+  mutate(txt = if_else(pop == "FR" & gp == "sampling", "NO DATA", NA_character_),
+         gp2 = if_else(str_detect(gp, "max"), 
+                       str_c(pop, gp), 
+                       as.character(gp)) %>% 
+           as_factor()) %>% 
+  ggplot(aes(x = gp, y = `50%`, color = gp2)) +
+  facet_wrap(~ pop, nrow = 1) +
+  geom_point() +
+  geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`), alpha = .5) +
+  geom_text(aes(x = gp, y = .365, label = txt), color = "#de2d26", angle = 90) +
+  scale_color_manual(values = c(c_pop, c_met), guide = "none") +
+  scale_y_continuous(
+    limits = c(0, .7),
+    breaks = 0:7 / 10) +
+  guides(x = guide_axis(angle = 45)) +
+  labs(x = NULL, y = "productivity") -> prod_max_plot; prod_max_plot
 
 # Plots for article ------------------------------------------------------------------
 
@@ -914,8 +968,6 @@ JuvOut4 %>%
     'Annual population growth rate without harvest pressure (' * lambda * ')'),
     y = NULL, x = NULL) -> lambda_max_plot; lambda_max_plot
 
-
-
 # Save ------------------------------------------------------------------------------
 
 grid.arrange(
@@ -974,7 +1026,7 @@ grid.arrange(
       theme(legend.position = "bottom") +
       labs(title = "A"), 
     lambda_max_plot + 
-      guides(x =  guide_axis(angle = 45)) +
+      guides(x = guide_axis(angle = 45)) +
       labs(title = "B",
            y = bquote(
              'Population growth rate (' * lambda * ')'))),
@@ -982,6 +1034,8 @@ grid.arrange(
   heights = c(5, 3), 
   layout_matrix = rbind(c(1, 2),
                         c(1, NA))) -> raw_pop_2_res
+
+prod_max_plot
 
 grid.arrange(
   grobs = list(raw_prop + theme(legend.position = "none") + 
@@ -1004,6 +1058,7 @@ list(matmet,
      raw_pop_res,
      prod_surv_plot, 
      raw_pop_2_res,
+     prod_max_plot,
      annex) -> plo
 
 list(c(7, 5),
@@ -1013,6 +1068,7 @@ list(c(7, 5),
      c(10, 5),
      c(8, 4),
      c(10, 5), 
+     c(4, 4),
      c(9.5, 6)) -> plo_dim
 
 list(plo, c(1:length(plo)), plo_dim) %>% 
