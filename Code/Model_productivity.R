@@ -859,7 +859,6 @@ JuvOut3 %>%
          ymin = 10^(log10(6.5e3) + 0.1 * min(c(2, (as.numeric(label) - 1)))),
          ymax = 10^(log10(ymin) + 0.1)) -> time_series
 
-
 ds %>% 
   ggplot(aes(x = year, y = n_pop)) + 
   facet_wrap( ~ pop, ncol = 1) +
@@ -1076,4 +1075,3 @@ list(plo, c(1:length(plo)), plo_dim) %>%
                  ..1, 
                  width = ..3[1], 
                  height = ..3[2], dpi = 600))
-

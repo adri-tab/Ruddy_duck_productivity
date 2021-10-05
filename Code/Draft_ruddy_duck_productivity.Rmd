@@ -223,10 +223,15 @@ in the range of similar species in litterature -> satisfying
 
 blabla
 
-## Result validation by comparison to maximum productivity
-
 ```{r MM2, fig.cap = "(ref:MM2cap)"}
 knitr::include_graphics("../Output/plot_2.png")
+```
+
+
+## Result validation by comparison to maximum productivity
+
+```{r MM3, fig.cap = "(ref:MM3cap)"}
+knitr::include_graphics("../Output/plot_3.png")
 ```
 
 # Results
@@ -234,23 +239,27 @@ knitr::include_graphics("../Output/plot_2.png")
 ## Productivity estimates
 
 ```{r R1, fig.cap = "(ref:R1cap)"}
-knitr::include_graphics("../Output/plot_3.png")
+knitr::include_graphics("../Output/plot_4.png")
 ```
 
 ## Result validation using survival analysis
 
 ```{r R2, fig.cap = "(ref:R2cap)"}
-knitr::include_graphics("../Output/plot_4.png")
+knitr::include_graphics("../Output/plot_5.png")
 ```
 
 ```{r R3, fig.cap = "(ref:R3cap)"}
-knitr::include_graphics("../Output/plot_5.png")
+knitr::include_graphics("../Output/plot_6.png")
 ```
 
 ## Result validation by comparison to maximum productivity
 
 ```{r R4, fig.cap = "(ref:R4cap)"}
-knitr::include_graphics("../Output/plot_6.png")
+knitr::include_graphics("../Output/plot_7.png")
+```
+
+```{r R5, fig.cap = "(ref:R5cap)"}
+knitr::include_graphics("../Output/plot_8.png")
 ```
 
 # Discussion
@@ -279,7 +288,7 @@ This work was partly funded by the LIFE Oxyura project (LIFE17 NAT/FR/000942) th
 # Supplement 1 {-}
 
 ```{r S1, fig.cap = "(ref:S1cap)"}
-knitr::include_graphics("../Output/plot_7.png")
+knitr::include_graphics("../Output/plot_9.png")
 ```
 
 Comments?
@@ -288,12 +297,16 @@ Comments?
 
 (ref:MM2cap) Evolution of the size of the two Ruddy duck populations in light of the harvest pressure; on time periods without harvest, population growth rates can be estimated (slopes in red for the UK and in blue for France)
 
+(ref:MM3cap) Evolution of the size of the two Ruddy duck populations in light of the harvest pressure; on time periods without harvest, population growth rates can be estimated (slopes in red for the UK and in blue for France)
+
 (ref:R1cap) (A) Estimates of productivity, i.e. average number of recruits produced per breeder; (B) Comparison of the productivity values between the two estimation methods; bars define the 95% confidence intervals
 
-(ref:R2cap) (A) Estimates of the population growth rate on time intervals with data availability. This aims at producing survival estimates to discuss the reliability of the methods to estimate productivity; (B) Growth rate estimates, bars define the 95% confidence intervals
+(ref:R2cap) (A) Estimates of the population growth rate on time intervals with data availability. This aims at producing survival estimates to discuss the reliability of the methods to estimate productivity; (B) Growth rate estimates; bars define the 95% confidence intervals
 
-(ref:R3cap) (A) Average productivity estimates on the time intervals defined for survival analysis; (B) Underlying average survival estimates
+(ref:R3cap) (A) Average productivity estimates on the time intervals defined for survival analysis; (B) Average survival estimates deduced from growth rate and productivity estimates on the time intervals; bars define the 95% confidence intervals
 
-(ref:R4cap) (A) Estimates of the population growth rate without harvest; two estimates were produced for the UK population because the growth rate dropped significantly when its size reached more than 1000 individuals; (B) Growth rate estimates, bars define the 95% confidence intervals
+(ref:R4cap) (A) Estimates of the population growth rate without harvest; two estimates were produced for the UK population because the growth rate dropped significantly when its size reached more than 1000 individuals; (B) Growth rate estimates; bars define the 95% confidence intervals
+
+(ref:R5cap) Comparison between a proxy of maximum productivity and the average productivity estimated following *counting* and *sampling* methods; the proxy is estimated during the maximum growth periods by combining the growth rate to the hypothesis of a 100% adult survival (*max growth*); this hypothesis implies that the true maximum of productivity is likely higher; bars define the 95% confidence intervals
 
 (ref:S1cap) (A1) Estimates of the number of recruits, i.e. the young adults reproducing for their first time; (B1) estimates of the proportion of recruits in the population at the reproduction period; (A2) & (B2) comparison of the values between the two estimation methods; bars define the 95% confidence intervals
