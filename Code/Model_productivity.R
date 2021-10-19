@@ -128,6 +128,13 @@ cor_plot <- function(col, title = NULL, limits = NA, breaks = NA) {
 read_rds("./Data/Ruddy_duck_data.rds") %>% pluck(1) %>% 
   mutate(across(pop, as_factor)) %>% arrange(pop) -> frag
 
+read_rds("./Data/Ruddy_duck_data.rds") %>% pluck(2) %>% 
+  mutate(across(pop, as_factor)) %>% arrange(pop) -> counts
+
+
+# male proportion -------------------------------------------------------------------
+
+# adult
 frag %>% 
   filter(age == 'ad', sex != "ind") %>% 
   group_by(year, pop, sex) %>% 
@@ -152,10 +159,48 @@ frag %>%
   scale_y_percent +
   scale_x_date_own(5e-2) +
   guides(size = guide_legend(title = "Samples")) +
-  labs(y = "Male proportion")
+  labs(y = "Male proportion adult")
 
-read_rds("./Data/Ruddy_duck_data.rds") %>% pluck(2) %>% 
-  mutate(across(pop, as_factor)) %>% arrange(pop) -> counts
+# juvenile
+frag %>% 
+  filter(age == 'no_ad', sex != "ind") %>% 
+  group_by(year, pop, sex) %>% 
+  summarize(across(shot, sum)) %>% 
+  group_by(year, pop) %>% 
+  mutate(tot = sum(shot)) %>%  
+  filter(sex == "mal", tot > 0) %>% 
+  group_by(pop) %>% 
+  mutate(inf = qbeta(0.025, shot, tot - shot), 
+         male_proportion = qbeta(0.5, shot, tot - shot), 
+         sup = qbeta(0.975, shot, tot - shot),
+         avg_inf = qbeta(0.025, sum(shot), sum(tot - shot)),
+         avg = qbeta(0.5, sum(shot), sum(tot - shot)),
+         avg_sup = qbeta(0.975, sum(shot), sum(tot - shot))) %>% 
+  ggplot(aes(x = year, y = male_proportion, color = pop)) +
+  geom_ribbon(aes(ymin = avg_inf, ymax = avg_sup), alpha = 0.3, color = "gray") +
+  geom_hline(aes(yintercept = avg), linetype = "dashed") +
+  geom_linerange(aes(ymin = inf, ymax = sup), alpha = .5) +
+  geom_point(aes(size = tot), alpha = .8) +
+  facet_wrap( ~ pop, ncol = 2) +
+  scale_color_manual(values = c_pop, guide = "none") +
+  scale_y_percent +
+  scale_x_date_own(5e-2) +
+  guides(size = guide_legend(title = "Samples")) +
+  labs(y = "Male proportion juvenile")
+
+# global
+frag %>% 
+  filter(age != "ind", sex != "ind") %>% 
+  filter(!(age == "no_ad" & repro == "after_rep")) %>% 
+  group_by(pop, sex, age) %>% 
+  summarize(across(shot, sum)) %>% 
+  group_by(pop, age) %>% 
+  mutate(tot = sum(shot)) %>%  
+  filter(sex == "mal", tot > 0) %>% 
+  group_by(age) %>% 
+  mutate(inf = qbeta(0.025, shot, tot - shot), 
+         male_proportion = qbeta(0.5, shot, tot - shot), 
+         sup = qbeta(0.975, shot, tot - shot))
 
 # Count and sample formatting ------------------------------------------------------
 
@@ -213,6 +258,31 @@ frag %>%
          spl_tot = ad + no_ad) %>% 
   relocate(obs_tot, .before = ad) %>% 
   rowid_to_column() -> ds
+
+count_sex_app %>% 
+  mutate(method = "winter counts",
+         tot = obs_type_mal + obs_type_fem,
+         `male proportion` = obs_type_mal / tot) %>% 
+  select(method, `male proportion`, tot) %>% 
+  bind_rows(frag %>%  
+              filter(age == "ad", sex != "ind") %>% 
+              filter(!(pop == "FR" & year(year) < 2011), !(pop == "UK" & year(year) > 2009)) %>%
+              group_by(year, pop) %>% 
+              mutate(tot = sum(shot)) %>%  
+              filter(sex == "mal") %>% 
+              mutate(mal = sum(shot)) %>% 
+              distinct(year, pop, mal, tot) %>%
+              ungroup() %>% 
+              filter(tot > 50) %>%
+              mutate(`male proportion` = mal / tot, 
+                     method = "adult samples") %>%
+              select(method, `male proportion`, tot)) %>% 
+  mutate(method = as_factor(method)) %>% 
+  ggplot(aes(x = method, y = `male proportion`, size = tot)) + 
+  geom_jitter(width = 0.2, alpha = .5) +
+  scale_y_continuous(limits = c(0, 1), breaks = 0:10/10, labels = scales::percent) +
+  guides(size = guide_legend(title = "Number of\ncounts or samples")) +
+  xlab("") -> intro_plot; intro_plot
 
 # Lambda formatting ------------------------------------------------------------
 
@@ -1050,7 +1120,8 @@ grid.arrange(
                         c(3, 4), 
                         c(5, NA))) -> annex
 
-list(matmet,
+list(intro_plot,
+     matmet,
      lambda,
      lambda_max, 
      prod_res,
@@ -1060,7 +1131,8 @@ list(matmet,
      prod_max_plot,
      annex) -> plo
 
-list(c(7, 5),
+list(c(4, 4),
+     c(7, 5),
      c(7, 5),
      c(7, 5),
      c(9, 4.5),
