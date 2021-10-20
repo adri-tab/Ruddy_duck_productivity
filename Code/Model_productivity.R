@@ -265,7 +265,7 @@ count_sex_app %>%
          `male proportion` = obs_type_mal / tot) %>% 
   select(method, `male proportion`, tot) %>% 
   bind_rows(frag %>%  
-              filter(age == "ad", sex != "ind") %>% 
+              filter(sex != "ind") %>% 
               filter(!(pop == "FR" & year(year) < 2011), !(pop == "UK" & year(year) > 2009)) %>%
               group_by(year, pop) %>% 
               mutate(tot = sum(shot)) %>%  
@@ -275,7 +275,7 @@ count_sex_app %>%
               ungroup() %>% 
               filter(tot > 50) %>%
               mutate(`male proportion` = mal / tot, 
-                     method = "adult samples") %>%
+                     method = "samples") %>%
               select(method, `male proportion`, tot)) %>% 
   mutate(method = as_factor(method)) %>% 
   ggplot(aes(x = method, y = `male proportion`, size = tot)) + 

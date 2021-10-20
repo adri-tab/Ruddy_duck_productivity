@@ -35,25 +35,28 @@ Sys.setlocale("LC_ALL", "English")
 
 # Abstract {-}
 
-The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key indicator to describe the renewal of a population, and therefore an essential tool in population management. The productivity, i.e. the number of recruits produced per breeder, is even more informative because it is independent of the population size and allows a comparison over time and between species. The proportion of young adults in a waterfowl population is often estimated from game-hunting samples. However, this proportion, which is a main step in estimating productivity, is not accessible in years without harvest, or with a low harvest rate. Moreover, the age-structure in the harvest samples, commonly called hunting bag, does not necessarily reflect the underlying age-structure of the population. It is often skewed towards juveniles and can lead to an overestimation of the productivity. In waterfowl, adult males usually display brighter colours than juveniles and females. This dichromatism can be characterized and monitored from count surveys, a non-invasive method. Such information can be used to infer the proportion of young adults, and consequently the productivity. In using two populations of ruddy duck, *Oxyura oxyura*, this study develops a Bayesian method to estimate the productivity from count data. To judge the accuracy of this approach, the results are compared to productivity estimates from samples. The adult survival is commonly assessed by capture mark recapture and published in the literature. Since the survival can also be estimated from both the counting and the sampling methods, the consistency of the two approaches is discussed by comparing the survival estimates with the literature values.
+The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key indicator to describe the renewal of a population, and therefore an essential tool in population management. The productivity, i.e. the number of recruits produced per breeder, is even more informative because it is independent of the breeding population size and allows comparisons over time and between species. The proportion of young adults in a waterfowl population, which is a main step in estimating productivity, is often estimated from game-hunting samples. However, this proportion is not accessible in years without harvest, or with a low harvest rate. Moreover, the age-structure in the harvest samples, commonly called hunting bag, does not necessarily reflect the underlying age-structure of the population. It is often skewed towards juveniles and can lead to an overestimation of the productivity. In waterfowl, adult males usually display brighter colours than immatures and females. This dichromatism can be characterized and monitored from count surveys, a non-invasive method. Such information can be used to infer the proportion of young adults, and consequently the productivity. In using two populations of ruddy duck, *Oxyura oxyura*, this study develops a Bayesian method to estimate the productivity from count data. The results are compared to productivity estimates from samples and are discussed by testing their consistency with the population growth rates. The results suggest that the counting method is a versatile tool to estimate the productivity if the species is monitored during the appropriate time period. 
 
 # Introduction
 
 ## Definitions
 
-One defines the productivity of a breeding population as the average number of recruits produced per each breeder (ref). If one considers a species reaching the sexual maturity as early as its first year, all the population is mature just before the reproduction season. The productivity is thus the ratio of the number of young adults at the reproduction season in year $t$, i.e. the recruits, to the number of all individuals before the reproduction season in year $t - 1$, i.e. the recruits and the adults older than one year.
+One defines the productivity of a breeding population as the average number of recruits produced per each breeder [@Johnson1987]. If one considers a species reaching the sexual maturity as early as its first year, all individuals are mature at the reproduction season. The productivity is thus the ratio of the number of young adults at the reproduction season in year $t$, i.e. the recruits, to the number of all individuals at the reproduction season in the previous year, $t - 1$.
 
 The population size in year $t$ is equal to the number of breeders that survived over year $t - 1$ plus the juveniles produced in year $t - 1$ that survived until the reproduction period of year $t$, i.e. the recruitment in year $t$. The growth rate of a population is thus the sum of the productivity and the adult survival rate.
 
-The productivity parameter is complex because it is composed of two sub-parameters: the reproduction success and the juvenile survival. 
+The productivity parameter is complex because it is composed of two sub-parameters: the reproduction succes, which is the product of the nesting and the hatching success, and the juvenile survival. 
 
 ## The use of productivity in population management {-}
 
 The management of an exploited population generally aims at...
 
+Many studies focus on the monitoring of the reproduction success of waterfowl species is not sufficient to manage properly a population to estimate population growth rate changes [@Dzus1998]. Productivity defined as recruit per breeder is better, but nesting and hatching success are keys to understand the reasons of productivity variability. 
+
+
 ## The variability of the productivity {-}
 
-A waterfowl species that is released in a favourable habitat will naturally expand (malthus). The growth of such a population can be explained by its productivity parameter that is higher than its adult mortality rate. This expansion is limited by the carrying capacity of the habitat (ref). When a waterfowl species is endemic of an ecosystem and evolves in stable environmental conditions, the population size varies around the carrying capacity because the individuals compete for space or/and food (ref), which prevents the population from expanding. This competition commonly induces a lower reproduction success or/and a higher youth mortality (ref). The productivity then decreases because it is dampened by density-dependent effects (holt). For an endemic species evolving in stable environmental conditions, the productivity and the adult mortality rate are balanced, which explains the stabilization of the number of individuals. 
+A waterfowl species that is released in a favourable habitat will naturally expand  [@Malthus1872]. The growth of such a population can be explained by its productivity parameter that is higher than its adult mortality rate. This expansion is limited by the carrying capacity of the habitat [@Sayre2008]. When a waterfowl species is endemic of an ecosystem and evolves in stable environmental conditions, the population size varies around the carrying capacity because the individuals compete for space or/and food [@Nummi2015], which prevents the population from expanding. This competition commonly induces a lower reproduction success or/and a higher youth mortality. The productivity then decreases because it is dampened by density-dependent effects. For an endemic species evolving in stable environmental conditions, the productivity and the adult mortality rate are balanced, which explains the stabilization of the number of individuals. 
 
 Hunting waterfowl induces adult and juvenile mortality (ref). Paradoxically, this juvenile mortality does not always induce a decrease of productivity (ref). Indeed, one expects that a population with a high adult mortality rate combined to a low productivity would rapidly extinct. However, hunting waterfowl has a long history, and most of these species have persisted over time. The reason is that harvest pressure reduces the competition for space and food. The density-dependent effects affecting the productivity in case of high population density are dampened by the harvest mortality. The exploitation of a population thus increases adult mortality, but also productivity. A balance between these two parameters can be reached if the population is exploited to a constant and moderate harvest rate. The size of a newly exploited population in stable environmental conditions should thus reach a new equilibrium, which is expected to be lower than the size without exploitation.
 
@@ -76,6 +79,8 @@ a population following its maximum growth rate is a perfect study model
 - We cannot explore the productivity when there is no harvest, however, it is crucial to explore what happens when there is no harvest in a scenario where we suggest a moratorium to let the population recover.
 
 - Biais because hunting like any predation action is selective. Often towards the weakest individuals. So overstimation of productivity, and potentially maximum sustainable harvest rate overestimated and consequently depletion of the managed population.
+
+For hunted duck species in North America, the mortality rate on first-year immatures compared to adults is higher by a factor ranging from 1.4 to 2 (. 
 
 ## Why counting data is a potential tool to estimate the productivity? {-}
 
@@ -105,6 +110,16 @@ Since this species is considered as a major threat to the white-headed duck beca
 
 ## Dichromatism characterization
 
+```{r MM1, fig.cap = "(ref:MM1cap)"}
+knitr::include_graphics("../Output/flock.png")
+```
+
+
+```{r MM2, fig.cap = "(ref:MM2cap)"}
+knitr::include_graphics("../Output/plot_1.png")
+```
+
+
 Pictures of male juvenile in winter
 Pictures of male in winter
 
@@ -114,8 +129,8 @@ The French and the UK wintering populations have been monitored since the presen
 
 $PR_{i, t}$ estimation by the counting method
 
-```{r MM1, fig.cap = "(ref:MM1cap)"}
-knitr::include_graphics("../Output/plot_1.png")
+```{r MM3, fig.cap = "(ref:MM3cap)"}
+knitr::include_graphics("../Output/plot_2.png")
 ```
 
 ## Model
@@ -187,6 +202,9 @@ S_{j} = \lambda_{j} - \overline{P_{i, t}}
 
 ## Result validation using survival analysis
 
+The adult survival is commonly assessed by capture mark recapture and published in the literature. Since the survival can also be estimated from both the counting and the sampling methods, the consistency of the two approaches is discussed by comparing the survival estimates with the literature values.
+
+
 |Name|Description|
 |:--|:----------------------------|
 |$N_{t}$|Number of breeders in year $t$|
@@ -223,43 +241,43 @@ in the range of similar species in litterature -> satisfying
 
 blabla
 
-```{r MM2, fig.cap = "(ref:MM2cap)"}
-knitr::include_graphics("../Output/plot_2.png")
+```{r MM4, fig.cap = "(ref:MM4cap)"}
+knitr::include_graphics("../Output/plot_3.png")
 ```
 
 
 ## Result validation by comparison to maximum productivity
 
-```{r MM3, fig.cap = "(ref:MM3cap)"}
-knitr::include_graphics("../Output/plot_3.png")
+```{r MM5, fig.cap = "(ref:MM5cap)"}
+knitr::include_graphics("../Output/plot_4.png")
 ```
 
 # Results
 
-## Productivity estimates
+## Productivity variability
 
 ```{r R1, fig.cap = "(ref:R1cap)"}
-knitr::include_graphics("../Output/plot_4.png")
+knitr::include_graphics("../Output/plot_5.png")
 ```
 
 ## Result validation using survival analysis
 
 ```{r R2, fig.cap = "(ref:R2cap)"}
-knitr::include_graphics("../Output/plot_5.png")
+knitr::include_graphics("../Output/plot_6.png")
 ```
 
 ```{r R3, fig.cap = "(ref:R3cap)"}
-knitr::include_graphics("../Output/plot_6.png")
+knitr::include_graphics("../Output/plot_7.png")
 ```
 
 ## Result validation by comparison to maximum productivity
 
 ```{r R4, fig.cap = "(ref:R4cap)"}
-knitr::include_graphics("../Output/plot_7.png")
+knitr::include_graphics("../Output/plot_8.png")
 ```
 
 ```{r R5, fig.cap = "(ref:R5cap)"}
-knitr::include_graphics("../Output/plot_8.png")
+knitr::include_graphics("../Output/plot_9.png")
 ```
 
 # Discussion
@@ -288,16 +306,18 @@ This work was partly funded by the LIFE Oxyura project (LIFE17 NAT/FR/000942) th
 # Supplement 1 {-}
 
 ```{r S1, fig.cap = "(ref:S1cap)"}
-knitr::include_graphics("../Output/plot_9.png")
+knitr::include_graphics("../Output/plot_10.png")
 ```
 
-Comments?
+(ref:MM1cap) Typical ruddy duck flock observation in winter: 4 male-like individuals with a white cheek and a black cap, 10 female-like individuals with a whitish cheek and a dark stripe across it, 3 unidentified individuals © Jay McGowan - 3 February 2013 - Tompkins, New York, United States
 
-(ref:MM1cap) Evolution of the size of the two Ruddy duck populations in light of the data time series; on restricted time periods with available data, population growth rates can be estimated (slopes in red for the UK and in blue for France)
+(ref:MM2cap) Apparent male proportion in winter counts vs male proportion in adult samples; for the first category, one point corresponds to the proportion of male-like plumage in a population counted in winter; for the second category, the male proportion is estimated from the adult ruddy ducks sampled over one year
 
-(ref:MM2cap) Evolution of the size of the two Ruddy duck populations in light of the harvest pressure; on time periods without harvest, population growth rates can be estimated (slopes in red for the UK and in blue for France)
+(ref:MM3cap) Evolution of the size of the two Ruddy duck populations in light of the data time series; on restricted time periods with available data, population growth rates can be estimated (slopes in red for the UK and in blue for France)
 
-(ref:MM3cap) Evolution of the size of the two Ruddy duck populations in light of the harvest pressure; on time periods without harvest, population growth rates can be estimated (slopes in red for the UK and in blue for France)
+(ref:MM4cap) Evolution of the size of the two Ruddy duck populations in light of the harvest pressure; on time periods without harvest, population growth rates can be estimated (slopes in red for the UK and in blue for France)
+
+(ref:MM5cap) Evolution of the size of the two Ruddy duck populations in light of the harvest pressure; on time periods without harvest, population growth rates can be estimated (slopes in red for the UK and in blue for France)
 
 (ref:R1cap) (A) Estimates of productivity, i.e. average number of recruits produced per breeder; (B) Comparison of the productivity values between the two estimation methods; bars define the 95% confidence intervals
 
