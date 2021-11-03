@@ -58,7 +58,7 @@ raw_plot <- function(para,
     facet_wrap(~ pop, nrow = 1, scales = "free_x") +
     # geom_line(linetype = "dashed", alpha = .5) +
     geom_point() +
-    geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`), alpha = .5) +
+    geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`), alpha = .5, size = 1.2) +
     scale_y_continuous(limits = if (is.na(ylimits)) {c(0, NA)} else {c(0, ylimits)}) +
     scale_x_date(date_breaks = "2 years", 
                  date_minor_breaks = "1 year", 
@@ -102,9 +102,9 @@ cor_plot <- function(col, title = NULL, limits = NA, breaks = NA) {
     geom_abline(slope = 1, linetype = "dashed") +
     geom_point(aes(color = year)) +
     geom_errorbarh(aes(xmin = !!sym(col_s[1]), xmax = !!sym(col_s[3]), color = year), 
-                   height = 0) +
+                   height = 0, alpha = .5, size = 1.2) +
     geom_errorbar(aes(ymin = !!sym(col_c[1]), ymax = !!sym(col_c[3]), color = year), 
-                  width = 0) +
+                  width = 0, alpha = .5, size = 1.2) +
     labs(title = title, 
          y = "counting method", x = "sampling method") +
     scale_x_continuous(expand = expansion(mult = c(0, 0)), 
@@ -777,7 +777,7 @@ JuvOut4 %>%
   ggplot(aes(x = method, y = `50%`, group = pop, color = method)) +
   facet_wrap(~ pop, nrow = 1, scales = "free_x") +
   geom_point() +
-  geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`)) +
+  geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`), alpha = .5, size = 1.2) +
   geom_text(aes(x = method, y = .365, label = txt), color = "#de2d26", angle = 90) +
   scale_y_continuous(
     limits = c(0, .7),
@@ -796,7 +796,7 @@ JuvOut4 %>%
   ggplot(aes(x = method, y = `50%`, group = pop, color = method)) +
   facet_wrap(~ pop, nrow = 1, scales = "free_x") +
   geom_point() +
-  geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`)) +
+  geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`), alpha = .5, size = 1.2) +
   geom_text(aes(x = method, y = .5, label = txt), color = "#de2d26", angle = 90) +
   scale_y_continuous(
     labels = scales::percent_format(accuracy = 1L),
@@ -821,7 +821,7 @@ JuvOut4 %>%
   ggplot(aes(x = method, y = `50%`, group = pop, color = method)) +
   facet_wrap(~ pop, nrow = 1, scales = "free_x") +
   geom_point() +
-  geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`)) +
+  geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`), alpha = .5, size = 1.2) +
   geom_text(aes(x = method, y = .5, label = txt), color = "#de2d26", angle = 90) +
   scale_y_continuous(
     labels = scales::percent_format(accuracy = 1L),
@@ -874,7 +874,7 @@ avg_full %>%
   ggplot(aes(x = gp, y = `50%`, color = gp2)) +
   facet_wrap(~ pop, nrow = 1) +
   geom_point() +
-  geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`), alpha = .5) +
+  geom_linerange(aes(ymin = `2.5%`, ymax = `97.5%`), alpha = .5, size = 1.2) +
   geom_text(aes(x = gp, y = .365, label = txt), color = "#de2d26", angle = 90) +
   scale_color_manual(values = c(c_pop, c_met), guide = "none") +
   scale_y_continuous(
@@ -1010,14 +1010,14 @@ JuvOut4 %>%
   mutate(pop = as_factor(str_trunc(method, 2, ellipsis = ""))) %>% 
   ggplot(aes(x = pop, y = `50%` - 1, group = pop, color = pop)) +
   geom_point(size = 2) +
-  geom_linerange(aes(ymin = `2.5%` - 1, ymax = `97.5%` - 1), size = 1.2) +
+  geom_linerange(aes(ymin = `2.5%` - 1, ymax = `97.5%` - 1), alpha = .5, size = 1.2) +
   scale_y_continuous(
     labels = scales::percent_format(accuracy = 1L, prefix = ""),
     limits = c(-.8, .1),
     breaks = -8:1 / 10) +
   scale_color_manual(values = c_pop, guide = "none") +
   labs(title = bquote(
-    'Annual population growth rate with harvest pressure (' * lambda * ')'),
+    'Annual population growth with harvest pressure (' * lambda * ' - 1)'),
     y = NULL, x = NULL) -> lambda_plot; lambda_plot
 
 JuvOut4 %>% 
@@ -1026,7 +1026,7 @@ JuvOut4 %>%
          sub_pop = as_factor(method)) %>% 
   ggplot(aes(x = sub_pop, y = `50%` - 1, group = sub_pop, color = pop, alpha = sub_pop)) +
   geom_point(size = 2) +
-  geom_linerange(aes(ymin = `2.5%` - 1, ymax = `97.5%` - 1), size = 1.2) +
+  geom_linerange(aes(ymin = `2.5%` - 1, ymax = `97.5%` - 1), alpha = .5, size = 1.2) +
   scale_y_continuous(
     labels = scales::percent_format(accuracy = 1L, prefix = "+"),
     limits = c(0, .8),
@@ -1034,7 +1034,7 @@ JuvOut4 %>%
   scale_alpha_manual(values = c(1, .5, 1), guide = "none") +
   scale_color_manual(values = c_pop, guide = "none") +
   labs(title = bquote(
-    'Annual population growth rate without harvest pressure (' * lambda * ')'),
+    'Annual population growth without harvest pressure (' * lambda * ' - 1)'),
     y = NULL, x = NULL) -> lambda_max_plot; lambda_max_plot
 
 # Save ------------------------------------------------------------------------------
@@ -1066,7 +1066,7 @@ grid.arrange(
     lambda_plot + 
       labs(title = "B",
            y = bquote(
-             'Population growth rate (' * lambda * ')'))),
+             'Population growth (' * lambda * ' - 1)'))),
   widths = c(5, 2),
   heights = c(5, 3), 
   layout_matrix = rbind(c(1, 2),
@@ -1098,7 +1098,7 @@ grid.arrange(
       guides(x = guide_axis(angle = 45)) +
       labs(title = "B",
            y = bquote(
-             'Population growth rate (' * lambda * ')'))),
+             'Population growth (' * lambda * ' - 1)'))),
   widths = c(5, 2),
   heights = c(5, 3), 
   layout_matrix = rbind(c(1, 2),
