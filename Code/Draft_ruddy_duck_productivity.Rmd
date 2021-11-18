@@ -3,7 +3,7 @@ lang: en-EN
 bibliography: ../../../../Biblio/JabRef/Library_OFB.bib
 csl: ../../../../Biblio/JabRef/Styles/APA.csl
 link-citations: true
-title: "Productivity estimation in waterfowl using a non-invasive method"
+title: "Recruitment rate estimation in waterfowl using a non-invasive method"
 author: 
 - Adrien Tableau^[Office Français de la Biodiversité, France - adrien.tableau@ofb.gouv.fr - contribution in data analyses & writing]
 - Alain Caizergues^[Office Français de la Biodiversité, France - alain.caizergues@ofb.gouv.fr - contribution in writing]
@@ -11,10 +11,10 @@ author:
 - Sébastien Reeber^[Société Nationale pour la Protection de la Nature, France - sebastien.reeber@snpn.fr - contribution in data collection]
 - Matthieu Guillemain^[Office Français de la Biodiversité, France -  matthieu.guillemain@ofb.gouv.fr - contribution in writing]
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-abstract: The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key indicator to describe the renewal of a population, and therefore an essential tool in population management. The productivity, defined inhere as the number of recruits produced per breeder, is even more informative because it is independent of the breeding population size and allows comparisons over time and between species. The proportion of young adults in a waterfowl population, which is a main step in estimating productivity, is often estimated from game-hunting samples. However, this proportion is not accessible in years without harvest, or with a low harvest rate. Moreover, the age-structure in the harvest samples, commonly called hunting bag, does not necessarily reflect the underlying age-structure of the population. It is often skewed towards juveniles and can lead to an overestimation of the productivity. In waterfowl, adult males usually display brighter colours than females and immatures from both sexes. This dichromatism can be characterized and monitored from count surveys, a non-invasive method. Such information can be used to infer the proportion of young adults, and consequently the productivity. In using two populations of ruddy duck, *Oxyura oxyura*, this study develops a Bayesian method to estimate the productivity from count data. The results are compared to productivity estimates from samples and are discussed by testing their consistency to support the observed population growth rates. The results suggest that the counting method is a versatile tool to estimate the productivity if the species is monitored during the appropriate time window. For the relevant waterfowl species, these results argue for considering a two-category protocol in winter count surveys. 
+abstract: The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key indicator to describe the renewal of a population, and therefore an essential tool in population management. The recruitment rate, defined inhere as the number of recruits produced per breeder, is even more informative because it is independent of the breeding population size and allows comparisons over time and between species. The proportion of young adults in a waterfowl population, which is a main step in estimating recruitment rate, is often estimated from game-hunting samples. However, this proportion is not accessible in years without harvest, or with a low harvest rate. Moreover, the age-structure in the harvest samples, commonly called hunting bag, does not necessarily reflect the underlying age-structure of the population. It is often skewed towards juveniles and can lead to an overestimation of the recruitment rate. In waterfowl, adult males usually display brighter colours than females and immatures from both sexes. This dichromatism can be characterized and monitored from count surveys, a non-invasive method. Such information can be used to infer the proportion of young adults, and consequently the recruitment rate. In using two populations of ruddy duck, *Oxyura oxyura*, this study develops a Bayesian method to estimate the recruitment rate from count data. The results are compared to recruitment rate estimates from samples and are discussed by testing their consistency to support the observed population growth rates. The results suggest that the counting method is a versatile tool to estimate the recruitment rate if the species is monitored during the appropriate time window. For the relevant waterfowl species, these results argue for considering a two-category protocol in winter count surveys. 
 output:
   bookdown::pdf_document2:
-    latex_engine: pdflatex
+    latex_engine: xelatex
     toc: false
 header-includes:
   \usepackage{float}
@@ -26,7 +26,7 @@ knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE, 
                       out.width = "100%", 
                       fig.align = "center",
-                      fig.pos = 'H') # pour tenir la position
+                      fig.pos = 'H') # hold position
 
 Sys.setlocale("LC_ALL", "English")
 
@@ -38,47 +38,48 @@ Sys.setlocale("LC_ALL", "English")
 
 *Definitions*
 
-One defines the productivity of a breeding population as the average number of recruits produced per each breeder [@Johnson1987]. This parameter might sometimes be called "annual fertility" [@Koons2014], or "reproductive rate" [@Cooch2014], or "recruitment rate" [@Flint2015]. If one considers a species reaching its sexual maturity as early as its first year, all individuals are mature at the reproduction season. The productivity is thus the ratio of the number of young adults at the reproduction season of year $t$, i.e. the recruits, to the number of all individuals at the reproduction season of the previous year, $t - 1$.
+One defines the recruitment rate of a breeding population as the average number of recruits produced per each breeder [@Flint2015]. This parameter might sometimes be called "annual fertility" [@Koons2014], "reproductive rate" [@Cooch2014], "reproductive success" [@Etterson2011], or "productivity" [@Johnson1987]. If one considers a species reaching its sexual maturity as early as its first year, all individuals are mature at the reproduction season. The recruitment rate is thus the ratio of the number of young adults at the reproduction season of year $t$, i.e. the recruits, to the number of all individuals at the reproduction season of the previous year, $t - 1$. The declination for species with age at first reproduction higher than 1 follows the same process [see @Robertson2008]. 
 
-The productivity parameter is complex because it is composed of two main sub-parameters: the reproductive success followed by the juvenile survival. Both sub-parameters can be split into other sub-parameters. For instance, the reproductive success is the product of the nesting success and the hatching success. The juvenile survival is the combination of the post-hatching survival and the fledging juvenile survival. According to @Blums2004, the recruitment for diving ducks is not related to the reproductive success, but depends mostly on the juvenile survival, which is driven by weather conditions. However, the results of this study does not necessarily reflect a general reality because several sources of variations of the reproductive success are controlled in the experimental plan of this study. The productivity as defined in the present study is thus a parameter integrating many sources of variability affecting all life stages from the egg to the young adult trying to breed for its first time [@Koons2017]. 
+The recruitment rate parameter is complex because it is composed of two main sub-parameters : the fecundity followed by the juvenile survival [@Etterson2011]. Both sub-parameters can be split into other sub-parameters. The fecundity can be defined by the product of the nesting success, the average clutch size, and the hatching success. The juvenile survival can be defined as the product of the post-hatching survival and the post-fledging survival. The recruitment rate as defined in the present study is thus a parameter integrating multiple life steps from the egg to the young adult attempting to breed for its first time [@Koons2017]. 
 
-*The use of productivity in population management*
+*The use of recruitment rate in population management*
 
-Population conservation, harvesting, and control require tools in population management to reach targets such as a population size for example [@Shea1998]. To do so, a first "blind" strategy is to test iteratively management rules to reach progressively an optimum. Such approach can be time-consuming given the intrinsic variability of the population response to its changing environment. It might also suffer from a rejection of the stakeholders because of the lack of transparency of an arbitrary process [@Williams2013]. Another approach is to try to predict the growth rate of the population as a function of the harvest rate and other environment inputs. Such modelling approach can provide clues on the recovering time of a population upon a variety of managment rules [@Otis2006]. These decision-support tools are then key inputs to status on the best management rules to implement. The growth rate of a population depends on the adult survival and the productivity, see Equation \@ref(eq:GR) in Section \@ref(MM). The adult survival is generally estimated by mark recapture/recovery methods [@Lebreton2001]. If the harvest pressure behaves as an additive mortality to the natural mortality for adults [e.g. @Iverson2013], it is quite straightforward to predict its impact of the adult survival. The key to predict the growth rate of a population is then to estimate the average value and the variability of the productivity and to understand how this parameter is impacted by a harvest pressure [@Anders2005].
+Population conservation, harvesting, and control require tools in population management to reach targets such as a population size for example [@Shea1998]. To do so, a first "blind" strategy is to test iteratively management rules to reach progressively an optimum. Such approach can be time-consuming given the intrinsic variability of the population response to its changing environment. It might also suffer from a rejection of the stakeholders because of the lack of transparency of an arbitrary process [@Williams2013]. Another approach is to try to predict the growth rate of the population as a function of the harvest rate and other environment inputs. Such modelling approach can provide clues on the recovering time of a population upon a variety of managment rules [@Otis2006]. These decision-support tools are then key inputs to status on the best management rules to implement. The growth rate of a population depends on the adult survival and the recruitment rate, see Equation \@ref(eq:GR) in Section \@ref(MM). The adult survival is generally estimated by mark recapture/recovery methods [@Lebreton2001]. If the harvest pressure behaves as an additive mortality to the natural mortality for adults [e.g. @Iverson2013], it is quite straightforward to predict its impact of the adult survival. 
+According to @Blums2004, the recruitment for diving ducks is poorly related to fecundity, but depends mostly on juvenile survival, which is driven by weather conditions. Studies on other birds concludes also on the weak correlation between fecundity and recruitment [e.g. @Murray2000]. The difficulty to track juvenile survival [@Schmidt2008] demonstrates the interest to focus on the recruitment rate to predict population growth rate over long time periods. The key to predict the growth rate of a population is then to estimate the average value and the variability of the recruitment rate, potentially influenced by the harvest pressure [@Anders2005]. 
 
-*The variability of the productivity*
+*The variability of the recruitment rate*
 
-A waterfowl species that is released in a favourable habitat will naturally expand  [@Malthus1872]. The growth of such a population reflects that the productivity parameter is higher than the adult mortality rate. This expansion is limited by the carrying capacity of the habitat [@Sayre2008]. When a waterfowl species is endemic of an ecosystem and evolves in stable environmental conditions, the population size varies around the carrying capacity because the individuals compete for space or/and food [@Nummi2015], which prevents the population from expanding. This competition commonly induces a lower reproductive success or/and a higher juvenile mortality. The population is then less productive because the productivity parameter is affected by density-dependent effects [@Gunnarsson2013]. For an endemic species evolving in stable environmental conditions, a balance between the productivity and the adult mortality rate explains the stabilization of the number of individuals [@Flint2015].
+A waterfowl species that is released in a favourable habitat will naturally expand  [@Malthus1872]. The growth of such a population reflects that the recruitment rate parameter is higher than the adult mortality rate. This expansion is limited by the carrying capacity of the habitat [@Sayre2008]. When a waterfowl species is endemic of an ecosystem and evolves in stable environmental conditions, the population size varies around the carrying capacity because the individuals compete for space or/and food [@Nummi2015], which prevents the population from expanding. This competition commonly induces a lower fecundity or/and a higher juvenile mortality. The population renewal is slowed because the recruitment rate parameter is affected by density-dependent effects [@Gunnarsson2013]. For an endemic species evolving in stable environmental conditions, a balance between the recruitment rate and the adult mortality rate explains the stabilization of the number of individuals [@Flint2015].
 
-Hunting waterfowl induces adult and juvenile mortality [@Bellrose1980]. Intuitively, one expects that such a hunted population would observe lower adult survival and productivity and then would rapidly deplete to its extinction. However, hunting waterfowl has a long history, and most of these species have persisted over time [@Cooch2014]. So paradoxically, hunting immature individuals does not always induce a decrease of productivity. The hetereogeneity of quality among immature individuals might explain this by inducing a compensation process if the harvest selects mostly individuals with a low reproductive potential [@Lindberg2013; @Gimenez2017]. The productivity can even be enhanced because the harvest pressure reduces the densities and potentially the competition for space and food [@Nummi2015; @Peron2012]. In conclusion, a limited exploitation of a population observing heteregeneity and/or density-dependent effect might increase or at least not affect the productivity. A balance between adult mortality and productivity can be theoritically reached if the population is exploited to a constant and moderate harvest rate [@Tsikliras2018]. The size of a newly exploited population in stable environmental conditions should thus reach a different equilibrium, which is expected to be lower than the size without exploitation. 
+Hunting waterfowl induces adult and juvenile mortality [@Bellrose1980]. Intuitively, one expects that such a hunted population would observe lower adult survival and recruitment rate and then would rapidly deplete to its extinction. However, hunting waterfowl has a long history, and most of these species have persisted over time [@Cooch2014]. So paradoxically, hunting immature individuals does not always induce a decrease of recruitment rate. The hetereogeneity of quality among immature individuals might explain this by inducing a compensation process if the harvest selects mostly individuals with a low reproductive potential [@Lindberg2013; @Gimenez2017]. The recruitment rate can even be enhanced because the harvest pressure reduces the densities and potentially the competition for space and food [@Nummi2015; @Peron2012]. In conclusion, a limited exploitation of a population observing heteregeneity and/or density-dependent effect might increase or at least not affect the recruitment rate. A balance between adult mortality and recruitment rate can be theoritically reached if the population is exploited to a constant and moderate harvest rate [@Tsikliras2018]. The size of a newly exploited population in stable environmental conditions should thus reach a different equilibrium, which is expected to be lower than the size without exploitation. 
 
-The reproductive success and the juvenile survival, the two components of the productivity, are very sensitive to weather conditions [@Blums2004; @Folliot2017]. The environment conditions are thus an additional source of variability of the productivity. The response of the productivity to a harvest pressure is thus not straightforward. It is noisy because of its sensitivity to environmental factors. It also depends directly on the intensity of harvest on the immature individuals and indirectly on the mitigation of the density-dependent effects.
+The fecundity and the juvenile survival, the two components of the recruitment rate, are very sensitive to weather conditions [@Blums2004; @Folliot2017]. The environment conditions are thus an additional source of variability of the recruitment rate. The response of the recruitment rate to a harvest pressure is thus not straightforward. It is noisy because of its sensitivity to environmental factors. It also depends directly on the intensity of harvest on the immature individuals and indirectly on the mitigation of the density-dependent effects.
 
-*What part of the productivity gradient is necessary for population management?* 
+*What part of the recruitment rate gradient is necessary for population management?* 
 
-In population mangement, a common question for a threaten or an invasive species is to determine the measure that will allow to reach a targetted population size/density in a limited time period **ref required**. For such question, the carrying capacity of the habitat is theoritically not reached. So a manager should mostly focus on collecting knowledge on the maximum productivity and its variability by removing the potential density-dependent effects occurring only for the highest theoritical densities [@Peron2013].
+In population mangement, a common question for a threaten or an invasive species is to determine the measure that will allow to reach a targetted population size/density in a limited time period [@Shea1998]. For such question, the carrying capacity of the habitat is theoritically not reached. So a manager should mostly focus on collecting knowledge on the maximum recruitment rate and its variability by removing the potential density-dependent effects occurring only for the highest theoritical densities [@Peron2013, @Eraud2021].
 
-*What is the ideal biological model to explore the gradient of the productivity?*
+*What is the ideal biological model to explore the gradient of the recruitment rate?*
 
-Hunting waterfowl has a long history, but few species have observed long-term moratorium **ref required**. So there are few opportunities to explore the response of the productivity to a gradient of pressure for such species. Alien species are often introduced during involuntary release events **ref required**. They observe commonly a first period of colonisation on new territories without management measures. Since its presence might impact the balance of the colonized ecosystem, it happens that managers take strong control measures to restrict the growth of these populations or to eradicate them **ref required**. Such species are then a good biological model to overcome density-dependent effects and explore the effects of a harvest gradient on productivity.  
+Hunting waterfowl has a long history, but the biological effects of long-term moratorium have been poorly surveyed [@MartinezAbrain2013]. So there are few opportunities to explore the response of the recruitment rate to a gradient of pressure for such species. Alien vertebrate species are often introduced during  unintentional or intentional release events [@Saul2016]. They observe commonly a first period of colonisation on new territories without management measures. Since its presence might impact the balance of the colonized ecosystem, it happens that managers take strong control measures to restrict the growth of these populations or to eradicate them [@Oficialdegui2020]. Such species are then a good biological model to overcome density-dependent effects and explore the effects of a harvest gradient on recruitment rate.  
 
-*How to estimate productivity?*
+*How to estimate recruitment rate?*
 
-The productivity parameter of a population can be assessed by monitoring the number of eggs that survives to the age of the first-breeding event. To do so, a first step consists in quantifying the reproductive success by estimating nesting and hatching success thanks to surveys in habitats representative of the managed population **ref required**. The survival of the post-hatched chick to its recruitment can be done by capture mark recapture method [@Blums2004]. Even if such approach provides valuable information on the dynamics of the recruitment and can highlight the bottlenecks, the fieldwork required to estimate both components is too time-consuming to generalize the method for waterfowl population management. 
+The recruitment rate parameter of a population can be assessed first by evaluating the fecundity of the breeding population and then by monitoring the survival from the egg life stage to the first-breeding event. To do so, it is necessary to monitor nests in habitats representative of the managed population [@Blums2004]. The survival the chick to its recruitment can be done by capture mark recapture method quite tricky to set up [@Blums2004; Schmidt2008]. Even if such approach provides valuable information on the dynamics of the recruitment and can highlight the bottlenecks, the fieldwork required to estimate both components is too time-consuming to generalize such approach for waterfowl population management. 
 
-In waterfowl, it is generally impossible to differenciate immatures from adults without examining birds in hand. Aging individuals from samples coming from hunting bags is thus another possible approach. Such approach suffers from two caveats. First, it is impossible to explore the productivity when there is no harvest whereas it is necessary to predict what would happen if a moratorium seems required to let a population recover, or to calibrate a priori the harvest effort necessary to control an invasive species [@Smith2005]. Secondly, like any predation action, hunting is selective and provides a biased picture of the population age structure in favor of the immatures [@Bellrose1980; @Fox2014]. The hunting bag analysis might then lead to overestimate the productivity and consequently the maximum sustainable harvest rate, with adverse consequences on population management ; [@Fox2014].
+In waterfowl, it is generally impossible to differenciate immatures from adults without examining birds in hand. Aging individuals from samples coming from hunting bags is thus another possible approach. Such approach suffers from two caveats. First, it is impossible to assess the recruitment rate when there is no harvest whereas it is necessary to predict what would happen if a moratorium seems required to allow a population to recover, or to calibrate a priori the harvest effort necessary to control an invasive species [@Smith2005]. Secondly, like any predation action, hunting is selective and provides a biased picture of the population age structure in favor of the immatures [@Bellrose1980; @Fox2014]. The hunting bag analysis might then lead to overestimate the recruitment rate and consequently the maximum sustainable harvest rate, with adverse consequences on population management [@Fox2014].
 
-In waterfowl, it is common that adult males display brighter colors than females when  immatures from both sexes display cover-up plumage similar to adult females **ref required**. Knowing sex ratios, this discrepancy between adult and immature males might be used to estimate the proportion of immature in a waterfowl population just by counting them from distance **ref required**. Such approach is promising because it requires only to count the proportion of birds of the two plumage kinds to infer an estimate of productivity. Unlike the two previous methods, this one is non-invasive and requires a little time investment, which allows to collect long time series and consequently to track productivity variability.
+In waterfowl, it is common that adult males display brighter colors than females when  immatures from both sexes display cover-up plumage similar to adult females [@Johnson1999]. Knowing sex ratios, this discrepancy between adult and immature males might be used to estimate the proportion of immature in a waterfowl population just by counting them from distance [@Smith2001]. Such approach is promising because it requires only to count the proportion of birds of the two plumage kinds to infer the recruitment rate. Unlike the two previous methods, this one is non-invasive and requires a little time investment, which allows to collect long time series and consequently to track recruitment rate variability.
 
 *Methodology of this study*
 
-From two populations of ruddy duck, an species introduced in Europe in the 40's, this study develops a Bayesian framework to infer productivity from count data. A comparison to the results of the common approach using samples from hunting bags aims at checking if the productivity variability is well tracked and if the hypothesis of the productivity overestimation by sampling methods is consistent with the results. Using two other approaches using average population growth rates, one testes the consistency of the order of magnitude of the productivity estimates from the counting method. 
+From two populations of ruddy duck, an species introduced in Europe in the 40's, this study develops a Bayesian framework to infer recruitment rate from count data. A comparison to the results of the common approach using samples from hunting bags aims at checking if the recruitment rate variability is well tracked and if the hypothesis of the recruitment rate overestimation by sampling methods is consistent with the results. Using two other approaches using average population growth rates, one testes the consistency of the order of magnitude of the recruitment rate estimates from the counting method. 
 
 # Materials & methods {#MM}
 
 ## Biological model
 
-The ruddy duck is a diving duck species introduced in the United Kingdom in the 40's [@GutierrezExposito2020]. The first reproduction was observed in the 60's. The population rapidely grew to reach more than 5000 individuals spread over the entire country. A new population set up in France from the 90's, likely because of an arrival of few individuals from the United Kingdom. This population set up around a single wintering spot, the Grand Lieu Lake (geographical coordinates: 47.09°N, 1.67°W). Since this species is considered as a threat to the white-headed duck because of the risk of genetic introgression [@MunozFuentes2007], an European plan of eradication has been adopted and control measures were taken in both countries [@GutierrezExposito2020]. 
+The ruddy duck is a diving duck species introduced in the United Kingdom in the 40's [@GutierrezExposito2020]. The first reproduction was observed in the 60's. The population rapidely grew to reach more than 5000 individuals spread over the entire country. A new population set up in France from the 90's, likely because of an arrival of few individuals from the United Kingdom. This population set up around a single wintering spot, the Grand Lieu Lake (47.09°N, 1.67°W). Since this species is considered as a threat to the white-headed duck because of the risk of genetic introgression [@MunozFuentes2007], an European plan of eradication has been adopted and control measures were taken in both countries [@GutierrezExposito2020]. 
 
 Just before the reproduction period, i.e. in winter, one can distinguish from shore individuals with male-like plumage from female-like individuals (Figure \@ref(fig:MM1)). It is noticeable that the apparent proportion of males in the counts from shore is far below the proportion of males in the samples from the hunting bag (Figure \@ref(fig:MM2)). 
 
@@ -90,15 +91,15 @@ knitr::include_graphics("../Output/flock.png")
 knitr::include_graphics("../Output/plot_1.png")
 ```
 
-Since sex identification of samples is very accurate **ref required**, the counting method misses the identification of a significant part of males in the population. In many waterfowl species, immature individuals of both sexes display cover-up plumage similar to adult female plumage **ref required**. Consequently, the counts in winter allows adult males to be distinguished from all other individuals (adult females, immature females, and immature males). This property can be valuable to estimate the recruitment with a few assumptions. One assumes in this study that the immature individuals have a equally balanced sex ratio [@Bellrose1961; @Blums1996; @Wood2021]
+Since sex identification of samples is very accurate **ref required**, the counting method misses the identification of a significant part of males in the population. In many waterfowl species, immature individuals of both sexes display cover-up plumage similar to adult female plumage **ref required**. Consequently, the counts in winter allows adult males to be distinguished from all other individuals (adult females, immature females, and immature males). This property can be valuable to estimate the recruitment with a few assumptions. One assumes in this study that the immature individuals have a equally balanced sex ratio [@Bellrose1961; @Blums1996; @Wood2021].
 
-Ruddy duck populations from the UK and from France follow similar demographic histories (Figure \@ref(fig:MM1)). They grew freely during some years in both countries until 1999. Limited control measures have been then applied from 1999 to 2005 in the UK and from 1999 to 2018 in France. In both countries, these management measures led to stop the expansion of the ruddy ducks. From 2005 in the UK and from 2018 in France, higher control effort led to a rapid depletion in both populations.
+Ruddy duck populations from the UK and from France follow similar demographic histories (Figure \@ref(fig:MM1)). They grew freely in both countries until 1999. Limited control measures have been then applied from 1999 to 2005 in the UK and from 1999 to 2018 in France. In both countries, these management measures led to stop the expansion of the ruddy ducks. From 2005 in the UK and from 2018 in France, higher control effort led to a rapid depletion in both populations.
 
 ```{r MM3, fig.cap = "(ref:MM3cap)"}
 knitr::include_graphics("../Output/plot_2.png")
 ```
 
-Such biological model is thus suited to study the response of the harvest pressure on productivity. 
+Such biological model is thus suited to study the response of the harvest pressure on recruitment rate. 
 
 ## Data time series
 
@@ -214,7 +215,7 @@ N_{t} & = S_{t}.N_{t-1} + P_{t}.N_{t-1} \notag \\
 \end{align}
 
 
-The population size in year $t$ is equal to the number of breeders that survived over year $t - 1$ plus the offspring produced in year $t - 1$ that survived until the reproduction period of year $t$, i.e. the recruitment in year $t$. The growth rate of a population is thus the sum of the productivity and the adult survival rate.
+The population size in year $t$ is equal to the number of breeders that survived over year $t - 1$ plus the offspring produced in year $t - 1$ that survived until the reproduction period of year $t$, i.e. the recruitment in year $t$. The growth rate of a population is thus the sum of the recruitment rate and the adult survival rate.
 
 The proportion of males in the adult part of a population at its equilibrium is inferred from the samples. 
 
@@ -228,7 +229,7 @@ sampling method?
 Ok but few data as poorly harvested
 
 realistic survival? 
-if > 1, estimated productivity is too low to support the maximum growth rate
+if > 1, estimated recruitment rate is too low to support the maximum growth rate
 in the range of similar species in litterature -> satisfying 
 
 blabla
@@ -237,7 +238,7 @@ blabla
 knitr::include_graphics("../Output/plot_3.png")
 ```
 
-## Result validation using maximum productivity proxy
+## Result validation using maximum recruitment rate proxy
 
 ```{r MM5, fig.cap = "(ref:MM5cap)"}
 knitr::include_graphics("../Output/plot_4.png")
@@ -245,7 +246,7 @@ knitr::include_graphics("../Output/plot_4.png")
 
 # Results
 
-## Productivity variability
+## recruitment rate variability
 
 ```{r R1, fig.cap = "(ref:R1cap)"}
 knitr::include_graphics("../Output/plot_5.png")
@@ -263,7 +264,7 @@ knitr::include_graphics("../Output/plot_6.png")
 knitr::include_graphics("../Output/plot_7.png")
 ```
 
-## Result validation using maximum productivity proxy
+## Result validation using maximum recruitment rate proxy
 
 ```{r R4, fig.cap = "(ref:R4cap)"}
 knitr::include_graphics("../Output/plot_8.png")
@@ -275,21 +276,27 @@ knitr::include_graphics("../Output/plot_9.png")
 
 # Discussion
 
-productivity the most sensitive parameter to density dependent effect [@Koons2014]
+According to @Blums2004, the recruitment for diving ducks is not related to the fecundity, but depends mostly on the juvenile survival, which is driven by weather conditions. Studies on other birds also conclude of the poor correlation between fecundity and recruitment [e.g. @Murray2000]. 
+
+
+age proportion -> [0, 1]
+recruitment rate [@, + inf] donc plus sensitive
+
+recruitment rate the most sensitive parameter to density dependent effect [@Koons2014]
 
 Hypothesis of time invariant sex ratios in immature and adult: limits
 
 For hunted duck species in North America, the mortality rate on first-year immatures compared to adults is higher by a factor ranging from 1.4 to 2 (Bellrose 1980). 
 
-Productivité: 
+recruitment rate: 
 Stabilité grosse pop, 
 variabilité petite pop. 
 
-Au dela du fait que la croissance de la pop est la somme de la survie et de la productivité, 
-intéressant de parler de la variability de la survie vs variabilité de la productivity 
+Au dela du fait que la croissance de la pop est la somme de la survie et de la recruitment rate, 
+intéressant de parler de la variability de la survie vs variabilité de la recruitment rate 
 pour parler de risk management.
 
-Productivity: drop from 2009
+recruitment rate: drop from 2009
 
 one considers harvest as an impact only adult survival, not on age structure, but we should, oversimplistics
 
@@ -300,7 +307,7 @@ blabla
 Taper des jeunes c'est pas forcément très utile car density dependence
 
 
-If the maximum productivity is not reached under optimal conditions (maximum population size not reached, and limited harvest pressure), it is a signal that one should explore the intermediate life stages before recruitment to provide a diagnostic on the changes of the environment conditions that have affected the productivity. 
+If the maximum recruitment rate is not reached under optimal conditions (maximum population size not reached, and limited harvest pressure), it is a signal that one should explore the intermediate life stages before recruitment to provide a diagnostic on the changes of the environment conditions that have affected the recruitment rate. 
 
 Condition of application to other species. 
 
@@ -333,14 +340,14 @@ knitr::include_graphics("../Output/plot_10.png")
 
 (ref:MM5cap) Evolution of the size of the two Ruddy duck populations in light of the harvest pressure; on time periods without harvest, maximum population growth rates can be estimated (slopes in red for the UK and in blue for France)
 
-(ref:R1cap) (A) Estimates of productivity, i.e. average number of recruits produced per breeder; (B) Comparison of the productivity values between the two estimation methods; bars define the 95% confidence intervals
+(ref:R1cap) (A) Estimates of recruitment rate, i.e. average number of recruits produced per breeder; (B) Comparison of the recruitment rate values between the two estimation methods; bars define the 95% confidence intervals
 
-(ref:R2cap) (A) Estimates of the population growth rate on time intervals with data availability. This aims at producing survival estimates to discuss the reliability of the methods to estimate productivity; (B) Growth rate estimates; bars define the 95% confidence intervals
+(ref:R2cap) (A) Estimates of the population growth rate on time intervals with data availability. This aims at producing survival estimates to discuss the reliability of the methods to estimate recruitment rate; (B) Growth rate estimates; bars define the 95% confidence intervals
 
-(ref:R3cap) (A) Average productivity estimates on the time intervals defined for survival analysis; (B) Average survival estimates deduced from growth rate and productivity estimates on the time intervals; bars define the 95% confidence intervals
+(ref:R3cap) (A) Average recruitment rate estimates on the time intervals defined for survival analysis; (B) Average survival estimates deduced from growth rate and recruitment rate estimates on the time intervals; bars define the 95% confidence intervals
 
 (ref:R4cap) (A) Estimates of the population growth rate without harvest; two estimates were produced for the UK population because the growth rate dropped significantly when its size reached more than 1000 individuals; (B) Growth rate estimates; bars define the 95% confidence intervals
 
-(ref:R5cap) Comparison between a proxy of maximum productivity and the average productivity estimated following *counting* and *sampling* methods; the proxy is estimated during the maximum growth periods by combining the growth rate to the hypothesis of a 100% adult survival (*max growth*); this hypothesis implies that the true maximum of productivity is likely higher; bars define the 95% confidence intervals
+(ref:R5cap) Comparison between a proxy of maximum recruitment rate and the average recrutiment rate estimated following *counting* and *sampling* methods; the proxy is estimated during the maximum growth periods by combining the growth rate to the hypothesis of a 100% adult survival (*max growth*); this hypothesis implies that the true maximum of recruitment rate is likely higher; bars define the 95% confidence intervals
 
 (ref:S1cap) (A1) Estimates of the number of recruits, i.e. the young adults reproducing for their first time; (B1) estimates of the proportion of recruits in the population at the reproduction period; (A2) & (B2) comparison of the values between the two estimation methods; bars define the 95% confidence intervals
