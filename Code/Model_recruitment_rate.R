@@ -132,7 +132,7 @@ read_rds("./Data/Ruddy_duck_data.rds") %>% pluck(2) %>%
   mutate(across(pop, as_factor)) %>% arrange(pop) -> counts
 
 
-# male proportion -------------------------------------------------------------------
+# Male proportion -------------------------------------------------------------------
 
 # adult
 frag %>% 
@@ -440,6 +440,9 @@ JuvCode <- nimbleCode(
       recruits[j] <- p_juv[j] * cnt_size_pop[j]
       
       productivity[j] <- recruits[j] / cnt_size_breeding_pop[j]
+      
+      survival[j] <- cnt_size_pop[j] / cnt_size_breeding_pop[j] - productivity[j]
+      
     }
     
     # parameter estimation from hunting samples
@@ -457,6 +460,9 @@ JuvCode <- nimbleCode(
       recruits[C + k] <- p_juv[C + k] * spl_size_pop[k]
       
       productivity[C + k] <- recruits[C + k] / spl_size_breeding_pop[k]
+      
+      survival[C + k] <- spl_size_pop[k] / spl_size_breeding_pop[k] - productivity[C + k]
+      
     }
     
     # r estimation frow counts
@@ -482,16 +488,6 @@ JuvCode <- nimbleCode(
                                 sd = N_sd[R_id[t]])
     }
     
-    # survival lambda max growth
-    for (q in 1:W) {
-      survival[q] <- lambda[W_id[q]] - productivity[q]
-    }
-    
-    # survival true lambda 
-    for (p in 1:Z) {
-      survival_2[p] <- lambda[Z_id[p]] - productivity[p]
-    }
-    
   })
 
 # set seed
@@ -509,16 +505,7 @@ JuvConst <- list(C = dis(obs_tot, pop, id, TRUE),
                  R_id = lam(sub_pop, id),
                  R_id_max = lam(sub_pop, id) %>% max(),
                  TS_id = lam(sub_ts, id),
-                 TS_id_max = lam(sub_ts, id) %>% max(),
-                 W = dis(obs_tot, pop, id, TRUE) + dis(spl_tot, pop, id, TRUE),
-                 W_id = c(dis(obs_tot, pop, id) %>% if_else(. == 2, 3, .), 
-                          dis(spl_tot, pop, id)) + 2,
-                 Z = lambda_ds %>% 
-                   filter(sub_pop %in% c("UK decrease", "FR constant")) %>% 
-                   nrow(),
-                 Z_id = lambda_ds %>% 
-                   filter(sub_pop %in% c("UK decrease", "FR constant")) %>% 
-                   pull(sub_ts))
+                 TS_id_max = lam(sub_ts, id) %>% max())
 
 JuvData <- list(mal_ad = unique(ds$kill_m),
                 fem_ad = unique(ds$kill_f),
@@ -555,7 +542,6 @@ JuvMon <- c("p_mal",
             "productivity",
             "lambda",
             "survival",
-            "survival_2",
             "log_N_int")
 
 # mcmc parameters
@@ -706,6 +692,10 @@ raw_plot(p_juv, title = "Proportion of recruits in the population",
 raw_plot(productivity, title = "Productivity: number of recruits per breeder") + 
   scale_y_continuous(breaks = 0:12/10, limits = c(0, 1.2)) -> raw_prod; raw_prod
 
+raw_plot(survival, title = "Adult survival", 
+         percent = TRUE) + 
+  scale_y_continuous(breaks = 0:12/10, limits = c(0, 1.2)) -> raw_surv; raw_surv
+
 raw_plot(recruits, title = "Number of recruits") + 
   facet_wrap(~ pop, nrow = 1, scales = "free") -> raw_recruit; raw_recruit
 
@@ -854,7 +844,7 @@ JuvOut3 %>%
   bind_rows(
     JuvOut4 %>% 
       filter(par == "lambda", str_detect(method, "small pop.")) %>% 
-      mutate(across(contains("%"), ~ .x - 1),
+      mutate(across(contains("%"), ~ .x - .85), # rrecruitment rate = lambda - survival
              pop = str_trunc(method, 2, ellipsis = "")) %>% 
       select(pop, par, contains("%"))) %>% 
   mutate(pop = as_factor(pop), 
@@ -878,8 +868,8 @@ avg_full %>%
   geom_text(aes(x = gp, y = .365, label = txt), color = c_met[2], angle = 90) +
   scale_color_manual(values = c(c_pop, c_met), guide = "none") +
   scale_y_continuous(
-    limits = c(0, .7),
-    breaks = 0:7 / 10) +
+    limits = c(0, .9),
+    breaks = 0:9 / 10) +
   guides(x = guide_axis(angle = 45)) +
   labs(x = NULL, y = "recruitment rate") -> prod_max_plot; prod_max_plot
 
