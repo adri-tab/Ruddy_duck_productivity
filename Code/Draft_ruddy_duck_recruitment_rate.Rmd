@@ -11,7 +11,7 @@ author:
 - Sébastien Reeber^[Société Nationale pour la Protection de la Nature, France - sebastien.reeber@snpn.fr - contribution in data collection]
 - Matthieu Guillemain^[Office Français de la Biodiversité, France -  matthi(UK).guillemain@ofb.gouv.fr - contribution in writing]
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-abstract: "The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key indicator to describe the renewal of a population, and therefore an essential tool in population management. The recruitment rate, defined inhere as the number of recruits produced per breeder, is even more informative because it is independent of the breeding population size and allows comparisons over time and between species. The proportion of young adult in a waterfowl population, which is a main step in estimating recruitment rate, is often estimated from game-hunting samples. However, this proportion is not accessible in years without harvest, or with a low harvest rate. Moreover, the age-structure in the harvest samples does not necessarily reflect the underlying age-structure of the population. It is often skewed towards immatures and can lead to an overestimation of the recruitment rate. In waterfowl, adult males usually display brighter colours than females and immatures from both sexes. This dichromatism can be characterized and monitored from count surveys, a non-invasive method. Such information can be used to infer the proportion of immatures, and consequently the recruitment rate. In using two populations of ruddy duck, *Oxyura oxyura*, this study introduces a Bayesian method to estimate the recruitment rate from count data. The results are compared to recruitment rate estimates from samples and their consistency to support the observed population growth rates is tested. The results suggest that the counting method is a versatile tool to estimate the recruitment rate if the species is monitored during the appropriate time window. The results argue for considering a two-category count protocol in winter surveys of waterfowl species when adult males can be identified. \\par \\textbf{Keywords:} fecundity - productivity - reproductive success - age ratio - juvenile - duck" 
+abstract: "The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key indicator to describe the renewal of a population, and therefore an essential tool in population management. The recruitment rate, defined inhere as the number of recruits produced per breeder, is even more informative because it is independent of the breeding population size and allows comparisons over time and between species. The proportion of young adult in a waterfowl population, which is a main step in estimating the recruitment rate, is often estimated from game-hunting samples. However, this proportion is not accessible in years without harvest, or with a low harvest rate. Moreover, the age-structure in the harvest samples does not necessarily reflect the underlying age-structure of the population. It is often skewed towards immatures and can lead to an overestimation of the recruitment rate. In waterfowl, adult males usually display brighter colours than females and immatures from both sexes. This dichromatism can be characterized and monitored from count surveys, a non-invasive method. Such information can be used to infer the proportion of immatures, and consequently the recruitment rate. In using two populations of ruddy duck, *Oxyura oxyura*, this study introduces a model to estimate the recruitment rate from count data. To test the accuracy of the method, the results are compared to recruitment rate estimates from samples, and their consistency to support the observed population growth rates is also tested. The results suggest that the counting method is a versatile tool to estimate the recruitment rate if the species is monitored during the appropriate time window. Authors argue for considering a two-category count protocol in winter surveys of waterfowl species for which adult males can be differentiated from other individuals. \\par \\textbf{Keywords:} fecundity - productivity - reproductive success - age ratio - juvenile - duck" 
 output:
   bookdown::pdf_document2:
     latex_engine: xelatex
@@ -85,33 +85,33 @@ From two populations of ruddy duck, an species introduced in Europe in the 40's,
 
 ## Biological model
 
-The ruddy duck is a diving duck species introduced in the United Kingdom in the 40's [@GutierrezExposito2020]. The first reproduction was observed in the 60's. The population rapidly grew to reach more than 5000 individuals spread over the entire country. A new population set up in France from the 90's, likely because of an arrival of a few individuals from the United Kingdom (UK). Unlike the UK population, the French one set up around a single wintering spot, the Grand Lieu Lake (47.09°N, 1.67°W). Since this species is considered as a threat to the white-headed duck because of the risk of genetic introgression [@MunozFuentes2007], an European plan of eradication has been adopted and control measures were taken in both countries [@GutierrezExposito2020]. 
+The ruddy duck is a diving duck species introduced in the United Kingdom in the 40's [@GutierrezExposito2020]. The first reproduction was observed in the 60's. The population rapidly grew to reach more than 5000 individuals spread over the entire country. A new population set up in France from the 90's, likely because of an arrival of a few individuals from the United Kingdom (UK). Unlike the UK population, the French one set up around a single wintering spot, the Grand Lieu Lake (47.09°N, 1.67°W), which falicitates the population monitoring. Since this species is considered as a threat to the white-headed duck because of the risk of a genetic introgression [@MunozFuentes2007], an European plan of eradication has been adopted and control measures were taken in both countries [@GutierrezExposito2020]. 
 
-Just before the reproduction period, one can distinguish from shore individuals with male-like plumage from female-like individuals on wintering spots (Figure \@ref(fig:MM1)). It is noticeable that the apparent proportion of males in the counts from shore is far below the proportion of males in the samples from hunting bags (Figure \@ref(fig:MM2)). 
+Just before the reproduction period, one can distinguish from shore individuals with male-like plumage from female-like individuals on wintering spots (Figure \@ref(fig:flock)). It is noticeable that the apparent proportion of males in the counts from shore is far below the proportion of males in the samples from hunting bags (Figure \@ref(fig:pmal)). 
 
-```{r MM1, fig.cap = "(ref:MM1cap)"}
+```{r flock, fig.cap = "(ref:flock)"}
 knitr::include_graphics("../Output/flock.png")
 ```
 
-```{r MM2, fig.cap = "(ref:MM2cap)"}
-knitr::include_graphics("../Output/plot_1.png")
+```{r pmal, fig.cap = "(ref:pmal)"}
+knitr::include_graphics("../Output/plot_1_saved.png")
 ```
 
-Since sex identification of samples is very accurate, such observation demonstrates that the counting method misses the identification of a significant part of males in the population. In many waterfowl species, immature individuals of both sexes display cover-up plumage similar to adult female plumage [@Reeber2015]. Consequently, the counts in winter allows adult males to be distinguished from all other individuals (adult females, immature females, and immature males). This property can be valuable to estimate the recruitment with a few conditions. The season when adult males can be distinguished from all other individuals is sufficiently close to the breeding period to consider the age structure picture of the population to be representative of the age structure of the breeding population^[immature survival equal to adult survival [@Arnold2018]]. The adult sex ratio is known and stable over the considered time period. 
+Since sex identification of samples is very accurate, such observation demonstrates that the counting method misses the identification of a significant part of males in the population. In many waterfowl species, immature individuals of both sexes display cover-up plumage similar to adult females [@Reeber2015]. Consequently, the counts in winter allows adult males to be distinguished from all other individuals (adult females, immature females, and immature males). This feature can be valuable to estimate the recruitment with two conditions. The season when adult males can be distinguished from all other individuals is sufficiently close to the breeding period to consider the age structure picture of the population to be representative of the age structure of the breeding population. The adult sex ratio is known and stable over the considered time period. 
 
-The demography of both ruddy duck populations has been tracked thanks to exhaustive counts on the wintering spots during the period between December 1 and January 31. Controlled individuals between the counting date and the beginning of the reproduction period (set up to May 1 upon field observations) were subtracted from the winter count to get a proxy of the breeding population size. The two populations follow similar demographic histories (Figure \@ref(fig:MM1)). They grew freely in both countries until 1999. Limited control measures have been then applied from 1999 to 2005 in the UK and from 1999 to 2018 in France. In both countries, these management measures led to stop the expansion of the ruddy ducks. From 2005 in the UK and from 2018 in France, higher control effort led to a rapid depletion in both populations. This history underlines that both populations observed a large spectrum of harvest effort, from no pressure to very high pressure. For sake of interpretation, the time period 2001-2004 was classified in the "no harvest" category in France because the harvest pressure applied over this period was very limited with no effect on the population growth.
+The demography of both ruddy duck populations has been tracked thanks to exhaustive counts on the wintering spots during the period between December 1 and January 31. Controlled individuals between the counting date and the beginning of the reproduction period (set up to May 1 upon field observations) were subtracted from the winter count to get a proxy of the breeding population size. Time series show that the two populations follow similar demographic histories (Figure \@ref(fig:count)). They grew freely in both countries until 1999. Control measures have been then applied from 1999 to 2005 in the UK and from 1999 to 2018 in France. In both countries, these management measures led to stop the expansion of the ruddy ducks. From 2005 in the UK and from 2018 in France, higher control effort led to a rapid depletion in both populations. This history underlines that both populations observed a large spectrum of harvest effort, from no pressure to very high pressure. For sake of interpretation, the time period 2001-2004 was classified in the *no harvest* category in France because the harvest pressure applied over this period was very limited with no effect on the population growth.
 
-```{r MM3, fig.cap = "(ref:MM3cap)"}
+```{r count, fig.cap = "(ref:count)"}
 knitr::include_graphics("../Output/plot_2.png")
 ```
 
-The counting dataset, which differentiates the male-like from the female-like individuals in winter, covers 7 years and 19 years in UK and France respectively (Figure \@ref(fig:MM3)). Combined together, the counting datasets cover different population dynamics corresponding to a large harvest pressure spectrum. In France, data before 2004 correspond to a period of population growth with (almost) no harvest pressure, whereas data in the following years correspond to a stabilized population size with a significant level of harvest pressure (Figure \@ref(fig:MM3)). In UK, the counting data correspond to a quick population depletion associated to a high level of harvest pressure, especially before the reproduction period. In parallel, the sampling dataset, which corresponds to individuals shot in winter during control operations, covers 9 years only in UK, with 5 years in common with the corresponding counting time series.
+The counting dataset, which differentiates the male-like from the female-like individuals in winter, covers 7 years and 19 years in UK and France respectively (Figure \@ref(fig:count)). Combined together, the counting datasets cover different population dynamics corresponding to a gradient of harvest pressure. In France, data before 2004 correspond to a period of population growth with (almost) no harvest pressure, whereas data in the following years correspond to a stabilized population size with a significant level of harvest pressure (Figure \@ref(fig:count)). In UK, the counting data correspond to a quick population depletion associated to a high level of harvest pressure, especially before the reproduction period. In parallel, the sampling dataset, which corresponds to individuals shot in winter during control operations, covers 9 years only in UK, with 5 years in common with the corresponding counting time series.
 
 ## Recruitment rate inference from count data
 
-Adult sex ratio in waterfowl is generally biased towards males (Figure \@ref(fig:MM2), @Wood2021). As a consequence, deducing the immature proportion from the adult male proportion is not straightforward because the adult female proportion is not just equal to the adult male proportion. Even if the adult sex ratio may vary over a long time range, it is relatively stable over a few years [@Wood2021]. Sex identification in adult samples from hunting bags was available for both ruddy duck populations. However, the small population size in France was limiting to provide useful sex proportion estimates. A comparison over months in UK showed no difference in male proportion, so adult samples collected over the whole year were used to estimate the male proportion. A comparison of male proportion among years with more 500 samples did not show significant differences among years. As a consequence, all adult samples were pooled to estimate the adult male proportion, see Equation \@ref(eq:pm). 
+Adult sex ratio in waterfowl is generally biased towards males (Figure \@ref(fig:pmal), @Wood2021). As a consequence, deducing the immature proportion from the adult male proportion is not straightforward because the adult female proportion is not just equal to the adult male proportion. Even if the adult sex ratio may vary over a long time range, it is relatively stable over a few years [@Wood2021]. Sex identification in adult samples from hunting bags was available for both ruddy duck populations. However, the small population size in France was limiting to provide useful sex proportion estimates. A comparison over months in UK showed no difference in male proportion, so adult samples collected over the whole year were used to estimate the male proportion. A comparison of male proportion among years with more 500 samples did not show significant interannual differences. As a consequence, all adult samples were pooled to estimate the adult male proportion, see Equation \@ref(eq:pm). 
 
-From the cumulated counts of male-like individuals in the wintering population, the proportion of immature individuals can be deduced following Equation \@ref(eq:pic). Only years with more than 100 individuals were selected. From this proportion and abundance index of breeding population sizes, the recruitment rate is straightforward, see Equation \@ref(eq:r). If the absolute value of the breeding population size is accessible, the recruitment can be estimated, see Equation \@ref(eq:R).
+Since the additive property of the binomiale distribution, the proportion of immature individuals can be deduced from the cumulated counts of male-like individuals in the wintering population, see Equation \@ref(eq:pic). Only years with more than 100 individuals were selected. From this proportion and abundance index of breeding population sizes, the recruitment rate is straightforward, see Equation \@ref(eq:r). If the absolute value of the breeding population size is accessible, the recruitment can be estimated, see Equation \@ref(eq:R).
 
 |Name|Class|Description|
 |:--|:----|:----------------------------|
@@ -122,7 +122,7 @@ From the cumulated counts of male-like individuals in the wintering population, 
 |$pi_{i, t}$|Parameter|Proportion of immature individuals in population $i$ in year $t$|
 |$C_{i, t}$|Data|Cumulated number of individuals counted in population $i$ in year $t$|
 |$R_{i, t}$|Parameter|Number of recruits in population $i$ in year $t$|
-|$N_{i, t}$|Data|Maximum number of individuals counted in the wintering population $i$ in year $t$ minus removals before reproduction (proxy of the breeding population size)|
+|$N_{i, t}$|Data|Proxy of the size of the breeding population $i$ in year $t$ (maximum number of individuals counted in the wintering population minus removals before reproduction)|
 |$r_{i, t}$|Parameter|Recruitment rate, i.e. number of recruits in population $i$ in year $t$ per breeder in year $t - 1$|
 
 \begin{equation}
@@ -197,20 +197,16 @@ log(N_{i, t}) \sim {\sf Norm}(N0_{i, J} + log(\lambda_{i, J}).t, \sigma_{i, J})
 
 ### Analysis of the adult survival 
 
-The adult survival is commonly assessed by capture mark recapture [@Lebreton2001]. Combined to average population growth rate, adult survival rate allows average recruitment rate to be estimated, and then compared with the output of the counting method. Unfortunately, no banding campaign was performed on the two ruddy duck populations. However, the relationship \@ref(eq:GR) could still produce average adult survival estimates that can be discussed. To do so, average population growth rate were estimated over time intervals overlapping the counting time series and the main corresponding harvest category, see Figure \@ref(fig:MM4). 
+The adult survival is commonly assessed by capture mark recapture [@Lebreton2001]. Combined to population growth rate, adult survival rate allows recruitment rate to be estimated, and then compared with the output of the counting method. Unfortunately, no banding campaign was performed on the two ruddy duck populations. However, the relationship \@ref(eq:GR) could still produce adult survival estimates that can be discussed. To do so, population growth rate overlapping the counting time series were estimated. 
 
-```{r MM4, fig.cap = "(ref:MM4cap)"}
-knitr::include_graphics("../Output/plot_3.png")
-```
-
-Inconsistency on recruitment rate output, which is defined on $[0;\infty]$, would either lead to average survival output $<0$, which points out an overestimation of the recruitment rate, or $>1$, which reflects that the recruitment rate cannot support the observed population growth and is thus underestimated. In between the two limit values, one still discuss the average survival outputs by comparison with survival values published in the literature. 
+Inconsistency on recruitment rate output, which is defined on $[0;\infty]$, would either lead to survival output $<0$, which points out an overestimation of the recruitment rate, or $>1$, which reflects that the recruitment rate cannot support the observed population growth and is thus underestimated. In between the two limit values, one still discuss the survival outputs by comparison with survival values published in the literature. 
 
 ### Comparison to a proxy of maximum recruitment rate
 
-When population growth is not limited by a harvest pressure and/or by density-dependent effects, both recruitment rate and adult survival are close to their maximum potential. Given a conservative assumption on the maximum adult survival of ruddy ducks and maximum population growth rate estimated during no harvest time period, one can provide a proxy of the maximum recruitment rate. If the recruitment rate outputs of the model are significantly superior to this proxy, it means that the method overestimates the recruitment rate, which means that some adult male individuals are not detected during count surveys. To do so, one uses a very conservative value of adult survival of 0.85 [highest survival rates observed in litterature for species of similar weight, @Nichols1997; @Krementz1997; @Buxton2004]. After reaching the threshold of 1000 individuals, the UK population growth observed a strong inflexion whereas no harvest pressure was applied. This observation led to split the analysis into two time series, see Figure \@ref(fig:MM5).
+When population growth is not limited by a harvest pressure and/or by density-dependent effects, both recruitment rate and adult survival are close to their maximum potential. Given a conservative assumption on the maximum adult survival of ruddy ducks and maximum population growth rate estimated during no harvest time period, one can provide a proxy of the maximum recruitment rate. If the recruitment rate outputs of the model are significantly superior to this proxy, it means that the method overestimates the recruitment rate, which means that some adult male individuals are not detected during count surveys. To do so, one uses a very conservative prior of adult survival by setting a uniform distribution on $[0.7;1]$ [the lower limit corresponds to the highest range of survival rates observed in litterature for species of similar weight, @Nichols1997; @Krementz1997; @Buxton2004]. After reaching the threshold of 1000 individuals, the UK population growth observed a strong inflexion whereas no harvest pressure was applied. This observation led to split the analysis into two time series, see Figure \@ref(fig:grts).
 
-```{r MM5, fig.cap = "(ref:MM5cap)"}
-knitr::include_graphics("../Output/plot_4.png")
+```{r grts, fig.cap = "(ref:grts)"}
+knitr::include_graphics("../Output/plot_3.png")
 ```
 
 For all the sub-models in Section \@ref(MM), the Bayesian framework was used for its efficiency and simplicity to propagate error through the parameters. One generated three chains of length 500000, with a thinning of 10 to avoid autocorrelation in the samples, and we discarded the first 2000 samples as burn-in. Chain convergence was assessed using the Gelman and Rubin convergence diagnostic (R<1.1, @Gelman1992). We fit the models using NIMBLE [@Valpine2017] run from R [@RCT2020]. Data and code are available here: https://github.com/adri-tab/Ruddy_duck_recruitment_rate. The values *X [min; max]* reported in results are means and the associated 95% confidence interval.
@@ -219,17 +215,17 @@ For all the sub-models in Section \@ref(MM), the Bayesian framework was used for
 
 ## Recruitment rate variability
 
-The adult male proportion, which is necessary to infer on the recruitment rate from count data, is estimated at 0.60 [0.59; 0.61]. The counting method provides estimations of the recruitment rate, Figure \@ref(fig:R1)A. In UK, values vary from 0.06 [0.05; 0.07] to 0.27 [0.20; 0.34] recruits per breeder, and in France, 0.08 [0.04; 0.12] to 0.76 [0.64; 0.88] recruits per breeder. There are significant year-to-year variations with a maximum amplitude of 0.70 recruits per breeder (12-time variability). Recruitment rates are estimated in both populations for 5 years, and no correlation is observed between the two populations.
+The adult male proportion, which is necessary to infer on the recruitment rate from count data, is estimated at 0.60 [0.59; 0.61]. The counting method provides estimations of the recruitment rate, Figure \@ref(fig:rrts)A. In UK, values vary from 0.06 [0.05; 0.07] to 0.27 [0.20; 0.34] recruits per breeder, and in France, 0.08 [0.04; 0.12] to 0.76 [0.64; 0.88] recruits per breeder. There are significant year-to-year variations with a maximum amplitude of 0.70 recruits per breeder (12-time variability). Recruitment rates are estimated in both populations for 5 years, and no correlation is observed between the two populations.
 
-Recruitment rates estimated from UK sample data are consistently higher than estimates from the corresponding count data Figure \@ref(fig:R1)A. The correlation between the two methods is strong and points out that the sampling method overestimates the recruitment rate by 44% compared to the counting method, Figure \@ref(fig:R1)B. 
+Recruitment rates estimated from UK sample data are consistently higher than estimates from the corresponding count data Figure \@ref(fig:rrts)A. The correlation between the two methods is strong and points out that the sampling method overestimates the recruitment rate by 44% compared to the counting method, Figure \@ref(fig:rrts)B. 
 
-```{r R1, fig.cap = "(ref:R1cap)"}
-knitr::include_graphics("../Output/plot_5.png")
+```{r rrts, fig.cap = "(ref:rrts)"}
+knitr::include_graphics("../Output/plot_4.png")
 ```
 
 ## Consistency of the adult survival
 
-Average population growth rates were estimated over the period of available count data with a consistent harvest pressure. Average population growth rates ($\lambda$) are estimated to 0.56 [0.48; 0.65] and 0.97 [0.94; 1.00] for the UK and France respectively, which corresponds to an average annual growth proportion ($\lambda - 1$) of -0.44 [-0.52; -0.35] and -0.03 [-0.06; 0.00] in the UK and France respectively, Figure \@ref(fig:R2).  
+Average population growth rates were estimated over the period of available count data with a consistent harvest pressure. Average population growth rates ($\lambda$) are estimated to 0.56 [0.48; 0.65] and 0.97 [0.94; 1.00] for the UK and France respectively, which corresponds to an average annual growth proportion ($\lambda - 1$) of -0.44 [-0.52; -0.35] and -0.03 [-0.06; 0.00] in the UK and France respectively 
 
 comprised between 0 and 1 like adult survival by definition, meaning similar weight to build population growth. Far higher in France than in UK, to be related to the growth rates differences (-44% vs -3%)
 
@@ -241,16 +237,13 @@ quite stable when harvest rate is limited (France 2000), but is lower and noisie
 
 Depletion is clear on the counting time series intervals (- 44% on average per year) compared to the not significant decrease in France over the time interval with harvest (-3% per year on average).
 
-```{r R2, fig.cap = "(ref:R2cap)"}
-knitr::include_graphics("../Output/plot_6.png")
+```{r srts, fig.cap = "(ref:srts)"}
+knitr::include_graphics("../Output/plot_5.png")
 ```
 
 As described before, recruitement rate over the studied time period is far lower for the UK than France (2.5 factor). 
 Underlined adult survival are comprised between 0 and 1, whatever the method. So we cannot conclude if one can be rejected. 
 
-```{r R3, fig.cap = "(ref:R3cap)"}
-knitr::include_graphics("../Output/plot_7.png")
-```
 
 whereas adult survival more consistent between the tow (.5 factor), meaning there was more variability in recruitment rate than in survival rate. growth rate difference is thus more explained by recruitment rate fluctuation than adult survival fluctuation, consistent with the demographic buffering, or canalization hypothesis [@Gaillard2003; @Lenzi2021] 
 
@@ -260,14 +253,14 @@ survival values compared to litterature? s
 
 Maximum growth rate are similar for both populations (+45%), which supports the consistency of the species. After a certain threshold, the growth rate falls to 6% per year even though no harvest pressure was applied on it, maybe density dependent effects. 
 
-```{r R4, fig.cap = "(ref:R4cap)"}
-knitr::include_graphics("../Output/plot_8.png")
+```{r mgr, fig.cap = "(ref:mgr)"}
+knitr::include_graphics("../Output/plot_6.png")
 ```
 
 Upon the conservative assumption of adult survival of .85, maximum recruitment rate reach .45 recruits per breeder. For both populations and methods, values remains below this maximum recruitment rate. This demonstrates that methods provide no inconsistent recruitment rate values, which is quite satisfying and cannot reject the methods.  
 
-```{r R5, fig.cap = "(ref:R5cap)"}
-knitr::include_graphics("../Output/plot_9.png")
+```{r grcomp, fig.cap = "(ref:grcomp)"}
+knitr::include_graphics("../Output/plot_7.png")
 ```
 
 If counting method acceptable, moderate harvest pressure does not reduce the recruitment rate as expected, maybe due to density dependend mortality for juvenile but it affects it if strong harvest rate. That is very interesting bro but warning,  these interpretation holds on weak estimations and adult survival equal to 1!!! 
@@ -315,7 +308,6 @@ blabla
 
 Taper des jeunes c'est pas forcément très utile car density dependence
 
-
 If the maximum recruitment rate is not reached under optimal conditions (maximum population size not reached, and limited harvest pressure), it is a signal that one should explore the intermediate life stages before recruitment to provide a diagnostic on the changes of the environment conditions that have affected the recruitment rate. 
 
 Condition of application to other species. 
@@ -334,29 +326,24 @@ This work was partly funded by the LIFE Oxyura project (LIFE17 NAT/FR/000942) th
 
 # Supplement
 
-```{r S1, fig.cap = "(ref:S1cap)"}
-knitr::include_graphics("../Output/plot_10.png")
+```{r sup, fig.cap = "(ref:sup)"}
+knitr::include_graphics("../Output/plot_8.png")
 ```
 
+(ref:flock) Typical observation of a ruddy duck flock in winter: 4 male-like individuals with a white cheek and a black cap, 10 female-like individuals with a whitish cheek and a dark stripe across it, 3 unidentified individuals © Jay McGowan - 3 February 2013 - Tompkins, New York, United States
 
-(ref:MM1cap) Typical observation of a ruddy duck flock in winter: 4 male-like individuals with a white cheek and a black cap, 10 female-like individuals with a whitish cheek and a dark stripe across it, 3 unidentified individuals © Jay McGowan - 3 February 2013 - Tompkins, New York, United States
+(ref:pmal) Apparent male proportion in winter counts vs male proportion in samples; for the first category, one point corresponds to the proportion of male-like plumage in a population counted in winter; for the second category, the male proportion is estimated from all ruddy ducks sampled over one year
 
-(ref:MM2cap) Apparent male proportion in winter counts vs male proportion in samples; for the first category, one point corresponds to the proportion of male-like plumage in a population counted in winter; for the second category, the male proportion is estimated from all ruddy ducks sampled over one year
+(ref:count) Evolution of the size of the two ruddy duck populations in light of the harvest pressure and the data time series
 
-(ref:MM3cap) Evolution of the size of the two ruddy duck populations in light of the harvest pressure and the data time series
+(ref:grts) Evolution of the size of the two ruddy duck populations in light of the harvest pressure; on time periods without harvest, maximum population growth rates can be estimated (slopes in red for the UK and in blue for France)
 
-(ref:MM4cap) Evolution of the size of the two ruddy duck populations in light of the harvest pressure; on time periods with data time series, population growth rates can be estimated (slopes in red for the UK and in blue for France)
+(ref:rrts) (A) Estimates of recruitment rate, i.e. average number of recruits produced per breeder; (B) Comparison of the recruitment rate values between the two estimation methods; bars define the 95% confidence intervals
 
-(ref:MM5cap) Evolution of the size of the two ruddy duck populations in light of the harvest pressure; on time periods without harvest, maximum population growth rates can be estimated (slopes in red for the UK and in blue for France)
+(ref:srts) (A) Estimates of adult survival rate using population growth rates; (B) Comparison of the survival rate values between the two estimation methods; bars define the 95% confidence intervals
 
-(ref:R1cap) (A) Estimates of recruitment rate, i.e. average number of recruits produced per breeder; (B) Comparison of the recruitment rate values between the two estimation methods; bars define the 95% confidence intervals
+(ref:mgr) (A) Estimates of the maximum population growth rate without harvest; two estimates were produced for the UK population because the growth rate dropped significantly when its size reached more than 1000 individuals; (B) Growth rate estimates; bars define the 95% confidence intervals
 
-(ref:R2cap) (A) Estimates of the population growth rate on time intervals with data availability. This aims at producing survival estimates to discuss the reliability of the methods to estimate recruitment rate; (B) Growth rate estimates; bars define the 95% confidence intervals
-
-(ref:R3cap) (A) Average recruitment rate estimates on the time intervals defined for survival analysis; (B) Average survival estimates deduced from growth rate and recruitment rate estimates on the time intervals; bars define the 95% confidence intervals
-
-(ref:R4cap) (A) Estimates of the population growth rate without harvest; two estimates were produced for the UK population because the growth rate dropped significantly when its size reached more than 1000 individuals; (B) Growth rate estimates; bars define the 95% confidence intervals
-
-(ref:R5cap) Comparison between a proxy of maximum recruitment rate and the average recrutiment rate estimated following *counting* and *sampling* methods; the proxy is estimated during the maximum growth periods by combining the growth rate to the hypothesis of a 100% adult survival (*max growth*); this hypothesis implies that the true maximum of recruitment rate is likely higher; bars define the 95% confidence intervals
+(ref:grcomp) Comparison between proxies of maximum recruitment rate and average recruitment rates estimated with and without harvest (*counting* method only); proxies are estimated by using the maximum growth rates; bars define the 95% confidence intervals
 
 (ref:S1cap) (A1) Estimates of the proportion of the immature individuals in the wintering population; (B1) estimates of the number of recruits, i.e. the young adults reproducing for their first time; (A2) & (B2) comparison of the values between the two estimation methods; bars define the 95% confidence intervals
