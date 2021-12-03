@@ -469,7 +469,7 @@ JuvCode <- nimbleCode(
     # r estimation frow counts
     
     # priors
-     max_surv ~ dunif(.7, 1)
+     max_surv ~ dunif(.7, .9)
     
     for (r in 1:R_id_max) {
       
