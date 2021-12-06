@@ -110,17 +110,17 @@ Assuming the additive property of the binomial distribution, the proportion of i
 
 |Name|Class|Description|
 |:---|:----|:----------------------------|
-|$p(m|a)$|Parameter|Proportion of males in adults (or probability to be an adult male)|
 |$SAM$|Data|Total number of adult males in samples|
 |$SAF$|Data|Total number of adult females in samples|
+|$p(m|a)$|Parameter|Proportion of males in adults (or probability to be an adult male)|
 |$CAM_{i, t}$|Data|Cumulated number of type-male individuals counted in population $i$ in year $t$, which are assumed to be adult males|
+|$C_{i, t}$|Data|Cumulated number of individuals counted in population $i$ in year $t$|
 |$p(m \cap a)_{i, t}$|Parameter|Proportion of adult males in population $i$ in year $t$|
 |$p(a)_{i, t}$|Parameter|Proportion adults in population $i$ in year $t$|
 |$p(i)_{i, t}$|Parameter|Proportion of immatures in population $i$ in year $t$|
-|$C_{i, t}$|Data|Cumulated number of individuals counted in population $i$ in year $t$|
-|$R_{i, t}$|Parameter|Number of recruits in population $i$ in year $t$|
 |$N_{i, t}$|Data|Proxy of the size of the breeding population $i$ in year $t$ (maximum number of individuals counted in the wintering population minus removals before reproduction)|
 |$r_{i, t}$|Parameter|Recruitment rate, i.e. number of recruits in population $i$ in year $t$ per breeder in year $t - 1$|
+|$R_{i, t}$|Parameter|Number of recruits in population $i$ in year $t$|
 
 \begin{equation}
 p(m|a) \sim {\sf Beta}(SAM, SAF)
@@ -202,73 +202,85 @@ Inconsistency on recruitment rate output, which is defined on $[0;\infty]$, woul
 
 ### Comparison to a proxy of maximum recruitment rate
 
-When population growth is not limited by a harvest pressure and/or by density-dependent effects, both recruitment rate and adult survival are close to their maximum potential. Given a conservative assumption on the maximum adult survival of ruddy ducks and maximum population growth rate estimated during no harvest time period, one can provide a proxy of the maximum recruitment rate. If the recruitment rate outputs of the model are significantly superior to this proxy, it means that the method overestimates the recruitment rate, which means that some adult males are not detected during count surveys. By spliting the recruitment rate outputs upon harvest category and country, one can discuss of the impact of the harvest on the recruitment rate.  
+When population growth is not limited by a harvest pressure and/or by density-dependent effects, both recruitment rate and adult survival are close to their maximum potential. Given a conservative assumption on the maximum adult survival of ruddy ducks and maximum population growth rate estimated during no harvest time period, one can provide a proxy of the maximum recruitment rate. If the recruitment rate outputs of the model are significantly superior to this proxy, it means that the method overestimates the recruitment rate, which may reflect that some adult males are not detected during count surveys. By splitting the recruitment rate outputs upon population and harvest category, one can discuss of the impact of the harvest on the recruitment rate.  
 
-To do so, one estimates maximum population growth rates over time periods observing no harvest using Equation \@ref(eq:L). After reaching the threshold of 1000 individuals, the UK population growth observed a strong inflexion whereas no harvest pressure was applied. This observation led to split the analysis into two time series, see Figure \@ref(fig:grts) for the time periods used in the maximum growth rate inference. To get proxies of maximum recruitment rate, one uses a very conservative prior on the adult survival by setting a uniform distribution on $[0.7;0.9]$ [the lower limit corresponds to the upper range of survival rates observed in literature for species of similar weight, @Nichols1997; @Krementz1997; @Buxton2004]. 
+To do so, one estimates maximum population growth rates over time periods observing no harvest using Equation \@ref(eq:L). Since the estimate of the UK population size is noisy below 500 individuals, one rejected data before 1972 (Figure \@ref(fig:grts)). After reaching the threshold of 1000 individuals, the UK population growth observed a strong inflexion whereas no harvest pressure was applied. This observation led to split the analysis into two time series for the time periods used in the maximum growth rate inference in UK (Figure \@ref(fig:grts)). 
 
 ```{r grts, fig.cap = "(ref:grts)"}
 knitr::include_graphics("../Output/plot_3.png")
 ```
 
-For all the sub-models in Section \@ref(MM), the Bayesian framework was used for its efficiency and simplicity to propagate error through the parameters. One generated three chains of length 500000, with a thinning of 10 to avoid autocorrelation in the samples, and one discarded the first 2000 samples as burn-in. Chain convergence was assessed using the Gelman and Rubin convergence diagnostic (R<1.1, @Gelman1992). One fit the models using NIMBLE [@Valpine2017] run from R [@RCT2020]. Data and code are available here: https://github.com/adri-tab/Ruddy_duck_recruitment_rate. The values *X [min; max]* reported in results are means and the associated 95% confidence interval.
+To get proxies of maximum recruitment rate from Equation \@ref(eq:GR), one uses a very conservative prior on the adult survival by setting a uniform distribution on $[0.7;0.9]$ [the lower limit corresponds to the upper range of survival rates observed in literature for species of similar weight, the upper limit corresponds to the range of survival rates of long-life species, @Nichols1997; @Krementz1997; @Buxton2004]. The average recruitment rates from the count data are estimated for each population and for each harvest category and compared to the maximum recruitment rates. 
+
+For all the sub-models in Section \@ref(MM), the Bayesian framework was used for its efficiency and simplicity to propagate error through the parameters. One generated three chains of length 500000, with a thinning of 10 to avoid autocorrelation in the samples, and one discarded the first 2000 samples as burn-in. Chain convergence was assessed using the Gelman and Rubin convergence diagnostic (R<1.1, @Gelman1992). One fit the models using NIMBLE [@Valpine2017] run from R [@RCT2020]. Data and code are available here: https://github.com/adri-tab/Ruddy_duck_recruitment_rate. The values *X[Y; Z]* reported in results are the medians and the associated boundaries of the 95% confidence interval of posterior distributions. The median was preferred to the mean because of its robustness to skewed distribution. 
 
 # Results
 
 ## Recruitment rate variability
 
-The adult male proportion, which is necessary to infer on the recruitment rate from count data, is estimated at 0.60 [0.59; 0.61]. The counting method provides estimations of the recruitment rate, Figure \@ref(fig:rrts)A. In UK, values vary from 0.06 [0.05; 0.07] to 0.27 [0.20; 0.34] recruits per breeder, and in France, 0.08 [0.04; 0.12] to 0.76 [0.64; 0.88] recruits per breeder. There are significant year-to-year variations with a maximum amplitude of 0.70 recruits per breeder (12-time variability). Recruitment rates are estimated in both populations over 5 years, and no correlation is observed between the two populations.
+The adult male proportion, which is necessary to infer on the recruitment rate from count data, is estimated at 0.60 [0.59; 0.61]. The counting method provides estimations of the recruitment rate, see Figure \@ref(fig:rrts)A. In UK, values vary from 0.06 [0.05; 0.07] to 0.27 [0.20; 0.34] recruits per breeder, and in France, 0.08 [0.04; 0.12] to 0.76 [0.64; 0.88] recruits per breeder. There are significant year-to-year variations with a maximum amplitude of 0.68 recruits per breeder in France (9.5-time variability). On the available period, recruitment rate in UK is smaller than in France. Recruitment rates are estimated in both populations over 5 years, and no correlation is observed between the two populations. The lowest recruitment rate observed in France, which is in 2019, corresponds to the start of the depletion of the population. It is noticeable that it is in the same range than the UK values, also estimated during a strong population depletion.
 
-Recruitment rates estimated from UK sample data are consistently higher than estimates from the corresponding count data, Figure \@ref(fig:rrts)A. The correlation between the two methods is strong and points out that the sampling method overestimates the recruitment rate by 44% compared to the counting method, Figure \@ref(fig:rrts)B. The precision of the two methods is in the same range.
-
+Recruitment rates estimated from UK sample data are consistently higher than estimates from the corresponding count data, Figure \@ref(fig:rrts)A. The correlation between the two methods is strong and points out that the sampling method overestimates the recruitment rate by 44% compared to the counting method, Figure \@ref(fig:rrts)B. Estimation precision is similar for the two methods. The UK population started to deplete from 2006, but no significant shift is observed between the two periods. 
+ 
 ```{r rrts, fig.cap = "(ref:rrts)"}
 knitr::include_graphics("../Output/plot_4.png")
 ```
 
-## Consistency of the adult survival
+## Consistency of the corresponding adult survival
 
-Adult surival rates were deduced from the recruitment rate estimates and the observed population growth rates, Figure \@ref(fig:srts). In UK, values that are obtained from the counting method ranged from 0.21 [0.20; 0.22] to 0.68 [0.65; 0.72]. In France, survival rates vary from 0.39 [0.34; 0.44] to 1.08 [0.98; 1.17]. Like recruitment rates, there is is significant year-to-year variability in both populations with a maximum amplitude of 0.69 (2.8-time vairability). 
+Adult survival rates were deduced from the recruitment rate estimates and the observed population growth rates, see Figure \@ref(fig:srts)A. In UK, values that are obtained from the counting method ranged from 0.21 [0.20; 0.22] to 0.68 [0.65; 0.72]. In France, survival rates vary from 0.39 [0.34; 0.44] to 1.08 [0.98; 1.17]. Like recruitment rates, there is significant year-to-year variability without clear temporal structure in both populations with a maximum amplitude of 0.69 in France (2.8-time variability). Unlike the recruitment rate, the survival rate in 2019 in France is not a low outlier.
 
-No trend in France
-
-Average population growth rates were estimated over the period of available count data with a consistent harvest pressure. Average population growth rates ($\lambda$) are estimated to 0.56 [0.48; 0.65] and 0.97 [0.94; 1.00] for the UK and France respectively, which corresponds to an average annual growth proportion ($\lambda - 1$) of -0.44 [-0.52; -0.35] and -0.03 [-0.06; 0.00] in the UK and France respectively 
-
-comprised between 0 and 1 like adult survival by definition, meaning similar weight to build population growth. Far higher in France than in UK, to be related to the growth rates differences (-44% vs -3%)
-
-Higher on average in the early years in France when (almost) no harvest pressure (1999- 2004) but large interannual fluctuations without clear temporal trends,but small temporal correlation, especially in UK. 
-
-quite stable when harvest rate is limited (France 2000), but is lower and noisier when harvest rate is huge and the population depleted.
-
-Depletion is clear on the counting time series intervals (- 44% on average per year) compared to the not significant decrease in France over the time interval with harvest (-3% per year on average).
+As expected, survival rates estimated from UK sample data are consistently lower than estimates from the corresponding count data, Figure \@ref(fig:srts)A. The correlation between the two methods points out that the sampling method underestimates the survival rate by 32% compared to the counting method, Figure \@ref(fig:srts)B. Estimation precision is similar for the two methods. The sample time series shows that the adult survival is significantly lower after 2006, which corresponds to the start of the depletion of the UK population.
 
 ```{r srts, fig.cap = "(ref:srts)"}
 knitr::include_graphics("../Output/plot_5.png")
 ```
 
-As described before, recruitment rate over the studied time period is far lower for the UK than France (2.5 factor). 
-Underlined adult survival are comprised between 0 and 1, whatever the method. So we cannot conclude if one can be rejected. 
-
-
-whereas adult survival more consistent between the tow (.5 factor), meaning there was more variability in recruitment rate than in survival rate. growth rate difference is thus more explained by recruitment rate fluctuation than adult survival fluctuation, consistent with the demographic buffering, or canalization hypothesis [@Gaillard2003; @Lenzi2021] 
-
-survival values compared to literature? s
-
 ## Comparison to a proxy of maximum recruitment rate
 
-Maximum growth rate are similar for both populations (+45%), which supports the consistency of the species. After a certain threshold, the growth rate falls to 6% per year even though no harvest pressure was applied on it, maybe density dependent effects. 
+Maximum population growth rates are similar for the two populations, 1.45[1.36; 1.55] and 1.47[1.29; 1.68] for UK and France respectively, which corresponds to an increase of about 45% per year (Figure \@ref(fig:mgr)). After reaching a certain size (~ 1000 individuals), the UK population growth rate falls to 1.06[1.04; 1.07], which corresponds to an increase of 6% per year, even though no harvest pressure was applied on it. 
 
 ```{r mgr, fig.cap = "(ref:mgr)"}
 knitr::include_graphics("../Output/plot_6.png")
 ```
 
-Upon the conservative assumption of adult survival of .85, maximum recruitment rate reach .45 recruits per breeder. For both populations and methods, values remains below this maximum recruitment rate. This demonstrates that methods provide no inconsistent recruitment rate values, which is quite satisfying and cannot reject the methods.  
+Upon the conservative assumption of a maximum adult survival uniformly distributed over 0.70 to 0.90, the maximum recruitment rate reaches 0.65[0.51; 0.75] and 0.66[0.45; 0.90] recruits per breeder for UK and France respectively (Figure \@ref(fig:grcomp)). When there is no harvest, the estimated average recruitment rate of the French population is in the range of the proxy of the maximum recruitment rate, 0.51[0.46; 0.57] recruits per breeder.
+When there is harvest, the average recruitment rates are 0.14[0.12; 0.16] and 0.33[0.31; 0.36] recruits per breeder for the UK and France respectively. Both values are significantly lower than the maximum recruitment rate, and it is noticeable that average recruitment rate is lower for the UK population, which is in depletion over the count time series, than for the French population, which of the dynamic is mostly stable over the monitored period. 
 
 ```{r grcomp, fig.cap = "(ref:grcomp)"}
 knitr::include_graphics("../Output/plot_7.png")
 ```
 
+# Discussion
+
+Count data differentiating adult males from other individuals in waterfowl are successfully used in this study to provide an estimation of recruitment rates. 
+
+*facts*
+
+This demonstrates that methods provide no inconsistent recruitment rate values, which is quite satisfying and cannot reject the methods.  
+
+# reparler des notions en introduction
+rajouter en intro cette notion.
+a same value of age ratio can correspond to different fecundity levels, so warning. 
+a same value of age ratio for a population in depletion and a population stabilized are not similary productive, the first one is less productive than the second one ! 
+so warning, focus on recruitment rate and not on age ratio if the dynamics of the population varies! recruitment proportion is commonly used in to discuss the fecundity of a population, but unlike the recruitment rate, this indicator does not consider the dynamics of the population and does reflect fecundity only on stable growth period
+
 If counting method acceptable, moderate harvest pressure does not reduce the recruitment rate as expected, maybe due to density dependent mortality for juvenile but it affects it if strong harvest rate. That is very interesting bro but warning,  these interpretation holds on weak estimations and adult survival equal to 1!!! 
 
-# Discussion
+
+
+the consistency between the two max growth rate strenghtens that seems to be a biological limit for this species, at least in the western Palearctic. 
+
+As described before, recruitment rate over the studied time period is far lower for the UK than France (2.5 factor). 
+Underlined adult survival are comprised between 0 and 1, whatever the method. So we cannot conclude if one can be rejected. 
+
+France affected the recruitment, UK affected adult survival for a similar result -> depletion
+
+whereas adult survival more consistent between the tow (.5 factor), meaning there was more variability in recruitment rate than in survival rate. growth rate difference is thus more explained by recruitment rate fluctuation than adult survival fluctuation, consistent with the demographic buffering, or canalization hypothesis [@Gaillard2003; @Lenzi2021] 
+
+survival values compared to literature? s
+
+Abundance index are considered exact, which should not be true. and lead to structural error in the estimates of annual growth rate.  
 
 @Arnold2018 underlines the lack of data on recruitment rate for modellers (in discussion) and that new methods are required to track this variable that often drive the population growth rate
 
@@ -315,6 +327,8 @@ If the maximum recruitment rate is not reached under optimal conditions (maximum
 
 Condition of application to other species. 
 
+Message de l'article
+
 # Aknowledgements {-}
 
 This work was partly funded by the LIFE Oxyura project (LIFE17 NAT/FR/000942) through the LIFE program. This work was carried on with the impulse of Jean-François Maillard, and Jean-Baptiste Mouronval from the *Office Français de la Biodiversité*, and Jean-Marc Gillier from the *Société Nationale pour la Protection de la Nature*. The authors aknowledge all the contributors of the data collection in the UK and in France, especially: **UK names**, Vincent Fontaine, Denis Lacourpaille, Jules Joly, Justin Potier, Valentin Boniface, Alexis Laroche, and Médéric Lortion, **other names**.    
@@ -345,7 +359,7 @@ knitr::include_graphics("../Output/plot_8.png")
 
 (ref:srts) (A) Estimates of adult survival rate using population growth rates; (B) Comparison of the survival rate values between the two estimation methods; bars define the 95% confidence intervals
 
-(ref:mgr) (A) Estimates of the maximum population growth rate without harvest; two estimates were produced for the UK population because the growth rate dropped significantly when its size reached more than 1000 individuals; (B) Growth rate estimates; bars define the 95% confidence intervals
+(ref:mgr) (A) Estimates of the maximum population growth without harvest $(\lambda - 1)$; two estimates were produced for the UK population because the growth rate dropped significantly when its size reached more than 1000 individuals; (B) Growth rate estimates; bars define the 95% confidence intervals
 
 (ref:grcomp) Comparison between proxies of maximum recruitment rate and average recruitment rates estimated with and without harvest (*counting* method only); proxies are estimated by using the maximum growth rates; bars define the 95% confidence intervals
 
