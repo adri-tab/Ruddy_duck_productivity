@@ -21,7 +21,8 @@ theme_set(theme_bw())
 
 tibble(id = 1:20) %>% 
   ggplot(aes(x = 1, y = id, color = factor(id))) +
-  geom_point(size = 10) + scale_y_continuous(aes(breaks = id)) -> p; p
+  geom_point(size = 10) + 
+  scale_y_continuous(aes(breaks = id)) -> p; p
 
 ggplot_build(p)$data
 
