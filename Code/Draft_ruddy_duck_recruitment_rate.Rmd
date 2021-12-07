@@ -11,11 +11,14 @@ author:
 # - Sébastien Reeber^[Société Nationale pour la Protection de la Nature, France - sebastien.reeber@snpn.fr - contribution in data collection]
 # - Matthieu Guillemain^[Office Français de la Biodiversité, France -  matthieu.guillemain@ofb.gouv.fr - contribution in writing]
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-# abstract: "The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key indicator to describe the renewal of a population, and therefore an essential tool in population management. The recruitment rate, defined inhere as the number of recruits produced per breeder, is even more informative because it is independent of the breeding population size and allows comparisons over time and between species. The proportion of young adult in a waterfowl population, which is a main step in estimating the recruitment rate, is often estimated from game-hunting samples. However, this proportion is not accessible in years without harvest, or with a low harvest rate. Moreover, the age-structure in the harvest samples does not necessarily reflect the underlying age-structure of the population. It is often skewed towards immatures and can lead to an overestimation of the recruitment rate. In waterfowl, adult males usually display brighter colours than females and immatures from both sexes. This dichromatism can be characterized and monitored from count surveys, a non-invasive method. Such information can be used to infer the proportion of immatures, and consequently the recruitment rate. In using two populations of ruddy duck, *Oxyura oxyura*, this study introduces a model to estimate the recruitment rate from count data. To test the accuracy of the method, the results are compared to recruitment rate estimates from samples, and their consistency to support the observed population growth rates is also tested. The results suggest that the counting method is a versatile tool to estimate the recruitment rate if the species is monitored during the appropriate time window. Authors argue for considering a two-category count protocol in winter surveys of waterfowl species for which adult males can be differentiated from other individuals. \\par \\textbf{Keywords:} fecundity - productivity - reproductive success - age ratio - juvenile - duck"
+abstract: | 
+  The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key indicator to describe the renewal of a population, and therefore an essential tool in population management. The recruitment rate, defined inhere as the number of recruits produced per breeder, is even more informative because it is independent of the breeding population size and allows comparisons over time and between species. The proportion of young adult in a waterfowl population, which is a main step in estimating the recruitment rate, is often estimated from game-hunting samples. However, this proportion is not accessible in years without harvest, or with a low harvest rate. Moreover, the age-structure in the harvest samples does not necessarily reflect the underlying age-structure of the population. It is often skewed towards immatures and can lead to an overestimation of the recruitment rate. In waterfowl, adult males usually display brighter colours than females and immatures from both sexes. This dichromatism can be characterized and monitored from count surveys, a non-invasive method. Such information can be used to infer the proportion of immatures, and consequently the recruitment rate. In using two populations of ruddy duck, *Oxyura oxyura*, this study introduces a model to estimate the recruitment rate from count data. To test the accuracy of the method, the results are compared to recruitment rate estimates from samples, and their consistency to support the observed population growth rates is also tested. The results suggest that the counting method is a versatile tool to estimate the recruitment rate if the species is monitored during the appropriate time window. Authors argue for considering a two-category count protocol in winter surveys of waterfowl species for which adult males can be differentiated from other individuals.
+  
+  **Keywords**: fecundity - productivity - reproductive success - age ratio - juvenile - duck
 output: 
-  bookdown::pdf_document2:
-    latex_engine: xelatex
+    bookdown::pdf_document2:
     toc: false
+    latex_engine: xelatex
 header-includes:
   \usepackage{float}
 ---
@@ -31,12 +34,6 @@ knitr::opts_chunk$set(echo = FALSE,
 Sys.setlocale("LC_ALL", "English")
 
 ```
-
-# Abstract {-}
-
-The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key indicator to describe the renewal of a population, and therefore an essential tool in population management. The recruitment rate, defined inhere as the number of recruits produced per breeder, is even more informative because it is independent of the breeding population size and allows comparisons over time and between species. The proportion of young adult in a waterfowl population, which is a main step in estimating the recruitment rate, is often estimated from game-hunting samples. However, this proportion is not accessible in years without harvest, or with a low harvest rate. Moreover, the age-structure in the harvest samples does not necessarily reflect the underlying age-structure of the population. It is often skewed towards immatures and can lead to an overestimation of the recruitment rate. In waterfowl, adult males usually display brighter colours than females and immatures from both sexes. This dichromatism can be characterized and monitored from count surveys, a non-invasive method. Such information can be used to infer the proportion of immatures, and consequently the recruitment rate. In using two populations of ruddy duck, *Oxyura oxyura*, this study introduces a model to estimate the recruitment rate from count data. To test the accuracy of the method, the results are compared to recruitment rate estimates from samples, and their consistency to support the observed population growth rates is also tested. The results suggest that the counting method is a versatile tool to estimate the recruitment rate if the species is monitored during the appropriate time window. Authors argue for considering a two-category count protocol in winter surveys of waterfowl species for which adult males can be differentiated from other individuals.
-
-**Keywords**: fecundity - productivity - reproductive success - age ratio - juvenile - duck
 
 \newpage
 
@@ -258,15 +255,17 @@ knitr::include_graphics("../Output/plot_7.png")
 
 # Discussion
 
-Count data differentiating adult males from other individuals in waterfowl are successfully used in this study to provide an estimation of recruitment rates. 
+Count data differentiating adult males from other individuals in waterfowl are successfully used in this study to provide estimations of recruitment rates. 
 
-## facts
+# Accuracy of the recruitment rate
+
+As expected, always lower than samples. Variability consistent to the samples as well, but slightly enhanced compared to the raw immature proportion \@ref(fig:sup)
 
 This demonstrates that methods provide no inconsistent recruitment rate values, which is quite satisfying and cannot reject the methods. 
 
 ## reparler des notions en introduction
 
-figure 8 -> One said that recruitment rate can increase if harvest because of heterogenity and density dependence, but it is not what we observe in France, likely because the exploitation is high inhere and consequently impact. 
+figure 8 -> One said that recruitment rate can increase if harvest because of heterogeneity and density dependence, but it is not what we observe in France, likely because the exploitation is high inhere and consequently impact. 
 
 obviously, harvest impact the pre
 
