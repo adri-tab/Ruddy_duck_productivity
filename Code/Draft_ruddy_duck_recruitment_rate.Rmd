@@ -1,6 +1,6 @@
 ---
 lang: en-EN
-bibliography: C:/Users/Adrien/Dropbox/JabRef/Library_OFB.bib
+bibliography: C:/Users/adrien.tableau/Dropbox/JabRef/Library_OFB.bib
 csl: https://www.zotero.org/styles/apa
 link-citations: true
 title: "Recruitment rate estimation in waterfowl using a non-invasive method"
@@ -23,7 +23,6 @@ output:
       toc: false
 header-includes:
   \usepackage{float}
-  
 ---
 
 ```{r setup, include=FALSE}
@@ -260,33 +259,62 @@ knitr::include_graphics("../Output/plot_7.png")
 
 Count data differentiating adult males from other individuals in waterfowl are successfully used in this study to provide estimations of recruitment rates. 
 
-# Accuracy of the counting method
+## Accuracy of the counting method
 
-As expected, countalways lower than samples. Variability consistent to the samples as well, but slightly enhanced compared to the raw immature proportion \@ref(fig:sup)
+*comparison to sample estimation*
+
+As expected, count always lower than samples. Variability consistent to the samples as well, but slightly enhanced compared to the raw immature proportion \@ref(fig:sup)
 
 This demonstrates that methods provide no inconsistent recruitment rate values, which is quite satisfying and cannot reject the methods. 
 
-A significant change in adult sex ratio would bias the estimation of recruitment rate. Since this measure integrates many bird cohorts, especially if it is a long-living species, updates on this ratio are not necessary on a year based 
+A significant change in adult sex ratio would bias the estimation of recruitment rate. However, since this ratio integrates many age-cohorts, the temporal autocorrelation is structurally strong. Significant variations can then occur only every multiple years, especially if it is a long-living species. Consequently, it is not necessary to monitor and update the adult sex ratio on a yearly base.   
 
-# 
+*survival consistency*
 
-# Impact of harvest on recruitment rate
+survival in the range of the expected values -> so no apparent issue of scaling issue, 
+so we the hypothesis that male-like individuals corresponds only to adult male is validated.
+
+*average recruitment rate compared to a proxy of maximum recruitment rate*
+
+always below the maximum recruitment rate so satisfying. 
+
+overall, even if we don't have access to the true value of the recruitment rate to test the accuracy of the counting method, a beam of arguments support that the method is not heavily biased, unlike the sampling method, as demonstrated in @Fox2014, even if one considers a picture limited to the end of the hunting season [@Fox2016].
+
+## Impact of harvest
+
+Survival higher than one but warning, observation error, so annual population growth rate might be inaccurate on some years. Also, we assumed a closed population, but it is possible that years with adult survival higher than one corresponds to an arrival of birds from the other population. As a consequence, the recruitment rate on these years may also be overestimated. 
+
+No impact on the adult survival in France, but it seems that there is an impact in UK.
+Why, because harvest occurs mostly in summer in France, and in winter in UK.
+
+Impact on the recruitment rate in France, and no impact in UK.
 
 
+Overall, the harvest seems to impact differently France and UK, likely because the harvest mortality occurs mostly in summer in France, and in winter in UK. 
 
-## reparler des notions en introduction
+But caution, a population model linking the harvest rate to state variables describing the population is necessary to check precisely the impact of the harvest pressure, and test hypothesis on the functioning of harvest mortality.
 
-figure 8 -> One said that recruitment rate can increase if harvest because of heterogeneity and density dependence, but it is not what we observe in France, likely because the exploitation is high inhere and consequently impact. 
+Recruitment rate decrease with the harvest for the French population, and the UK population recruitment rate is also below the French one. 
+it seems quite clear that the harvest affects the recruitment rate. 
 
-obviously, harvest impact the pre
+*reference to introduction*
 
+It is quite consistent with the assumption in introduction. Since studied populations are in colonization of their habitat, maximum densities are not reached, and then no or limited density dependent effect occur. 
 
-rajouter en intro cette notion.
+If counting method acceptable, moderate harvest pressure does not reduce the recruitment rate as expected, maybe due to density dependent mortality for juvenile but it affects it if strong harvest rate. That is very interesting bro but warning, these interpretation holds on weak estimations and adult survival equal to 1!!!
+
+it may be possible that first sight of density dependence occur in UK from 1000 individuals, but was not big enough to fully curb the population growth. Since there is a strong correlation between the number of birds observed and the number of sites occupied by the birds, this inflexion may be simply due to a limited number of new favourable sites to be colonized.
+
+What about heterogeneity, figure 8 -> One said that recruitment rate can increase if harvest because of heterogeneity and density dependence, but it is not what we observe in France, likely because the exploitation is high inhere and consequently impact. 
+
+## Use of recruitment rate
+
+*better than sex ratio*
 a same value of age ratio can correspond to different fecundity levels, so warning. 
 a same value of age ratio for a population in depletion and a population stabilized are not similary productive, the first one is less productive than the second one ! 
 so warning, focus on recruitment rate and not on age ratio if the dynamics of the population varies! recruitment proportion is commonly used in to discuss the fecundity of a population, but unlike the recruitment rate, this indicator does not consider the dynamics of the population and does reflect fecundity only on stable growth period
 
-If counting method acceptable, moderate harvest pressure does not reduce the recruitment rate as expected, maybe due to density dependent mortality for juvenile but it affects it if strong harvest rate. That is very interesting bro but warning, these interpretation holds on weak estimations and adult survival equal to 1!!! 
+ 
 
 
 
@@ -350,9 +378,9 @@ Condition of application to other species.
 
 Message de l'article
 
-# Aknowledgements {-}
+# Acknowledgments {-}
 
-This work was partly funded by the LIFE Oxyura project (LIFE17 NAT/FR/000942) through the LIFE program. This work was carried on with the impulse of Jean-François Maillard, and Jean-Baptiste Mouronval from the *Office Français de la Biodiversité*, and Jean-Marc Gillier from the *Société Nationale pour la Protection de la Nature*. The authors aknowledge all the contributors of the data collection in the UK and in France, especially: **UK names**, Vincent Fontaine, Denis Lacourpaille, Jules Joly, Justin Potier, Valentin Boniface, Alexis Laroche, and Médéric Lortion, **other names**.
+This work was partly funded by the LIFE Oxyura project (LIFE17 NAT/FR/000942) through the LIFE program. This work was carried on with the impulse of Jean-François Maillard, and Jean-Baptiste Mouronval from the *Office Français de la Biodiversité*, and Jean-Marc Gillier from the *Société Nationale pour la Protection de la Nature*. The authors acknowledge all the contributors of the data collection in the UK and in France, especially: **UK names**, Vincent Fontaine, Denis Lacourpaille, Justin Potier, Alexis Laroche, Médéric Lortion, Jules Joly, and Valentin Boniface.
 
 # References {-}
 
