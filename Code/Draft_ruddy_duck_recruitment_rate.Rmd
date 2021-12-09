@@ -1,26 +1,29 @@
 ---
 lang: en-EN
-bibliography: C:/Users/adrien.tableau/Dropbox/JabRef/Library_OFB.bib
+bibliography: C:/Users/Adrien/Dropbox/JabRef/Library_OFB.bib
 csl: https://www.zotero.org/styles/apa
 link-citations: true
 title: "Recruitment rate estimation in waterfowl using a non-invasive method"
 author: 
 - Adrien Tableau^[Office Français de la Biodiversité, France - adrien.tableau@ofb.gouv.fr]
-# - Alain Caizergues^[Office Français de la Biodiversité, France - alain.caizergues@ofb.gouv.fr - contribution in writing]
-# - Iain Henderson^[Animal and Plant Health Agency, United Kingdom - iain.henderson@apha.gov.uk - contribution in data collection]
-# - Sébastien Reeber^[Société Nationale pour la Protection de la Nature, France - sebastien.reeber@snpn.fr - contribution in data collection]
-# - Matthieu Guillemain^[Office Français de la Biodiversité, France -  matthieu.guillemain@ofb.gouv.fr - contribution in writing]
+# - Alain Caizergues^[Office Français de la Biodiversité, France - alain.caizergues@ofb.gouv.fr]
+- Iain Henderson^[Animal and Plant Health Agency, United Kingdom - iain.henderson@apha.gov.uk]
+- Sébastien Reeber^[Société Nationale pour la Protection de la Nature, France - sebastien.reeber@snpn.fr]
+# - Matthieu Guillemain^[Office Français de la Biodiversité, France -  matthieu.guillemain@ofb.gouv.fr]
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-abstract: | 
-  The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key indicator to describe the renewal of a population, and therefore an essential tool in population management. The recruitment rate, defined inhere as the number of recruits produced per breeder, is even more informative because it is independent of the breeding population size and allows comparisons over time and between species. The proportion of young adult in a waterfowl population, which is a main step in estimating the recruitment rate, is often estimated from game-hunting samples. However, this proportion is not accessible in years without harvest, or with a low harvest rate. Moreover, the age-structure in the harvest samples does not necessarily reflect the underlying age-structure of the population. It is often skewed towards immatures and can lead to an overestimation of the recruitment rate. In waterfowl, adult males usually display brighter colours than females and immatures from both sexes. This dichromatism can be characterized and monitored from count surveys, a non-invasive method. Such information can be used to infer the proportion of immatures, and consequently the recruitment rate. In using two populations of ruddy duck, *Oxyura oxyura*, this study introduces a model to estimate the recruitment rate from count data. To test the accuracy of the method, the results are compared to recruitment rate estimates from samples, and their consistency to support the observed population growth rates is also tested. The results suggest that the counting method is a versatile tool to estimate the recruitment rate if the species is monitored during the appropriate time window. Authors argue for considering a two-category count protocol in winter surveys of waterfowl species for which adult males can be differentiated from other individuals.
+abstract: |
+  The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key indicator to describe the renewal of a population, and therefore an essential tool in population management. The recruitment rate, defined inhere as the number of recruits produced per breeder, is even more informative because it is independent of the breeding population size and allows comparisons over time and between species. The proportion of young adult in a waterfowl population, which is a main step in estimating the recruitment rate, is often estimated from game-hunting samples. However, this proportion is not accessible in years without harvest, or with a low harvest rate. Moreover, the age-structure in the harvest samples does not necessarily reflect the underlying age-structure of the population. It is often skewed towards immatures and can lead to an overestimation of the recruitment rate. In waterfowl, adult males usually display brighter colours than females and immatures from both sexes. This dichromatism can be characterized and monitored from count surveys, a non-invasive method. Such information can be used to infer the proportion of immatures, and consequently the recruitment rate. In using two populations of ruddy duck, *Oxyura oxyura*, this study introduces a model to estimate the recruitment rate from count data. To test the accuracy of the method, the results are compared to recruitment rate estimates from samples, and their consistency to support the observed population growth rates is also tested. The results suggest that the counting method is a versatile tool to estimate the recruitment rate if the species is monitored during the appropriate time window. Authors argue for considering a two-category count protocol in winter surveys of waterfowl species for which adult males can be differentiated from other individuals.   
   
   **Keywords**: fecundity - productivity - reproductive success - age ratio - juvenile - duck
 output: 
     bookdown::pdf_document2:
-    toc: false
-    latex_engine: xelatex
+      latex_engine: xelatex
+      toc: false
+    bookdown::word_document2:
+      toc: false
 header-includes:
   \usepackage{float}
+  
 ---
 
 ```{r setup, include=FALSE}
@@ -47,7 +50,7 @@ The recruitment rate parameter is complex because it is composed of two main sub
 
 *The use of recruitment rate in population management*
 
-Population conservation, harvesting, and control require tools in population management in order to reach quantitative targets, such as a population size for example [@Shea1998]. To do so, a first "blind" strategy is to test iteratively management rules to reach progressively an optimum. Such approach can be time-consuming given the intrinsic variability of the population response to its changing environment. It might also suffer from a rejection of the stakeholders because of the lack of transparency of an arbitrary process [@Williams2013]. Another approach is to try to predict the growth rate of the population as a function of the harvest rate and other environment inputs. Such modelling approach can provide clues on the recovering time of a population upon a variety of management rules [@Otis2006]. These decision-support tools are then key inputs to status on the best management rules to implement. The growth rate of a population depends on the adult survival and the recruitment rate, see Equation \@ref(eq:GR) in Section \@ref(PGR). The adult survival is generally estimated by mark recapture/recovery methods [@Lebreton2001]. If the harvest pressure behaves as an additive mortality to the natural mortality for adults [e.g. @Iverson2013], it is quite straightforward to predict its impact on the adult survival. 
+Population conservation, harvesting, and control require tools in population management in order to reach quantitative targets, such as a population size for example [@Shea1998; @Johnson2021]. To do so, a first "blind" strategy is to test iteratively management rules to reach progressively an optimum. Such approach can be time-consuming given the intrinsic variability of the population response to its changing environment. It might also suffer from a rejection of the stakeholders because of the lack of transparency of an arbitrary process [@Williams2013]. Another approach is to try to predict the growth rate of the population as a function of the harvest rate and other environment inputs. Such modelling approach can provide clues on the recovering time of a population upon a variety of management rules [@Otis2006]. These decision-support tools are then key inputs to status on the best management rules to implement. The growth rate of a population depends on the adult survival and the recruitment rate, see Equation \@ref(eq:GR) in Section \@ref(PGR). The adult survival is generally estimated by mark recapture/recovery methods [@Lebreton2001]. If the harvest pressure behaves as an additive mortality to the natural mortality for adults [e.g. @Iverson2013], it is quite straightforward to predict its impact on the adult survival. 
 
 According to @Blums2004, the recruitment for diving ducks is poorly related to fecundity, but depends mostly on juvenile survival, which is driven by weather conditions. Studies on other birds concludes also on the weak correlation between fecundity and recruitment [e.g. @Murray2000]. The difficulty to track juvenile survival [@Schmidt2008] demonstrates the interest to focus on the recruitment rate when accessible. The key to predict the growth rate of a population is then to estimate the value of the recruitment rate and its variability, potentially influenced by the harvest pressure [@Anders2005]. 
 
@@ -247,7 +250,7 @@ Maximum population growth rates are similar for the two populations, 1.45 [1.36;
 knitr::include_graphics("../Output/plot_6.png")
 ```
 
-Upon the conservative assumption of a maximum adult survival uniformly distributed over 0.70 to 0.90, the maximum recruitment rate reaches 0.65 [0.51; 0.75] and 0.66 [0.45; 0.90] recruits per breeder for UK and France respectively (Figure \@ref(fig:grcomp)). When there is no harvest, the estimated average recruitment rate of the French population is in the range of the proxy of the maximum recruitment rate, 0.51 [0.46; 0.57] recruits per breeder. When there is harvest, the average recruitment rates are 0.14 [0.12; 0.16] and 0.33 [0.31; 0.36] recruits per breeder for the UK and France respectively. Both values are significantly lower than the maximum recruitment rate, and it is noticeable that average recruitment rate is lower for the UK population, which is in depletion over the count time series, than for the French population, which of the dynamic is mostly stable over the monitored period. 
+Upon the conservative assumption of a maximum adult survival uniformly distributed over 0.70 to 0.90, the maximum recruitment rate reaches 0.65 [0.51; 0.75] and 0.66 [0.45; 0.90] recruits per breeder for UK and France respectively (Figure \@ref(fig:grcomp)). When there is no harvest, the estimated average recruitment rate of the French population is in the range of the proxy of the maximum recruitment rate, 0.51 [0.46; 0.57] recruits per breeder. When there is harvest, the average recruitment rates are 0.14 [0.12; 0.16] and 0.33 [0.31; 0.36] recruits per breeder for the UK and France respectively. Both values are significantly lower than the maximum recruitment rate, and it is noticeable that the average recruitment rate is lower for the UK population, which is in depletion over the count time series, than for the French population, which of the dynamic is mostly stable over the monitored period. 
 
 ```{r grcomp, fig.cap = "(ref:grcomp)"}
 knitr::include_graphics("../Output/plot_7.png")
@@ -257,11 +260,19 @@ knitr::include_graphics("../Output/plot_7.png")
 
 Count data differentiating adult males from other individuals in waterfowl are successfully used in this study to provide estimations of recruitment rates. 
 
-# Accuracy of the recruitment rate
+# Accuracy of the counting method
 
-As expected, always lower than samples. Variability consistent to the samples as well, but slightly enhanced compared to the raw immature proportion \@ref(fig:sup)
+As expected, countalways lower than samples. Variability consistent to the samples as well, but slightly enhanced compared to the raw immature proportion \@ref(fig:sup)
 
 This demonstrates that methods provide no inconsistent recruitment rate values, which is quite satisfying and cannot reject the methods. 
+
+A significant change in adult sex ratio would bias the estimation of recruitment rate. Since this measure integrates many bird cohorts, especially if it is a long-living species, updates on this ratio are not necessary on a year based 
+
+# 
+
+# Impact of harvest on recruitment rate
+
+
 
 ## reparler des notions en introduction
 
