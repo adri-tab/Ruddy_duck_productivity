@@ -120,7 +120,7 @@ Assuming the additive property of the binomial distribution, the proportion of i
 |$p(m|a)$|Parameter|Proportion of males in adults (or probability to be an adult male)|
 |$CAM_{i, t}$|Data|Cumulated number of type-male individuals counted in population $i$ in year $t$, which are assumed to be adult males|
 |$C_{i, t}$|Data|Cumulated number of individuals counted in population $i$ in year $t$|
-|$p(m \cap a)_{i, t}$|Parameter|Proportion of adult males in population $i$ in year $t$|
+|$p(a \cap m)_{i, t}$|Parameter|Proportion of adult males in population $i$ in year $t$|
 |$p(a)_{i, t}$|Parameter|Proportion adults in population $i$ in year $t$|
 |$p(i)_{i, t}$|Parameter|Proportion of immatures in population $i$ in year $t$|
 |$N_{i, t}$|Data|Proxy of the size of the breeding population $i$ in year $t$ (maximum number of individuals counted in the wintering population minus removals before reproduction)|
@@ -133,7 +133,7 @@ p(m|a) \sim {\sf Beta}(SAM, SAF)
 \end{equation}
 
 \begin{align}
-CAM_{i, t} & \sim {\sf Binom}(p(m \cap a)_{i, t}, C_{i, t}) \notag \\
+CAM_{i, t} & \sim {\sf Binom}(p(a \cap m)_{i, t}, C_{i, t}) \notag \\
 & \sim {\sf Binom}(p(m|a).p(a)_{i, t}, C_{i, t}) \notag \\
 & \sim {\sf Binom}(p(m|a).(1 - p(i)_{i, t}), C_{i, t})
 (\#eq:pic)
