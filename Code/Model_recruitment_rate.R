@@ -467,7 +467,7 @@ JuvCode <- nimbleCode(
       
     }
     
-    # r estimation frow counts
+    # r estimation from counts
     
     # priors
      max_surv ~ dunif(.7, .9)

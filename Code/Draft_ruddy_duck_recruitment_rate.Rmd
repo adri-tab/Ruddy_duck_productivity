@@ -261,9 +261,9 @@ Count data in waterfowl that differentiate adult males from other individuals ar
 
 ## Accuracy of the counting method
 
-The recruitment rates from the counting method are in the same range for the two populations. The higher variability observed in France is not unexpected because the French time series is longer than in UK and corresponds to a larger harvest spectrum. There is no temporal correlation between the two populations, so it suggests that the recruitment rate is more likely influenced by regional-scale factors than large-scale ones. This is consistent with the literature because **[ref required]** shows that nesting success and hatching success are conditional to water levels, and that juvenile survival in waterfowl depends mostly on weather conditions [@Blums2004].
+The recruitment rates from the counting method are in the same range for the two populations. The higher variability observed in France is not unexpected because the French time series is longer and covers a larger harvest spectrum than in UK. There is no temporal correlation between the two populations, so it suggests that the recruitment rate is more likely influenced by regional-scale factors than large-scale ones. This is consistent with the literature because both nesting/hatching success and juvenile survival are conditional to the onset of lay, which is tightly related to local weather parameters, i.e. the spring temperature, the cumulative rainfall, and the water levels [@Folliot2017; @Blums2004; @Dzus1998].
 
-Assuming that the sample data provide a good picture of the interannual variability of the recruitment rate, the good correlation to the outputs of the counting method demonstrates its ability to track the recruitment rate variability. This result is quite robust because the correlation is obvious with only five years available. However, this conclusion might be overrated because two successive population size values are part of the recruitment rate, which mechanically scale the outputs. It explains why the correlation on the immature proportion, the other component of the recruitment rate, is a bit less obvious than for the recruitment rate (Figure \@ref(fig:sup)A).
+Assuming that the sample data provide a good picture of the interannual variability of the recruitment rate, the good correlation to the outputs of the counting method demonstrates its ability to track the recruitment rate variability. This result is quite robust because the correlation is obvious with only a five-year time series. However, this conclusion might be overrated because two successive population size values are part of the recruitment rate, which mechanically scale the outputs. It explains why the correlation on the immature proportion, the other component of the recruitment rate, is a bit more noisy than for the recruitment rate (Figure \@ref(fig:sup)A).
 
 A significant change in adult sex ratio would bias the estimation of recruitment rate. However, since this ratio integrates many age-cohorts, the temporal autocorrelation is structurally strong. Significant variations can then occur only every multiple years, especially if it is a long-living species. Consequently, it is not necessary to monitor and update the adult sex ratio on a yearly base.  
 
@@ -285,7 +285,7 @@ overall, even if we don't have access to the true value of the recruitment rate 
 
 ## Influence of harvest on the recruitment rate
 
-
+Variability within harvest category represents  
 
 ## Implication in waterfowl management
 
