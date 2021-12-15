@@ -377,7 +377,7 @@ ds %>%
              aes(x = year, y = n_pop, color = sub_pop)) +
   scale_x_date_own(1e-2)
 
-# Data formatting function ----------------------------------------------------------
+# Data formatting functions ---------------------------------------------------------
 
 dis <- function(fil = NA, gp = NA, col = NA, size = FALSE) {
   fil = enquo(fil)
@@ -683,6 +683,32 @@ lambda_ds %>%
          lambda = exp(r_avg)) %>% 
   ungroup() -> lambda_ds_2
 
+JuvOut4 %>% 
+  filter(par == "productivity", method == "counting") %>% 
+  mutate(gp = if_else(year(year) %in% c(1999, 2002:2004) & pop == "FR", 
+                      "no_harvest", "harvest")) %>% 
+  group_by(pop, gp) %>% 
+  mutate(mean = mean(`50%`)) %>% 
+  ungroup() %>% 
+  mutate(res = `50%` - mean) %>% 
+  group_by(pop) %>% 
+  mutate(var_tot = var(`50%`),
+         var_res = var(res), 
+         prop_var = (var_tot - var_res) / var_tot)
+
+JuvOut4 %>% 
+  filter(par == "survival", method == "counting") %>% 
+  mutate(gp = if_else(year(year) %in% c(1999, 2002:2004) & pop == "FR", 
+                      "no_harvest", "harvest")) %>% 
+  group_by(pop, gp) %>% 
+  mutate(mean = mean(`50%`)) %>% 
+  ungroup() %>% 
+  mutate(res = `50%` - mean) %>% 
+  group_by(pop) %>% 
+  mutate(var_tot = var(`50%`),
+         var_res = var(res), 
+         prop_var = (var_tot - var_res) / var_tot)
+
 # Output plot -----------------------------------------------------------------------
 
 raw_plot(p_juv, title = "Proportion of recruits in the population", 
@@ -799,7 +825,7 @@ JuvOut4 %>%
   scale_y_continuous(
     limits = c(0, 1),
     breaks = 0:10 / 10) +
-  labs(x = NULL, y = "recruitment rate") -> prod_max_plot; prod_max_plot
+  labs(x = NULL, y = "average recruitment rate") -> prod_max_plot; prod_max_plot
 
 # Plots for article ------------------------------------------------------------------
 
@@ -1001,4 +1027,3 @@ list(plo, c(1:length(plo)), plo_dim) %>%
                  ..1, 
                  width = ..3[1], 
                  height = ..3[2], dpi = 600))
-

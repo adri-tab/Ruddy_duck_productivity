@@ -10,7 +10,7 @@ author:
 - Iain Henderson^[Animal and Plant Health Agency, United Kingdom - iain.henderson@apha.gov.uk]
 - Sébastien Reeber^[Société Nationale pour la Protection de la Nature, France - sebastien.reeber@snpn.fr]
 # - Matthieu Guillemain^[Office Français de la Biodiversité, France -  matthieu.guillemain@ofb.gouv.fr]
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+date: "15 décembre, 2021"
 abstract: |
   The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key indicator to describe the renewal of a population, and therefore an essential tool in population management. The recruitment rate, defined inhere as the number of recruits produced per breeder, is even more informative because it is independent of the breeding population size and allows comparisons over time and between species. The proportion of young adult in a waterfowl population, which is a main step in estimating the recruitment rate, is often estimated from game-hunting samples. However, this proportion is not accessible in years without harvest, or with a low harvest rate. Moreover, the age-structure in the harvest samples does not necessarily reflect the underlying age-structure of the population. It is often skewed towards immatures and can lead to an overestimation of the recruitment rate. In waterfowl, adult males usually display brighter colours than females and immatures from both sexes. This dichromatism can be characterized and monitored from count surveys, a non-invasive method. Such information can be used to infer the proportion of immatures, and consequently the recruitment rate. In using two populations of ruddy duck, *Oxyura oxyura*, this study introduces a model to estimate the recruitment rate from count data. To test the accuracy of the method, the results are compared to recruitment rate estimates from samples, and their consistency to support the observed population growth rates is also tested. The results suggest that the counting method is a versatile tool to estimate the recruitment rate if the species is monitored during the appropriate time window. Authors argue for considering a two-category count protocol in winter surveys of waterfowl species for which adult males can be differentiated from other individuals.   
   
@@ -25,17 +25,7 @@ header-includes:
   \usepackage{float}
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, 
-                      warning = FALSE, 
-                      message = FALSE, 
-                      out.width = "100%", 
-                      fig.align = "center",
-                      fig.pos = 'H') # hold position / require package "float"
 
-Sys.setlocale("LC_ALL", "English")
-
-```
 
 \newpage
 
@@ -89,21 +79,36 @@ The ruddy duck is a diving duck species introduced in the United Kingdom in the 
 
 Just before the reproduction period, one can distinguish from shore individuals with male-like plumage from female-like individuals on wintering spots (Figure \@ref(fig:flock)). It is noticeable that the apparent proportion of males in the counts from shore is far below the proportion of males in the samples from hunting bags (Figure \@ref(fig:pmal)). 
 
-```{r flock, fig.cap = "(ref:flock)"}
-knitr::include_graphics("../Output/flock.png")
-```
+\begin{figure}[H]
 
-```{r pmal, fig.cap = "(ref:pmal)"}
-knitr::include_graphics("../Output/plot_1_saved.png")
-```
+{\centering \includegraphics[width=1\linewidth]{../Output/flock} 
+
+}
+
+\caption{(ref:flock)}(\#fig:flock)
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{../Output/plot_1_saved} 
+
+}
+
+\caption{(ref:pmal)}(\#fig:pmal)
+\end{figure}
 
 Assuming sex identification of samples is very accurate, such observation demonstrates that the counting method misses the identification of a significant part of males in the population. In many waterfowl species, immature individuals of both sexes display cover-up plumage similar to adult females [@Reeber2015]. Consequently, the counts in winter allows adult males to be distinguished from all other individuals (adult females, immature females, and immature males). This feature can be valuable to estimate the recruitment with two conditions. The season when adult males can be distinguished from all other individuals is sufficiently close to the breeding period to consider the age structure picture of the population to be representative of the age structure of the breeding population. The adult sex ratio is known and stable over the considered time period. 
 
 The demography of both ruddy duck populations has been tracked thanks to exhaustive counts on the wintering spots during the period between December 1 and January 31. Controlled individuals between the counting date and the beginning of the reproduction period (set up to May 1 upon field observations) were subtracted from the winter count to get a proxy of the breeding population size. Time series show that the two populations follow similar demographic histories (Figure \@ref(fig:count)). They grew freely in both countries until 1999. Control measures have been then applied from 1999 to 2005 in the UK and from 1999 to 2018 in France. In both countries, these management measures led to stop the expansion of the ruddy ducks. From 2005 in the UK and from 2018 in France, higher control effort led to a rapid depletion in both populations. This history underlines that both populations observed a large spectrum of harvest effort, from no pressure to very high pressure. For sake of interpretation, the time period 2001-2004 was classified in the *no harvest* category in France because the harvest pressure applied over this period was very limited with no effect on the population growth.
 
-```{r count, fig.cap = "(ref:count)"}
-knitr::include_graphics("../Output/plot_2.png")
-```
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{../Output/plot_2} 
+
+}
+
+\caption{(ref:count)}(\#fig:count)
+\end{figure}
 
 The counting dataset, which differentiates the male-like from the female-like individuals in winter, covers 7 years and 19 years in UK and France respectively (Figure \@ref(fig:count)). Combined together, the counting datasets cover different population dynamics corresponding to a gradient of harvest pressure. In France, data before 2004 correspond to a period of population growth with (almost) no harvest pressure, whereas data in the following years correspond to a stabilized population size with a significant level of harvest pressure (Figure \@ref(fig:count)). In UK, the counting data correspond to a quick population depletion associated to a high level of harvest pressure, especially before the reproduction period. In parallel, the sampling dataset, which corresponds to individuals shot in winter during control operations, covers 9 years only in UK, with 5 years in common with the corresponding counting time series.
 
@@ -211,9 +216,14 @@ When population growth is not limited by a harvest pressure and/or by density-de
 
 To do so, one estimates maximum population growth rates over time periods observing no harvest using Equation \@ref(eq:L). Since the estimate of the UK population size is noisy below 500 individuals, one rejected data before 1972 (Figure \@ref(fig:grts)). After reaching the threshold of 1000 individuals, the UK population growth observed a strong inflexion whereas no harvest pressure was applied. This observation led to split the analysis into two time series for the time periods used in the maximum growth rate inference in UK (Figure \@ref(fig:grts)). 
 
-```{r grts, fig.cap = "(ref:grts)"}
-knitr::include_graphics("../Output/plot_3.png")
-```
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{../Output/plot_3} 
+
+}
+
+\caption{(ref:grts)}(\#fig:grts)
+\end{figure}
 
 To get proxies of maximum recruitment rate from Equation \@ref(eq:GR), one uses a very conservative prior on the adult survival by setting a uniform distribution on $[0.7; 0.9]$ [the lower limit corresponds to the upper range of survival rates observed in literature for species of similar weight, the upper limit corresponds to the range of survival rates of long-life species, @Nichols1997; @Krementz1997; @Buxton2004]. The average recruitment rates from the count data are estimated for each population and for each harvest category and compared to the maximum recruitment rates. 
 
@@ -227,9 +237,14 @@ The adult male proportion, which is necessary to infer on the recruitment rate f
 
 Recruitment rates estimated from UK sample data are consistently higher than estimates from the corresponding count data, Figure \@ref(fig:rrts)A. The correlation between the two methods is strong and points out that the sampling method overestimates the recruitment rate by 44% compared to the counting method, Figure \@ref(fig:rrts)B. Estimation precision is similar for the two methods. The UK population started to deplete from 2006, but no significant shift is observed between the two periods. 
  
-```{r rrts, fig.cap = "(ref:rrts)"}
-knitr::include_graphics("../Output/plot_4.png")
-```
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{../Output/plot_4} 
+
+}
+
+\caption{(ref:rrts)}(\#fig:rrts)
+\end{figure}
 
 ## Consistency of the corresponding adult survival
 
@@ -237,23 +252,38 @@ Adult survival rates were deduced from the recruitment rate estimates and the ob
 
 As expected, survival rates estimated from UK sample data are consistently lower than estimates from the corresponding count data, Figure \@ref(fig:srts)A. The correlation between the two methods points out that the sampling method underestimates the survival rate by 32% compared to the counting method, Figure \@ref(fig:srts)B. Estimation precision is similar for the two methods. The sample time series shows that the adult survival is significantly lower after 2006, which corresponds to the start of the depletion of the UK population.
 
-```{r srts, fig.cap = "(ref:srts)"}
-knitr::include_graphics("../Output/plot_5.png")
-```
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{../Output/plot_5} 
+
+}
+
+\caption{(ref:srts)}(\#fig:srts)
+\end{figure}
 
 ## Comparison to a proxy of maximum recruitment rate
 
 Maximum population growth rates are similar for the two populations, 1.45 [1.36; 1.55] and 1.47 [1.29; 1.68] for UK and France respectively, which corresponds to an increase of about 45% per year (Figure \@ref(fig:mgr)). After reaching a certain size (~ 1000 individuals), the UK population growth rate falls to 1.06 [1.04; 1.07], which corresponds to an increase of 6% per year, even though no harvest pressure was applied on it. 
 
-```{r mgr, fig.cap = "(ref:mgr)"}
-knitr::include_graphics("../Output/plot_6.png")
-```
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{../Output/plot_6} 
+
+}
+
+\caption{(ref:mgr)}(\#fig:mgr)
+\end{figure}
 
 Upon the conservative assumption of a maximum adult survival uniformly distributed over 0.70 to 0.90, the maximum recruitment rate reaches 0.65 [0.51; 0.75] and 0.66 [0.45; 0.90] recruits per breeder for UK and France respectively (Figure \@ref(fig:grcomp)). When there is no harvest, the estimated average recruitment rate of the French population is in the range of the proxy of the maximum recruitment rate, 0.51 [0.46; 0.57] recruits per breeder. When there is harvest, the average recruitment rates are 0.14 [0.12; 0.16] and 0.33 [0.31; 0.36] recruits per breeder for the UK and France respectively. Both values are significantly lower than the maximum recruitment rate, and it is noticeable that the average recruitment rate is lower for the UK population, which is in depletion over the count time series, than for the French population, which of the dynamic is mostly stable over the monitored period. 
 
-```{r grcomp, fig.cap = "(ref:grcomp)"}
-knitr::include_graphics("../Output/plot_7.png")
-```
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{../Output/plot_7} 
+
+}
+
+\caption{(ref:grcomp)}(\#fig:grcomp)
+\end{figure}
 
 # Discussion
 
@@ -396,9 +426,14 @@ This work was partly funded by the LIFE Oxyura project (LIFE17 NAT/FR/000942) th
 
 # Supplement
 
-```{r sup, fig.cap = "(ref:sup)"}
-knitr::include_graphics("../Output/plot_8.png")
-```
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{../Output/plot_8} 
+
+}
+
+\caption{(ref:sup)}(\#fig:sup)
+\end{figure}
 
 (ref:flock) Typical observation of a ruddy duck flock in winter: 4 male-like individuals with a white cheek and a black cap, 10 female-like individuals with a whitish cheek and a dark stripe across it, 3 unidentified individuals © Jay McGowan - 3 February 2013 - Tompkins, New York, United States
 
