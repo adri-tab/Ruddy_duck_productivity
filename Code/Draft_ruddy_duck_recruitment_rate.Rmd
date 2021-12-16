@@ -259,124 +259,91 @@ knitr::include_graphics("../Output/plot_7.png")
 
 Count data in waterfowl that differentiate adult males from other individuals are successfully used in this study to infer estimations of recruitment rates. In the following section, one checks the accuracy of the method from indicators developed for this purpose. From the outputs on the two populations of ruddy duck, one discusses about the effects of the harvest on the recruitment rate and its implication on waterfowl management.
 
+@Arnold2018 underlines the lack of data on recruitment rate for modellers and that new methods are required to track this variable that often drive the population growth rate
+
+Recruitment rate drives lambda? see @Arnold2018
+
 ## Accuracy of the counting method
 
 The recruitment rates from the counting method are in the same range for the two populations, which demonstrate a certain consistency in the results obtained from the method. The higher variability observed in France is not unexpected because the French time series is longer and covers a larger harvest spectrum than in UK. There is no temporal correlation between the two populations, so it suggests that the recruitment rate fluctuations are more likely influenced by regional-scale factors than large-scale ones. This is consistent with the literature because both nesting/hatching success and juvenile survival are conditional to the onset of lay, which is tightly related to local weather parameters, e.g. the spring temperature, the cumulative rainfall, and the water levels [@Folliot2017; @Blums2004; @Dzus1998].
 
-Assuming that the sample data provide a good picture of the interannual variability of the recruitment rate, the good correlation to the outputs of the counting method demonstrates the ability of this method to track the recruitment rate variability. This result is quite robust because the correlation is obvious with only a five-year time series. However, this conclusion might be overrated because two successive population size values are part of the recruitment rate, which mechanically scale the outputs. It explains why the correlation on the immature proportion, the other component of the recruitment rate, is a bit more noisy than for the recruitment rate (Figure \@ref(fig:sup)A). The uncertainty of the estimates is very close to the outputs from the sampling method. Even though the counting method is more indirect to infer on the recruitment rate, it performs to provide a good confidence of the outputs which is satisfying. A significant change in adult sex ratio would bias the evolution of the recruitment rate. However, since this ratio integrates many age-cohorts, the temporal autocorrelation is structurally strong. Significant variations can then occur only every multiple years, especially if it is a long-living species. Consequently, it is not necessary to monitor and update the adult sex ratio on a yearly base.  
-The counting method always provides recruitment rates significantly lower than the sampling method by factor close to 2 on average, a result that is in line with the hypothesis that the harvest is generally selective towards immature individuals in waterfowl because they are more vulnerable to hunters [@Bellrose1980; @Fox2014]. This is a robust result because the approaches used to control ruddy ducks differ strongly from usual hunting practices and are apriori less selective. It is especially clear in the UK, for which control operations occur in winter using long-range rifles that prevents the bird from escaping from the threat. The assumption on the accuracy of the counting method is then not excluded from the consistency of this result. 
+According to @Blums2004, the recruitment for diving ducks is not related to the fecundity, but depends mostly on the juvenile survival, which is driven by weather conditions. Studies on other birds also conclude of the poor correlation between fecundity and recruitment [e.g. @Murray2000]. 
 
-Annual adult survival rates deduced from observed population growth rates and recruitment estimates are on average in line with the literature **ref required**. which confirms that the counting method is poorly biased if there is some bias. 
+Assuming that the sample data provide a good picture of the interannual variability of the recruitment rate, the good correlation to the outputs of the counting method demonstrates the ability of this method to track the recruitment rate variability. This result is quite robust because the correlation is obvious with only a five-year time series. However, this conclusion might be overrated because two successive population size values are part of the recruitment rate, which mechanically scale the outputs. It explains why the correlation on the immature proportion, the other component of the recruitment rate, is a bit more noisy than for the recruitment rate (Figure \@ref(fig:sup)A). The uncertainty of the estimates is very close to the outputs from the sampling method. Even though the counting method is more indirect to infer on the recruitment rate, it performs to provide a good confidence of the outputs which is satisfying. A significant change in adult sex ratio would bias the evolution of the recruitment rate. However, since this ratio integrates many age-cohorts, the temporal autocorrelation is structurally strong. Significant variations can then occur only every multiple years, especially if it is a long-living species. Consequently, it is not necessary to monitor and update the adult sex ratio on a yearly base. adult sex ratio in line with other duck species [@Wood2021] 
 
-survival in the range of the expected values -> so no apparent issue of scaling issue, so we the hypothesis that male-like individuals corresponds only to adult male is validated. 
+The counting method always provides recruitment rates significantly lower than the sampling method by factor close to 2 on average, a result that is in line with the hypothesis that the harvest is generally selective towards immature individuals in waterfowl because they are more vulnerable than adults to hunters [@Bellrose1980; @Fox2014]. This is a robust result because the approach used to control ruddy ducks differ strongly from usual hunting practices and are apriori less selective. It is especially clear in the UK, for which control operations occur in winter using long-range rifles that prevents the bird from escaping from the threat. The assumption on the accuracy of the counting method is then not excluded from the consistency of this result. 
 
-*average recruitment rate compared to a proxy of maximum recruitment rate*
+Annual adult survival rates deduced from observed population growth rates and recruitment rate estimates are on average in line with the literature [@Nichols1997; @Krementz1997; @Buxton2004], which reflects that there is no apparent scaling issue. The hypothesis that male-like individuals corresponds only to adult males is then acceptable. This result supports that the counting method is poorly biased if there is some bias. However, some adult survival rate values are outside the range of expected values even if they never significantly exceed the maximum possible value of one. This may be due to an observation error of the growth rate that is not possible to assess in the population size estimations, or more likely to the corruption of the closed population hypothesis. Indeed, if there is an arrival from another ruddy duck population, the true recruitment cannot explain by itself the apparent population growth and indirectly leads to an overestimation of the adult survival.  
+ 
+Proxies of recruitment rate are very close for the two populations, which demonstrates that population parameters can be assessed even with small size populations. 
+The consistency between the two max growth rate strenghtens that seems to be a biological limit for this species, at least in the western Palearctic. 
 
-always below the maximum recruitment rate so satisfying. 
+The average recruitment rate estimated from the counting method, with or without harvest, are for both populations below the proxies of maximum recruitment rate. The assumption on the accuracy of the counting method is then not excluded from the consistency of this result.
 
-overall, even if we don't have access to the true value of the recruitment rate to test the accuracy of the counting method, a beam of arguments support that the method is not heavily biased, unlike the sampling method, as demonstrated in @Fox2014, even if one considers a picture limited to the end of the hunting season [@Fox2016].
+Overall, even if the true value of the recruitment rate is accessible to test the accuracy of the counting method, a beam of arguments support that the method is not heavily biased. This consists in a big difference with the sampling method as demonstrated in @Fox2014, even if one considers a picture limited to the end of the hunting season to limit the bias [@Fox2016].
+
+Survival higher than one but warning, observation error, so annual population growth rate might be inaccurate on some years. Also, we assumed a closed population, but it is possible that years with adult survival higher than one corresponds to an arrival of birds from the other population. As a consequence, the recruitment rate on these years may also be overestimated. Abundance index are considered exact, which should not be true. and lead to structural error in the estimates of annual growth rate.
+
+This time lag might be not a issue if the survival of immature is close to the adult survival between the two periods. winter count and breeding season
 
 ## Influence of harvest on the recruitment rate
 
 Variability within harvest category represents  
 
-## Implication in waterfowl management
-
-Survival higher than one but warning, observation error, so annual population growth rate might be inaccurate on some years. Also, we assumed a closed population, but it is possible that years with adult survival higher than one corresponds to an arrival of birds from the other population. As a consequence, the recruitment rate on these years may also be overestimated. 
-
-No impact on the adult survival in France, but it seems that there is an impact in UK.
-Why, because harvest occurs mostly in summer in France, and in winter in UK.
-
-The harvest pressure, simplified into a two-category variable, explains already 19.3% and 4.6% of the variance of the recruitment rate and the adult survival rate of the French population. The harvest pressure described as a continuous variable is expected to explain even more the recruitment rate variability. The harvest pressure applied in France is thus a factor that likely induces a strong immature mortality, but a moderate one on the adults. 
-
-
+The harvest pressure, simplified into a two-category variable, explains already 19.3% and 4.6% of the variance of the recruitment rate and the adult survival rate of the French population. The harvest pressure described as a continuous variable is expected to explain even more the recruitment rate variability. The harvest pressure applied in France is thus a factor that likely induces a strong immature mortality, but a moderate one on the adults. No impact on the adult survival in France, but it seems that there is an impact in UK. Why, because harvest occurs mostly in summer in France, and in winter in UK.
 
 Impact on the recruitment rate in France, and no impact in UK.
-
-
-Overall, the harvest seems to impact differently France and UK, likely because the harvest mortality occurs mostly in summer in France, and in winter in UK. 
-
-But caution, a population model linking the harvest rate to state variables describing the population is necessary to check precisely the impact of the harvest pressure, and test hypothesis on the functioning of harvest mortality.
-
 Recruitment rate decrease with the harvest for the French population, and the UK population recruitment rate is also below the French one. 
 it seems quite clear that the harvest affects the recruitment rate. 
 
-*reference to introduction*
-
-It is quite consistent with the assumption in introduction. Since studied populations are in colonization of their habitat, maximum densities are not reached, and then no or limited density dependent effect occur. 
-
-If counting method acceptable, moderate harvest pressure does not reduce the recruitment rate as expected, maybe due to density dependent mortality for juvenile but it affects it if strong harvest rate. That is very interesting bro but warning, these interpretation holds on weak estimations and adult survival equal to 1!!!
-
-it may be possible that first sight of density dependence occur in UK from 1000 individuals, but was not big enough to fully curb the population growth. Since there is a strong correlation between the number of birds observed and the number of sites occupied by the birds, this inflexion may be simply due to a limited number of new favourable sites to be colonized.
-
-What about heterogeneity, figure 8 -> One said that recruitment rate can increase if harvest because of heterogeneity and density dependence, but it is not what we observe in France, likely because the exploitation is high inhere and consequently impact. 
-
-## Use of recruitment rate
-
-*better than sex ratio*
-a same value of age ratio can correspond to different fecundity levels, so warning. 
-a same value of age ratio for a population in depletion and a population stabilized are not similary productive, the first one is less productive than the second one ! 
-so warning, focus on recruitment rate and not on age ratio if the dynamics of the population varies! recruitment proportion is commonly used in to discuss the fecundity of a population, but unlike the recruitment rate, this indicator does not consider the dynamics of the population and does reflect fecundity only on stable growth period
-
-the consistency between the two max growth rate strenghtens that seems to be a biological limit for this species, at least in the western Palearctic. 
-
-As described before, recruitment rate over the studied time period is far lower for the UK than France (2.5 factor). 
-Underlined adult survival are comprised between 0 and 1, whatever the method. So we cannot conclude if one can be rejected. 
+Overall, the harvest seems to impact differently France and UK, likely because the harvest mortality occurs mostly in summer in France, and in winter in UK. 
 
 France affected the recruitment, UK affected adult survival for a similar result -> depletion
 
-whereas adult survival more consistent between the tow (.5 factor), meaning there was more variability in recruitment rate than in survival rate. growth rate difference is thus more explained by recruitment rate fluctuation than adult survival fluctuation, consistent with the demographic buffering, or canalization hypothesis [@Gaillard2003; @Lenzi2021] 
-
-survival values compared to literature? s
-
-Abundance index are considered exact, which should not be true. and lead to structural error in the estimates of annual growth rate. 
-
-@Arnold2018 underlines the lack of data on recruitment rate for modellers (in discussion) and that new methods are required to track this variable that often drive the population growth rate
-
-Recruitment rate drives lambda? see @Arnold2018
-
- (only X years), meaning no large scale factor drive the fluctuations of productivity. 
-
-adult sex ratio in line with other duck species [@Wood2021]
-
-This time lag might be not a issue if the survival of immature is close to the adult survival between the two periods. winter count and breeding season
-
-According to @Blums2004, the recruitment for diving ducks is not related to the fecundity, but depends mostly on the juvenile survival, which is driven by weather conditions. Studies on other birds also conclude of the poor correlation between fecundity and recruitment [e.g. @Murray2000]. 
-
-No correlation between the two populations on recruitment rate, so maybe no large scale drivers of recruitment rate variability. 
-
-age proportion -> [0, 1]
-recruitment rate [0, +inf] donc plus sensitive
-
-recruitment rate the most sensitive parameter to density dependent effect [@Koons2014]
-
-Hypothesis of time invariant sex ratios in immature and adult: limits
-
 For hunted duck species in North America, the mortality rate on first-year immatures compared to adults is higher by a factor ranging from 1.4 to 2 (Bellrose 1980). 
+
+so more variability should be reflected in a difference of variability between the 2 parameters, but not true, how to make our result consistent with these observations?
+Huge harvest pressure, and adult are targetted, so compensation on adult survival. 
 
 recruitment rate: 
 Stabilité grosse pop, 
 variabilité petite pop. 
 
-Au dela du fait que la croissance de la pop est la somme de la survie et de la recruitment rate, 
-intéressant de parler de la variability de la survie vs variabilité de la recruitment rate 
-pour parler de risk management.
+## Implication in waterfowl management
+
+recruitment rate the most sensitive parameter to density dependent effect [@Koons2014]
+
+Population growth is equally influenced by adult survival and recruitment
+whereas adult survival more consistent between the tow (.5 factor), meaning there was more variability in recruitment rate than in survival rate. growth rate difference is thus more explained by recruitment rate fluctuation than adult survival fluctuation, consistent with the demographic buffering, or canalization hypothesis [@Gaillard2003; @Lenzi2021] 
+
+Au dela du fait que la croissance de la pop est la somme de la survie et de la recruitment rate, intéressant de parler de la variability de la survie vs variabilité de la recruitment rate pour parler de risk management.
+
+But caution, a population model linking the harvest rate to state variables describing the population is necessary to check precisely the impact of the harvest pressure, and test hypothesis on the functioning of harvest mortality.
+
+It is quite consistent with the assumption in introduction. Since studied populations are in colonization of their habitat, maximum densities are not reached, and then no or limited density dependent effect occur.
+
+it may be possible that first sight of density dependence occur in UK from 1000 individuals, but was not big enough to fully curb the population growth. Since there is a strong correlation between the number of birds observed and the number of sites occupied by the birds, this inflexion may be simply due to a limited number of new favourable sites to be colonized.
+
+If counting method acceptable, moderate harvest pressure does not reduce the recruitment rate as expected, maybe due to density dependent mortality for juvenile but it affects it if strong harvest rate. That is very interesting bro but warning, these interpretation holds on weak estimations and adult survival equal to 1!!!
+
+What about heterogeneity, figure 8 -> One said that recruitment rate can increase if harvest because of heterogeneity and density dependence, but it is not what we observe in France, likely because the exploitation is high inhere and consequently impact. 
+
+recruitment rate better than sex ratio: a same value of age ratio can correspond to different fecundity levels, so warning.  a same value of age ratio for a population in depletion and a population stabilized are not similary productive, the first one is less productive than the second one ! so warning, focus on recruitment rate and not on age ratio if the dynamics of the population varies! recruitment proportion is commonly used in to discuss the fecundity of a population, but unlike the recruitment rate, this indicator does not consider the dynamics of the population and does reflect fecundity only on stable growth period
+
+Taper des jeunes c'est pas forcément très utile car density dependence
 
 recruitment rate: drop from 2009
 
 one considers harvest as an impact only adult survival, not on age structure, but we should, oversimplistics
 
-blabla
-
-@Nichols2006 -> il faut compter de la façon dont on demande
-
-Taper des jeunes c'est pas forcément très utile car density dependence
-
 If the maximum recruitment rate is not reached under optimal conditions (maximum population size not reached, and limited harvest pressure), it is a signal that one should explore the intermediate life stages before recruitment to provide a diagnostic on the changes of the environment conditions that have affected the recruitment rate. 
 
 Condition of application to other species. 
 
+# Conclusion
+
 Message de l'article
+@Nichols2006 -> il faut compter de la façon dont on demande
 
 # Acknowledgments {-}
 
