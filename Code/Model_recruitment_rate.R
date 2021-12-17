@@ -954,7 +954,7 @@ grid.arrange(
 
 grid.arrange(
   grobs = list(raw_surv + 
-                 labs(title = "A", y = "survival rate") + 
+                 labs(title = "A", y = "adult survival rate") + 
                  theme(legend.position = "bottom"),
                cor_surv + labs(title = "B")),
   width = c(5, 3),

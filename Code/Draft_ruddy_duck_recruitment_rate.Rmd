@@ -1,6 +1,6 @@
 ---
 lang: en-EN
-bibliography: C:/Users/adrien.tableau/Dropbox/JabRef/Library_OFB.bib
+bibliography: "`r paste0('C:/Users/', Sys.info()[['user']], '/Dropbox/JabRef/Library_OFB.bib')`"
 csl: https://www.zotero.org/styles/apa
 link-citations: true
 title: "Recruitment rate estimation in waterfowl using a non-invasive method"
@@ -19,6 +19,8 @@ output:
     bookdown::pdf_document2:
       latex_engine: xelatex
       toc: false
+      keep_md: true
+      keep_tex: true
     bookdown::word_document2:
       toc: false
 header-includes:
@@ -43,9 +45,9 @@ Sys.setlocale("LC_ALL", "English")
 
 *Definitions*
 
-One defines the recruitment rate of a breeding population as the average number of recruits produced per each breeder [@Flint2015]. This parameter might sometimes be called *annual fertility* [@Koons2014], *fecundity* [@Arnold2018], *reproductive rate* [@Cooch2014], *reproductive success* [@Etterson2011], or *productivity* [@Johnson1987; @Hagen2008]. If one considers a species reaching its sexual maturity as early as its first year, all individuals are mature at the reproduction season. The recruitment rate is thus the ratio of the number of young adults at the reproduction season of year $t$, i.e. the recruits, to the number of all individuals at the reproduction season of the previous year, $t - 1$. The declination for species with delayed maturity follows the same process [see @Robertson2008].
+One defines the *recruitment rate* of a breeding population as the average number of recruits produced per each breeder [@Flint2015]. This parameter might sometimes be called *annual fertility* [@Koons2014], *reproductive rate* [@Cooch2014], *reproductive success* [@Etterson2011], or *productivity* [@Johnson1987; @Hagen2008]. If one considers a species reaching its sexual maturity as early as its first year, all individuals are mature at the reproduction season. The recruitment rate is thus the ratio of the number of young adults at the reproduction season of year $t$, i.e. the recruits, to the number of all individuals at the reproduction season of the previous year, $t - 1$. The declination for species with delayed maturity follows the same process [see @Robertson2008].
 
-The recruitment rate parameter is complex because it is composed of two main sub-parameters: the fecundity followed by the juvenile survival [@Etterson2011]. Both sub-parameters can be split into other sub-parameters. The fecundity can be defined by the product of the nesting success, the average clutch size, and the hatching success. The juvenile survival can be defined as the product of the post-hatching survival and the post-fledging survival, both critical life periods [@Hill2008; @Blums2004]. The recruitment rate as defined in the present study is thus a parameter integrating multiple life steps from the egg to the young adult attempting to breed for its first time [@Koons2017]. 
+The recruitment rate parameter is complex because it is composed of two main sub-parameters: the fecundity followed by the juvenile survival [@Etterson2011; @Arnold2018]. Both sub-parameters can be split into other sub-parameters. The fecundity can be defined by the product of the nesting success, the average clutch size, and the hatching success. The juvenile survival can be defined as the product of the post-hatching survival and the post-fledging survival, both critical life periods [@Hill2008; @Blums2004]. The recruitment rate as defined in the present study is thus a parameter integrating multiple life steps from the egg production to the young adult attempting to breed for its first time [@Koons2017]. 
 
 *The use of recruitment rate in population management*
 
@@ -217,7 +219,7 @@ knitr::include_graphics("../Output/plot_3.png")
 
 To get proxies of maximum recruitment rate from Equation \@ref(eq:GR), one uses a very conservative prior on the adult survival by setting a uniform distribution on $[0.7; 0.9]$ [the lower limit corresponds to the upper range of survival rates observed in literature for species of similar weight, the upper limit corresponds to the range of survival rates of long-life species, @Nichols1997; @Krementz1997; @Buxton2004]. The average recruitment rates from the count data are estimated for each population and for each harvest category and compared to the maximum recruitment rates. 
 
-For all the sub-models in Section \@ref(MM), the Bayesian framework was used for its efficiency and simplicity to propagate error through the parameters. One generated three chains of length 500000, with a thinning of 10 to avoid autocorrelation in the samples, and one discarded the first 2000 samples as burn-in. Chain convergence was assessed using the Gelman and Rubin convergence diagnostic (R<1.1, @Gelman1992). One fit the models using NIMBLE [@Valpine2017] run from R [@RCT2020]. Data and code are available here: https://github.com/adri-tab/Ruddy_duck_recruitment_rate. The values *X[Y; Z]* reported in results are the medians and the associated boundaries of the 95% confidence interval of posterior distributions. The median was preferred to the mean because of its robustness to skewed distribution. 
+For all the sub-models in Section \@ref(MM), the Bayesian framework was used for its efficiency and simplicity to propagate error through the parameters. One used only uninformative priors on all parameters. One generated three chains of length 500000, with a thinning of 10 to avoid autocorrelation in the samples, and one discarded the first 2000 samples as burn-in. Chain convergence was assessed using the Gelman and Rubin convergence diagnostic (R<1.1, @Gelman1992). One fit the models using NIMBLE [@Valpine2017] run from R [@RCT2020]. Data and code are available here: https://github.com/adri-tab/Ruddy_duck_recruitment_rate. The values **X[Y; Z]** reported in results are the medians and the associated boundaries of the 95% confidence interval of posterior distributions. The median was preferred to the mean because of its robustness to skewed distribution. 
 
 # Results
 
@@ -257,34 +259,21 @@ knitr::include_graphics("../Output/plot_7.png")
 
 # Discussion
 
-Count data in waterfowl that differentiate adult males from other individuals are successfully used in this study to infer estimations of recruitment rates. In the following section, one checks the accuracy of the method from indicators developed for this purpose. From the outputs on the two populations of ruddy duck, one discusses about the effects of the harvest on the recruitment rate and its implication on waterfowl management.
-
-@Arnold2018 underlines the lack of data on recruitment rate for modellers and that new methods are required to track this variable that often drive the population growth rate
-
-Recruitment rate drives lambda? see @Arnold2018
+Count data in waterfowl that differentiate adult males from other individuals are successfully used in this study to infer estimations of recruitment rates. Since this parameter usually explains mostly the population growth in waterfowl [e.g. @Arnold2018], the non-invasive method introduced in this study might be considered as a candidate tool to monitor at low cost waterfowl populations. In the following section, one checks the accuracy of the method from indicators that were developed for this purpose. From the outputs on the two populations of ruddy duck, one discusses about the effects of the harvest on the recruitment rate and its implications on waterfowl management.
 
 ## Accuracy of the counting method
 
 The recruitment rates from the counting method are in the same range for the two populations, which demonstrate a certain consistency in the results obtained from the method. The higher variability observed in France is not unexpected because the French time series is longer and covers a larger harvest spectrum than in UK. There is no temporal correlation between the two populations, so it suggests that the recruitment rate fluctuations are more likely influenced by regional-scale factors than large-scale ones. This is consistent with the literature because both nesting/hatching success and juvenile survival are conditional to the onset of lay, which is tightly related to local weather parameters, e.g. the spring temperature, the cumulative rainfall, and the water levels [@Folliot2017; @Blums2004; @Dzus1998].
 
-According to @Blums2004, the recruitment for diving ducks is not related to the fecundity, but depends mostly on the juvenile survival, which is driven by weather conditions. Studies on other birds also conclude of the poor correlation between fecundity and recruitment [e.g. @Murray2000]. 
-
-Assuming that the sample data provide a good picture of the interannual variability of the recruitment rate, the good correlation to the outputs of the counting method demonstrates the ability of this method to track the recruitment rate variability. This result is quite robust because the correlation is obvious with only a five-year time series. However, this conclusion might be overrated because two successive population size values are part of the recruitment rate, which mechanically scale the outputs. It explains why the correlation on the immature proportion, the other component of the recruitment rate, is a bit more noisy than for the recruitment rate (Figure \@ref(fig:sup)A). The uncertainty of the estimates is very close to the outputs from the sampling method. Even though the counting method is more indirect to infer on the recruitment rate, it performs to provide a good confidence of the outputs which is satisfying. A significant change in adult sex ratio would bias the evolution of the recruitment rate. However, since this ratio integrates many age-cohorts, the temporal autocorrelation is structurally strong. Significant variations can then occur only every multiple years, especially if it is a long-living species. Consequently, it is not necessary to monitor and update the adult sex ratio on a yearly base. adult sex ratio in line with other duck species [@Wood2021] 
+Assuming that the sample data provide a good picture of the interannual variability of the recruitment rate, the good correlation to the outputs of the counting method demonstrates the ability of this method to track the recruitment rate variability. This result is quite robust because the correlation is obvious with only a five-year time series. The assumption of a constant adult sex ratio over time is then acceptable. A significant change in adult sex ratio would indeed bias the evolution of the recruitment rate. However, since this ratio integrates many age-cohorts, the temporal autocorrelation is structurally strong. Significant variations can then occur only every multiple years, especially if the species is long-living. Consequently, it is not necessary to monitor and update the adult sex ratio on a yearly base, as done in this study (the average adult sex ratio found here is in line with other duck species [@Wood2021]). However, the robustness of the correlation between the two methods might be overrated because two successive population size values are part of the recruitment rate, which mechanically scale the outputs. It explains why the correlation on the immature proportion, the other component of the recruitment rate, is a bit more noisy than for the recruitment rate (Figure \@ref(fig:sup)A). The uncertainty around the estimates is similar for the two methods even though the counting method is more indirect to infer on the recruitment rate, which is satisfying. 
 
 The counting method always provides recruitment rates significantly lower than the sampling method by factor close to 2 on average, a result that is in line with the hypothesis that the harvest is generally selective towards immature individuals in waterfowl because they are more vulnerable than adults to hunters [@Bellrose1980; @Fox2014]. This is a robust result because the approach used to control ruddy ducks differ strongly from usual hunting practices and are apriori less selective. It is especially clear in the UK, for which control operations occur in winter using long-range rifles that prevents the bird from escaping from the threat. The assumption on the accuracy of the counting method is then not excluded from the consistency of this result. 
 
-Annual adult survival rates deduced from observed population growth rates and recruitment rate estimates are on average in line with the literature [@Nichols1997; @Krementz1997; @Buxton2004], which reflects that there is no apparent scaling issue. The hypothesis that male-like individuals corresponds only to adult males is then acceptable. This result supports that the counting method is poorly biased if there is some bias. However, some adult survival rate values are outside the range of expected values even if they never significantly exceed the maximum possible value of one. This may be due to an observation error of the growth rate that is not possible to assess in the population size estimations, or more likely to the corruption of the closed population hypothesis. Indeed, if there is an arrival from another ruddy duck population, the true recruitment cannot explain by itself the apparent population growth and indirectly leads to an overestimation of the adult survival.  
- 
-Proxies of recruitment rate are very close for the two populations, which demonstrates that population parameters can be assessed even with small size populations. 
-The consistency between the two max growth rate strenghtens that seems to be a biological limit for this species, at least in the western Palearctic. 
+Annual adult survival rates deduced from observed population growth rates and recruitment rate estimates are on average in line with the literature on species of similar weight [@Nichols1997; @Krementz1997; @Buxton2004], which reflects that there is no apparent scaling issue. The assumption that male-like individuals corresponds only to adult males is then acceptable. This result supports that the counting method is poorly biased if it is. However, some adult survival rate values are outside the range of expected values even if they never significantly exceed the maximum possible value of one. A likely reason to these extreme values is a corruption of the closed population assumption on some years. Indeed, if there is an arrival from another ruddy duck population, the true recruitment cannot explain by itself the apparent population growth and indirectly leads to an overestimation of the adult survival.  
 
-The average recruitment rate estimated from the counting method, with or without harvest, are for both populations below the proxies of maximum recruitment rate. The assumption on the accuracy of the counting method is then not excluded from the consistency of this result.
+Proxies of maximum recruitment rate are very close for the two populations. This strengthens that the ruddy duck species reached its intrinsic biological reproduction limit, at least given the environmental conditions of the western Palearctic. The consistency of this intermediate result suggests that the population size estimation is quite good for both populations and demonstrates that their evolution is well tracked even with a few individuals. The average recruitment rate estimated from the counting method, with or without harvest, are not different of significantly below the proxies of maximum recruitment rate for both populations. The assumption on the accuracy of the counting method is then again not excluded from the consistency of this result.
 
-Overall, even if the true value of the recruitment rate is accessible to test the accuracy of the counting method, a beam of arguments support that the method is not heavily biased. This consists in a big difference with the sampling method as demonstrated in @Fox2014, even if one considers a picture limited to the end of the hunting season to limit the bias [@Fox2016].
-
-Survival higher than one but warning, observation error, so annual population growth rate might be inaccurate on some years. Also, we assumed a closed population, but it is possible that years with adult survival higher than one corresponds to an arrival of birds from the other population. As a consequence, the recruitment rate on these years may also be overestimated. Abundance index are considered exact, which should not be true. and lead to structural error in the estimates of annual growth rate.
-
-This time lag might be not a issue if the survival of immature is close to the adult survival between the two periods. winter count and breeding season
+Overall, even if the true values of recruitment rates are not directly accessible to test the accuracy of the counting method, a beam of arguments support that the method is not heavily biased. This consists in a big difference with the sampling method as demonstrated in @Fox2014, even when one considers a picture limited to the end of the hunting season to limit the bias [@Fox2016].
 
 ## Influence of harvest on the recruitment rate
 
@@ -310,6 +299,10 @@ Stabilité grosse pop,
 variabilité petite pop. 
 
 ## Implication in waterfowl management
+
+Recruitment rate drives lambda [@Arnold2018]
+
+According to @Blums2004, the recruitment for diving ducks is not related to the fecundity, but depends mostly on the juvenile survival, the other component of the recruitment that is moslty driven by the weather conditions. Studies on other birds also conclude of the poor correlation between fecundity and recruitment [e.g. @Murray2000]. 
 
 recruitment rate the most sensitive parameter to density dependent effect [@Koons2014]
 
