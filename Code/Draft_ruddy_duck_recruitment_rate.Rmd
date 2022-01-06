@@ -6,11 +6,12 @@ link-citations: true
 title: "Recruitment rate estimation in waterfowl using a non-invasive method"
 author: 
 - Adrien Tableau^[Office Français de la Biodiversité, France - adrien.tableau@ofb.gouv.fr]
-# - Alain Caizergues^[Office Français de la Biodiversité, France - alain.caizergues@ofb.gouv.fr]
 - Iain Henderson^[Animal and Plant Health Agency, United Kingdom - iain.henderson@apha.gov.uk]
 - Sébastien Reeber^[Société Nationale pour la Protection de la Nature, France - sebastien.reeber@snpn.fr]
+# - Jean-François Maillard^[Office Français de la Biodiversité, France - jean-francois.maillard@ofb.gouv.fr]
 # - Matthieu Guillemain^[Office Français de la Biodiversité, France -  matthieu.guillemain@ofb.gouv.fr]
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+# - Alain Caizergues^[Office Français de la Biodiversité, France - alain.caizergues@ofb.gouv.fr]
+date: "`r Sys.setlocale('LC_TIME', 'English'); format(Sys.time(), '%d %B, %Y')`"
 abstract: |
   The response of a waterfowl population to a harvest pressure depends on its capacity to renew. The recruitment, i.e. the number of young adults reproducing for the first time, is a key indicator to describe the renewal of a population, and therefore an essential tool in population management. The recruitment rate, defined inhere as the number of recruits produced per breeder, is even more informative because it is independent of the breeding population size and allows comparisons over time and between species. The proportion of young adult in a waterfowl population, which is a main step in estimating the recruitment rate, is often estimated from game-hunting samples. However, this proportion is not accessible in years without harvest, or with a low harvest rate. Moreover, the age-structure in the harvest samples does not necessarily reflect the underlying age-structure of the population. It is often skewed towards immatures and can lead to an overestimation of the recruitment rate. In waterfowl, adult males usually display brighter colours than females and immatures from both sexes. This dichromatism can be characterized and monitored from count surveys, a non-invasive method. Such information can be used to infer the proportion of immatures, and consequently the recruitment rate. In using two populations of ruddy duck, *Oxyura oxyura*, this study introduces a model to estimate the recruitment rate from count data. To test the accuracy of the method, the results are compared to estimates of recruitment rate using samples. One also tests the conistency of the recruitment rates to support the observed population growth rates. The results suggest that the counting method is a versatile tool to estimate the recruitment rate if the species is monitored during the appropriate time window. Authors argue for considering a two-category count protocol in winter surveys of waterfowl species for which adult males can be differentiated from other individuals.   
   
@@ -24,7 +25,8 @@ output:
     bookdown::word_document2:
       toc: false
 header-includes:
-  \usepackage{float}
+  - \usepackage{float} # allows to hold figure position
+  - \usepackage[left]{lineno} # line numbering
 ---
 
 ```{r setup, include=FALSE}
@@ -40,6 +42,8 @@ Sys.setlocale("LC_ALL", "English")
 ```
 
 \newpage
+
+\linenumbers
 
 # Introduction
 
@@ -273,34 +277,33 @@ Overall, even if the true values of recruitment rates are not known to test the 
 
 ## Influence of harvest on the recruitment rate
 
-Only the French population was monitored over a period covering years without and with harvest. The harvest pressure, that is defined into a binary variable (no harvest / harvest), affects on average negatively both the recruitment rate and the adult survival for this population. If it explains only 4.6% of the variance of the adult survival, this value raises to 19.3% for the recruitment rate of the French population. The harvest pressure applied in France is thus a factor that likely induces a strong juvenile mortality that impacts the recruitment rate, but a negligible mortality on the adults. This conclusion is obviously opposed to the hypothesis that the heterogeneity in immature individuals would dampen the effect of the harvest pressure on the resulting recruitment rate. Two points can however explain this apparent discrepancy. Since the management targeted the eradication of this ruddy duck population, the harvest on immatures might be simply far higher than what the population could compensate and finally affects the recruitment rate. Also, the population started to be controlled when it was still growing at a high rate, so immature individuals were not suffering from density-dependent effects and were consequently sensitive to any additional mortality sources, like a new harvest pressure for instance. The low impact of the harvest on adult survival compared to the recruitment rate might reflect the timing of the management strategy adopted in France. Since the culling efficiency is poor on the wintering spot, most of control operations occur in summer just after the reproduction, when the proportion of immature birds is the largest.
+Only the French population was monitored over a period covering years without and with harvest. The harvest pressure, that is defined into a binary variable (no harvest / harvest), affects on average negatively both the recruitment rate and the adult survival for this population, as expected. If it explains only 4.6% of the variance of the adult survival, this value raises to 19.3% for the recruitment rate of the French population. The harvest pressure applied in France is thus a factor that likely induces a strong juvenile mortality that impacts the recruitment rate, but a negligible mortality on the adults. This conclusion is obviously opposed to the hypothesis that the heterogeneity in immature individuals would dampen the effect of the harvest pressure on the resulting recruitment rate. Two points can however explain this apparent discrepancy. Since the management targeted the eradication of this ruddy duck population, the harvest on immatures might be simply far higher than what the population could compensate and finally affects the recruitment rate. Also, the population started to be controlled when it was still growing at a high rate, so immature individuals were not suffering from density-dependent effects and were consequently sensitive to any additional mortality sources, like the new harvest pressure for instance. The low impact of the harvest on adult survival compared to the recruitment rate might be due to the timing of the management strategy adopted in France. Since the culling efficiency is poor on the wintering spot, most of control operations occur in summer just after the reproduction, when the proportion of immature birds is the largest.
 
-The UK population depleted from 2005, which also corresponds to a significant increase of the harvest effort. Even if only a few data from the sampling method are available before and after this year, it seems that the recruitment rate is not affected by this increase of harvest whereas the adult survival dropped significantly. This differs strongly from the response of the French population to the harvest. Unlike in France, a significant part of the control operations in UK occur in winter, which could explain this difference. Indeed, winter corresponds to the season just before the reproduction period, when the proportion of immatures in the population is the lowest over the year because their survival is far lower than adults. The adult survival seems then mostly affected by the harvest pressure applied in winter.
+The UK population depleted from 2005, which also corresponds to a significant increase of the harvest effort. Even if only a few data from the sampling method are available before and after this year, it seems that the recruitment rate is not affected by this increase of harvest whereas the adult survival dropped significantly. This differs strongly from the response of the French population to the harvest. Unlike in France, a significant part of the control operations in UK occur in winter, which could explain this difference. Indeed, winter corresponds to the season just before the reproduction period, when the proportion of immatures in the population is the lowest because their survival is far lower than adults. The adult survival seems then mostly affected by the harvest pressure applied in winter.
 
-The strong divergence of the response to the harvest pressure of the two ruddy duck populations demonstrates that it is necessary to account for the time window over which the harvest occurs to produce proper predictions. Controlling a waterfowl population is then not only a question about how big should be the harvest effort, but also when this effort should focus within a year to be efficient. These first insights suggest that further investigation are required to calibrate the response of the population to different harvest regimes. 
+The strong divergence of the response to the harvest pressure of the two ruddy duck populations demonstrates that it is necessary to account for the time window over which the harvest occurs to produce proper predictions. Controlling a waterfowl population is then not only a question about how big should be the harvest effort, but also mostly when this effort should focus within a year to be efficient. These first insights suggest that further investigation on this topic would be valuable to calibrate the response of the population to different harvest regimes. 
 
 ## Implication in waterfowl management
 
 Age ratio, or indifferently recruit proportion, is commonly used to describe the renewal capacity of a waterfowl population and to track the evolution of its productivity [@Smith2001; @Bellrose1980; @Robertson2008; @Rodway2015; @Zimmerman2010]. The recruitment rate is however a better indicator than the age ratio, the latter being likely preferred for its simple estimation. Indeed, the age ratio/recruit proportion does not account for the dynamics of the population and reflects the population productivity only if the population growth is steady. For instance, for a breeding population of 100 individuals reaching the next year 100 individuals and then 60 individuals the second year, a 50% recruit proportion in both cases reflect actually a strong decrease of the recruitment rate, respectively 0.5 recruits per breeder and 0.3 recruits per breeder. This demonstrates that the age ratio/recruit proportion suffers of caveats that can be misleading for a manager. According to @Blums2004, the recruitment for diving ducks is not related to the fecundity, but depends mostly on the juvenile survival, the other component of the recruitment that is mostly driven by the weather conditions. Studies on other birds also conclude of the poor correlation between fecundity and recruitment [e.g. @Murray2000]. Fecundity alone does not provide all knowledge required for a manager to understand the dynamics of a population.
 
-Immatures are more prone to die naturally than adults and are submitted to density dependent processes, which explains why the recruitment rate is the most sensitive parameter to density dependent effect [@Koons2014]. This means that culling mostly immatures can have limited effect of the population dynamics if the harvest pressure remains moderate. Considering that the harvest effort occurring in winter impacted mostly adult survival and led to the strong depletion of the UK ruddy duck population, harvesting early in the season should be favoured to maximize the catch in preserving the resources. If the goal is to eradicate a species, a strong effort should be done especially in the late season as done in the UK, just before the reproduction.
+Adult survival and recruitment rate equally influence the growth rate variability of the studied ruddy duck populations, but the relative variability of the adult survival is more than three times smaller than the recruitment rate. This observation is in line with the demographic buffering, or canalization hypothesis, on the survival parameter [@Gaillard2003; @Lenzi2021]. @Arnold2018 even demonstrates that the recruitment rate can be the most influencing factor on the population growth in some waterfowl species. Population management in waterfowl cannot neglect a careful monitoring of the recruitment rate, even if this parameter might be more difficult to track compared to the adult survival. Tracking the recruitment rate provides however only indications to a manager that a population renewal is affected. If the maximum recruitment rate is not reached under optimal conditions, it is a signal that one should explore the intermediate life stages before recruitment to provide a diagnostic on the changes of the environment conditions that have affected the recruitment rate. 
 
-Tracking recruitment rate: If the maximum recruitment rate is not reached under optimal conditions (maximum population size not reached, and limited harvest pressure), it is a signal that one should explore the intermediate life stages before recruitment to provide a diagnostic on the changes of the environment conditions that have affected the recruitment rate. 
+Immatures are more prone to die naturally than adults and are submitted to density dependent processes, which explains why the recruitment rate is the most sensitive parameter to density dependent effect [@Koons2014]. This means that culling mostly immatures could have only a limited effect on the population dynamics if the harvest pressure remains moderate. Considering that the harvest effort occurring in winter impacted mostly adult survival and led to the strong depletion of the UK ruddy duck population, harvesting early in the season should be favoured if the objective is to maximize the catch in preserving the resources. If the goal is to eradicate a population, a strong effort should be done especially in the late season as done in the UK, just before the reproduction. These hypotheses still requires to be tested thanks to a population model linking the harvest rate to state variables describing the population. Such tool is valuable to assess precisely the impact of the harvest pressure and to test hypotheses on the functioning of the harvest mortality [@Plard2019].
 
-Condition of application to other species. 
+Applying the method implemented in this study on any other waterfowl species implies that the adult males can be distinguished from the other individuals at distance. The latter in the season the dichromatism is observable, the better it is to assure a relevant picture of the age structure of the population and then good estimates of the recruitment rate.
+
+
 
 recruitment rate: 
 Stabilité grosse pop, 
 variabilité petite pop. 
 
-Recruitment rate drives lambda [@Arnold2018]
 
 
 
-Population growth is equally influenced by adult survival and recruitment
-whereas adult survival more consistent between the two (.5 factor), meaning there was more variability in recruitment rate than in survival rate. growth rate difference is thus more explained by recruitment rate fluctuation than adult survival fluctuation, consistent with the demographic buffering, or canalization hypothesis [@Gaillard2003; @Lenzi2021] 
-Au dela du fait que la croissance de la pop est la somme de la survie et de la recruitment rate, intéressant de parler de la variability de la survie vs variabilité de la recruitment rate pour parler de risk management.
-But caution, a population model linking the harvest rate to state variables describing the population is necessary to check precisely the impact of the harvest pressure, and test hypothesis on the functioning of harvest mortality.
+
+
 
 It is quite consistent with the assumption in introduction. Since studied populations are in colonization of their habitat, maximum densities are not reached, and then no or limited density dependent effect occur.
 
@@ -322,6 +325,8 @@ Message de l'article
 # Acknowledgments {-}
 
 This work was partly funded by the LIFE Oxyura project (LIFE17 NAT/FR/000942) through the LIFE program. This work was carried on with the impulse of Jean-François Maillard, and Jean-Baptiste Mouronval from the *Office Français de la Biodiversité*, and Jean-Marc Gillier from the *Société Nationale pour la Protection de la Nature*. The authors acknowledge all the contributors of the data collection in the UK and in France, especially: **UK names**, Vincent Fontaine, Denis Lacourpaille, Justin Potier, Alexis Laroche, Médéric Lortion, Jules Joly, and Valentin Boniface.
+
+\nolinenumbers
 
 # References {-}
 
