@@ -1,7 +1,7 @@
 
-# Ruddy_duck_recruitment_rate
+# Ruddy_duck_vital_rates
 
-Objective : Recruitment rate estimation using count data
+Objective : Recruitment and survival estimation using count data
 
 ## Data source
 
@@ -23,6 +23,6 @@ the Rmarkdown file
 ## How to run code
 
   - Import locally the repository
-  - Open Ruddy_duck_recruitment_rate.Rproj in Rstudio
-  - Open then Model_recruitment_rate.R to run or modify the model
-  - Open Draft_ruddy_duck_recruitment rate.Rmd to run or modify the draft
+  - Open Ruddy_duck_vital_rates.Rproj in Rstudio
+  - Open then Model_vital_rates.R to run or modify the model
+  - Open Draft_ruddy_duck_vital_rates.Rmd to run or modify the draft
