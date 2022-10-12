@@ -264,7 +264,7 @@ frag %>%
   rowid_to_column() -> ds
 
 count_sex_app %>% 
-  mutate(method = "in visual detection",
+  mutate(method = "in counts",
          tot = obs_type_mal + obs_type_fem,
          `female proportion` = obs_type_fem / tot) %>% 
   select(method, `female proportion`, tot) %>% 
@@ -290,11 +290,6 @@ count_sex_app %>%
   xlab("") + 
   labs(title = "Female proportion", caption = "data from UK & French Ruddy duck populations") +
   coord_flip() -> intro_plot; intro_plot
-
-# ggsave(filename = "P:\\LIFE_Presentations\\2022-09-15_duck symposium\\prop_fem.png", 
-#        plot = intro_plot,
-#        width = 8, 
-#        height = 2, dpi = 600)
 
 # Lambda formatting ------------------------------------------------------------
 
@@ -1284,7 +1279,7 @@ raw_ds2 %>%
 
 raw_ds2 %>% 
   filter(var == "survival") %>% 
-  ggplot(aes(x = year, y = `50%`, color = pop, shape = label)) +
+  ggplot(aes(x = year, y = `50%`, color = pop)) +
   geom_pointrange(aes(ymin = `2.5%`, ymax = `97.5%`), alpha = .5, size = 1.1) +
   geom_hline(yintercept = 1, alpha = 0.1, size = 1.5) +
   scale_color_manual(values = c_pop) +
@@ -1297,9 +1292,7 @@ raw_ds2 %>%
     limits = c(0, 1.15),
     breaks = 0:11 / 10,
     minor_breaks = NULL) +
-  guides(x = guide_axis(angle = 45), 
-         color = guide_legend(title = "", order = 1),
-         shape = guide_legend(title = "", order = 2)) +
+  guides(x = guide_axis(angle = 45)) +
   labs(title = "Apparent survival rate", 
        subtitle = "adult survival & potential adult migration", 
        x = NULL, y = NULL) +
@@ -1307,7 +1300,7 @@ raw_ds2 %>%
 
 raw_ds2 %>% 
   filter(var == "productivity") %>% 
-  ggplot(aes(x = year, y = `50%`, color = pop, shape = label)) +
+  ggplot(aes(x = year, y = `50%`, color = pop)) +
   geom_pointrange(aes(ymin = `2.5%`, ymax = `97.5%`), alpha = .5, size = 1.1) +
   scale_color_manual(values = c_pop) +
   scale_shape_manual(values = c(18, 16)) +
@@ -1319,14 +1312,11 @@ raw_ds2 %>%
     limits = c(0, 1.15),
     breaks = 0:11 / 10,
     minor_breaks = NULL) +
-  guides(x = guide_axis(angle = 45), 
-         color = guide_legend(title = "", order = 1),
-         shape = guide_legend(title = "", order = 2)) +
+  guides(x = guide_axis(angle = 45)) +
   labs(title = "Apparent recruitment rate",
        subtitle = "recruits per breeder & potential recruit migration", 
        x = NULL, y = NULL) +
   theme(legend.position = "none") -> prod_yr; prod_yr 
-
 
 JuvOut4 %>% 
   filter(par == "p_juv_avg", method != "proxy") %>% 
@@ -1501,6 +1491,9 @@ cor_plot(col = "productivity",
 
 # Save for presentation -----------------------------------------------------------------------
 
+
+intro_plot
+
 count_yr
 juv_yr
 
@@ -1553,7 +1546,6 @@ grid.arrange(
   heights = 5,
   layout_matrix = rbind(c(1, 2, 3))) -> cor_rates1
 
-
 grid.arrange(
   grobs = list(cor_juv_pres2,
                cor_surv_pres2,
@@ -1562,14 +1554,16 @@ grid.arrange(
   heights = 5,
   layout_matrix = rbind(c(1, 2, 3))) -> cor_rates2
 
-list(count_full, 
+list(intro_plot,
+     count_full, 
      raw_nb, 
      rates,
      avg_harv,
      cor_rates1,
      cor_rates2) -> plo_pres
 
-list(c(7, 4),
+list(c(8, 2), 
+     c(7, 4),
      c(5, 8),
      c(5, 8),
      c(12, 4),

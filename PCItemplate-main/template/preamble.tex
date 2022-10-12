@@ -1,0 +1,305 @@
+%%%%%%%%%%TO FORMAT A PREPRINT%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%main packages to use%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{xstring}
+\usepackage[top=7cm,bottom=2.5cm,headheight=120pt,headsep=15pt,left=6cm,right=1.5cm,marginparwidth=4.2cm,marginparsep=0.5cm]{geometry}
+\usepackage{ifthen}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{marginnote}
+\reversemarginpar  % sets margin notes to the left
+\usepackage{lipsum} % Required to insert dummy text
+\usepackage{calc}
+\usepackage{siunitx}
+\usepackage{lineno}
+%\usepackage[none]{hyphenat} % use only if there is a problem
+% Use Unicode characters
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Clean citations with biblatex
+\usepackage[
+backend=biber,
+natbib=true,
+sortcites=true,
+defernumbers=true,
+style=authoryear,
+citestyle=authoryear-comp,
+maxnames=99,
+maxcitenames=2,
+giveninits=true,
+terseinits=true,
+url=false
+]{biblatex}
+%%%%%%%%%%%%%%%%%%%%%%end main package list %%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%% adjustments to bibliography settings%%%%%%%%%%%%%
+\DeclareFieldFormat{doi}{%
+  \ifhyperref
+    {\href{https://doi.org/#1}{\nolinkurl{https://doi.org/#1}}}
+    {\nolinkurl{https://doi.org/#1}}}
+
+\AtEveryBibitem{\clearfield{month}}
+\AtEveryBibitem{\clearfield{day}}
+\AtEveryBibitem{\clearfield{language}}
+\AtEveryBibitem{\clearfield{issn}}
+\AtEveryBibitem{\clearfield{id}}
+\AtEveryBibitem{\clearfield{eprint}}
+\AtEveryBibitem{\clearfield{annotation}}
+
+\DeclareNameAlias{default}{family-given}
+\renewcommand*{\revsdnamepunct}{} % no comma between family and given names
+\renewbibmacro{in:}{%
+  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}} % remove 'In:' before journal name
+\DeclareFieldFormat[article]{pages}{#1} % remove pp.
+\AtEveryBibitem{\ifentrytype{article}{\clearfield{number}}{}} % don't print issue numbers
+\DeclareFieldFormat[article, inbook, incollection, inproceedings, misc, thesis, unpublished]{title}{#1} % title without quotes
+\usepackage{csquotes}
+\RequirePackage[english]{babel} % must be called after biblatex
+
+\addbibresource{\myrefs}% add the main bibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%build the "cite as" reference from info in the YAML header of the Rmd%%%%
+\def\filecontentsspecials#1#2#3{
+  \global\let\ltxspecials\dospecials
+  \gdef\dospecials{\ltxspecials
+    \catcode`#1=0
+    \catcode`#2=1
+    \catcode`#3=2
+    \global\let\dospecials\ltxspecials
+  }
+}
+
+\newcommand{\writeauthor}{author={\citeauthors},}
+\newcommand{\writeDOI}{doi={\preprintDOI},}
+
+\filecontentsspecials|[]
+\begin{filecontents*}[overwrite]{bibliography/recommendedpreprint.bib}
+@article{recommendedpreprint,
+  title={\preprinttitle},
+  |writeauthor%
+  journal={\preprintserver},
+  volume={\preprintnumber, ver. \preprintversion \space peer-reviewed and recommended by \emph{\PCI}},
+  year={\pubyear},
+  |writeDOI
+}
+\end{filecontents*}
+
+\addbibresource{bibliography/recommendedpreprint.bib}
+
+% the authors and doi fields need to be expanded and written explicitly to the bib fiel to work well
+% when added back to the references
+% hence the trick with | and the code above \begin{filecontents}
+% borrowed to https://tex.stackexchange.com/questions/534035/macros-commands-inside-a-filecontents-environment-does-not-expand
+% the other fields don't need to (and trying to expand with the same code can give errors anyway)
+
+
+\DeclareBibliographyCategory{ignore}
+\addtocategory{ignore}{recommendation} % adding recommendation to 'ignore' category so that it does not appear in the References
+\newcommand{\mybibexclude}[1]{\addtocategory{ignore}{#1}}
+% Clickable references. Use \url{www.example.com} or \href{www.example.com}{description} to add a clicky url
+\usepackage{nameref}
+\usepackage[pdfborder={0 0 0}]{hyperref}  % sets link border to white
+\urlstyle{same}
+%%%%%%%%%%%%%%%%%%%%%%% end bibliography settings%%%%%%%
+
+
+%%%%%% Figure and table management
+\usepackage{graphbox}  % loads graphicx ppackage with extended options for vertical alignment of figures
+\usepackage{floatrow}
+\floatsetup[figure]{capposition=\captionside}
+\floatsetup[table]{style=plaintop}
+\usepackage[justification=centering]{caption} %center caption relative to figure/table
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%% typesetting%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Line numbers
+%\usepackage[right]{lineno}
+% Improve typesetting in LaTex
+\usepackage{microtype}
+\DisableLigatures[f]{encoding = *, family = * }
+% Text layout and font (Open Sans)
+\setlength{\parindent}{0.4cm}
+\linespread{1.2}
+\RequirePackage[default,scale=0.90]{opensans}
+% Defining document colors
+\usepackage{xcolor}
+\definecolor{darkgray}{HTML}{808080}
+\definecolor{mediumgray}{HTML}{6D6E70}
+\definecolor{ligthgray}{HTML}{d9d9d9}
+\definecolor{pciblue}{HTML}{74adca}
+\definecolor{opengreen}{HTML}{77933c}
+% Use adjustwidth environment to exceed text width
+\usepackage{changepage}
+% Adjust caption style
+\usepackage[aboveskip=1pt,labelfont=bf,labelsep=period,singlelinecheck=off]{caption}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%% Headers and footers%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}  % custom headers/footers
+\usepackage{lastpage}  % number of page in the document
+\pagestyle{fancy}  % enables customization of headers/footers
+\fancyhfoffset[L]{4.5cm}  % offsets header and footer to the left to include margin
+\renewcommand{\headrulewidth}{\ifnum\thepage=1 0.5pt \else 0pt \fi} % header ruler only on first page
+\renewcommand{\footrulewidth}{0.5pt}
+% full logo on first page, then small logo on subsequent pages
+
+\lhead{\ifnum\thepage=1 \includegraphics[width=13.5cm]{resources/logo_pour_PDF_\whichPCI.png} \else \includegraphics[width=5cm]{resources/small_logo_pour_PDF_\whichPCI.png} \fi}
+
+\chead{}
+\rhead{}
+
+
+\lfoot{\scriptsize \textsc{\color{mediumgray}\PCI}}
+
+\cfoot{}
+\rfoot{\scriptsize\thepage\space of\space\pageref{LastPage}}
+%%%%%%%end header and footer settings%%%%%%%%%%%%%
+
+
+\ifnum\pdfstrcmp{\whichPCI}{ecology}=0
+  \newcommand{\PCI}{Peer Community In Ecology} \else %
+\ifnum\pdfstrcmp{\whichPCI}{evolbiol}=0
+  \newcommand{\PCI}{Peer Community In Evolutionary Biology} \else %
+\ifnum\pdfstrcmp{\whichPCI}{paleo}=0
+  \newcommand{\PCI}{Peer Community In Paleontology} \else %
+\ifnum\pdfstrcmp{\whichPCI}{animsci}=0
+  \newcommand{\PCI}{Peer Community In Animal Science} \else %
+\ifnum\pdfstrcmp{\whichPCI}{genomics}=0
+  \newcommand{\PCI}{Peer Community In Genomics} \else %
+\ifnum\pdfstrcmp{\whichPCI}{archaeo}=0
+  \newcommand{\PCI}{Peer Community In Archaeology} \else %
+\ifnum\pdfstrcmp{\whichPCI}{zool}=0
+  \newcommand{\PCI}{Peer Community In Zoology} \else %
+\ifnum\pdfstrcmp{\whichPCI}{mcb}=0
+  \newcommand{\PCI}{Peer Community In Mathematical \& Computational Biology} \else %
+\ifnum\pdfstrcmp{\whichPCI}{fws}=0
+  \newcommand{\PCI}{Peer Community In Forest \& Wood Science}
+\fi \fi \fi \fi \fi \fi \fi \fi \fi
+
+%%%%%%begin the preprint%%%%%%%%%%
+\newcommand{\beginningpreprint}{
+\vspace*{0.5cm}
+\begin{flushleft}
+\baselineskip=30pt
+%\marginpar{\includegraphics[align=c,width=0.5cm]{OAlogogreen.png} \space %\large\textbf{\color{opengreen}Open Access}\\
+%\\
+%\large\textnormal{\color{opengreen}PREPRINT}}
+% Margin information
+\marginpar{
+\large\textnormal{\color{pciblue}\\RESEARCH ARTICLE}\\
+\vspace*{0.5pt}
+\\
+\includegraphics[align=c,width=0.5cm]{resources/OAlogoblue.png} \space \large\textbf{\color{pciblue}Open Access}\\
+\\
+\includegraphics[align=c,width=0.5cm]{resources/o_peerreview.png} \space \large\textbf{\color{pciblue}Open Peer-Review}\\
+\\
+\ifnum\pdfstrcmp{\opendata}{true}=0
+  \includegraphics[align=c,width=0.5cm]{resources/o_data3.png} \space \large\textbf{\color{pciblue}Open Data}\\
+\\
+\fi
+\ifnum\pdfstrcmp{\opencode}{true}=0
+  \includegraphics[align=c,width=0.5cm]{resources/o_script3.png} \space \large\textbf{\color{pciblue}Open Code}\\
+\fi
+\\
+\\
+\\
+\\
+\raggedright
+%\vspace*{3.25cm}
+\scriptsize\textbf{Cite as:}\space
+
+%%%%rather than asking the authors to add the reference of the preprint to their bibliography to enable the citeas
+%%%%we make use of the YAML fields of the Rmd file
+\fullcite{recommendedpreprint}\mybibexclude{recommendedpreprint}\\
+
+\vspace*{0.5cm}
+\textbf{Posted:} \datepub\\
+\vspace*{0.5cm}
+\textbf{Recommender:}\\
+\recommender\\
+\vspace*{0.5cm}
+\textbf{Reviewers:}\\
+\reviewers\\
+\vspace*{0.5cm}
+\textbf{Correspondence:}\\
+\href{mailto:\email}{\email}\\
+
+
+}
+{\Huge
+\fontseries{sb}\selectfont{\preprinttitle}}
+\end{flushleft}
+\vspace*{0.25cm}
+\begin{flushleft}
+%\marginpar{
+
+
+%\marginnote{
+%\raggedright
+%\vspace*{3.25cm}
+%\scriptsize\textbf{Cite as:}\space
+%\fullcite{preprint}\\
+%\vspace*{0.5cm}
+%\textbf{Published:} \datepub\\
+%\vspace*{0.5cm}
+%\textbf{Recommender:}\\
+%\recommender\\
+%\vspace*{0.5cm}
+%\textbf{Reviewers:}\\
+%\reviewers\\
+%\vspace*{0.5cm}
+%\textbf{Correspondence:}\\
+%\href{mailto:\email}{\email}\\
+%\vspace*{0.5cm}
+%\vspace*{3cm}
+%\vspace*{0.2cm}
+%}[0.8cm]
+
+
+\Large
+\listauthors
+\end{flushleft}
+\bigskip
+{\raggedright
+\listinstitutions}
+{\raggedright
+\authorshipnotes}
+
+% Recommended preprint box
+\begin{flushleft}
+%\noindent
+\fcolorbox{lightgray}{lightgray}{
+\parbox{\textwidth - 2\fboxsep}{
+\centering\large{\fontseries{sb}\selectfont{This article has been peer-reviewed and recommended by\\
+\emph{\PCI}\\
+\recommendationDOI\\}}
+%\raggedright\large{\fontseries{sb}\selectfont{An article peer-reviewed and recommended by \emph{\PCI}, edited by \recommender \space on the basis of the reviews by \reviewers \space (DOI: \DOIrecommendationlink)}}\\
+%\small \fullcite{preprint}
+}}
+\end{flushleft}
+\vspace*{0.5cm}
+\fcolorbox{pciblue}{pciblue}{
+\parbox{\textwidth - 2\fboxsep}{
+\vspace{0.25cm}
+\textbf{\large{\textsc{Abstract}}}\\
+\preprintabstract\\
+
+\footnotesize{\textbf{\emph{Keywords: }}\preprintkeywords}
+\vspace{0.25cm}}
+}
+}
+
+
+
