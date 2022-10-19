@@ -964,16 +964,16 @@ JuvOut4 %>%
 ########### j'en suis la ##############
 #######################################
 
-
-
 JuvOut4 %>% 
+  mutate(par = if_else(par == "lambda" & str_detect(method, "small"), "lambda_avg", par),
+         pop = if_else(par == "lambda_avg", method %>% str_sub(1, 2) %>% as_factor(), pop)) %>% 
   filter(par %>% str_ends("_avg")) %>% 
   mutate(box = case_when(
-    method == "proxy" ~ "maximum",
+    method %>% str_detect("proxy|small") ~ "maximum",
     method %>% str_detect(".no|samp") ~ "no harvest",
     TRUE ~ "harvest") %>% 
       as_factor() %>% 
-      fct_relevel(c("maximum", "no harvest", "harvest")), 
+      fct_relevel(c("no harvest", "harvest", "maximum")), 
     across(contains("%"), ~ if_else(method %>% str_detect("sampl"), NA_real_, .x)),
     txt = if_else(str_detect(method, "sampling"), "NO DATA", NA_character_)) %>% 
   select(-year, -method) %>% 
@@ -983,7 +983,8 @@ JuvOut4 %>%
               ggplot(aes(x = pop, y = `50%`, color = pop)) +
   facet_wrap(~ box, nrow = 1) +
   theme(strip.text.x = element_text(size = 14)) +
-  geom_pointrange(aes(ymin = `2.5%`, ymax = `97.5%`), alpha = .5, size = 1.2) +
+  geom_pointrange(aes(ymin = `2.5%`, ymax = `97.5%`), 
+                  alpha = 0.5, size = 1.5, fatten = 1.2) +
   geom_text(aes(x = pop, y = .43, label = txt), color = c_pop[1], angle = 90) +
   scale_color_manual(values = c_pop, guide = "none") +
   scale_y_percent() +
