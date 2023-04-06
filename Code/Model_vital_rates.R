@@ -4,7 +4,6 @@ Sys.setlocale("LC_ALL", "en_US.UTF-8")
 
 require(tidyverse)
 require(rlang)
-require(lubridate)
 require(nimble)
 require(MCMCvis)
 require(mcmcplots)
@@ -251,15 +250,13 @@ count_sex_app %>%
   select(method, `female proportion`, tot) %>% 
   bind_rows(frag %>%  
               filter(sex != "ind") %>% 
-              filter(!(pop == "FR" & year(year) < 2011), 
-                     !(pop == "GB" & year(year) > 2009)) %>%
               group_by(year, pop) %>% 
               mutate(tot = sum(shot)) %>%  
               filter(sex == "fem") %>% 
               mutate(fem = sum(shot)) %>% 
               distinct(year, pop, fem, tot) %>%
               ungroup() %>% 
-              filter(tot > 50) %>%
+              filter(tot > 100) %>%
               mutate(`female proportion` = fem / tot, 
                      method = "Female %\nin hunting bags") %>%
               select(method, `female proportion`, tot)) %>% 
@@ -319,7 +316,26 @@ frag %>%
   geom_line(aes(y = n_win)) +
   facet_wrap( ~ pop, ncol = 1, scales = "free_y") +
   scale_x_date_own(0)
-  
+
+frag %>%
+  filter(age != "ind") %>% 
+  group_by(pop, age) %>% 
+  summarise(across(shot, sum)) %>% 
+  group_by(pop) %>% 
+  mutate(tot = sum(shot)) %>% 
+  ungroup() %>% 
+  filter(age == "ad") %>% 
+  mutate(prop = shot / tot)
+
+frag %>%
+  filter(age == "ad") %>% 
+  group_by(pop, repro) %>% 
+  summarise(across(shot, sum)) %>% 
+  group_by(pop) %>% 
+  mutate(tot = sum(shot)) %>% 
+  ungroup() %>% 
+  filter(repro == "before_rep") %>% 
+  mutate(prop = shot / tot)
 
 frag %>%  
   mutate(shot = shot * if_else(age == "ind", 1e-2 * p_ad, 1)) %>% 
