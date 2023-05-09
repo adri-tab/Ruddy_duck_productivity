@@ -43,7 +43,7 @@ scale_x_date_own <- function(coef = 5e-2) {
                  date_minor_breaks = "1 year", 
                  date_labels = "%Y", 
                  expand = c(coef, coef)),
-    guides(x =  guide_axis(angle = 45)),
+    guides(x =  guide_axis(angle = 90)),
     labs(x = NULL) 
   )}
 
@@ -84,7 +84,7 @@ cor_plot <- function(col, title = NULL, subtitle = NULL, limits = NA, breaks = N
                   width = 0, alpha = .5, linewidth = 1.2) +
     labs(title = title,
          subtitle = subtitle,
-         y = "count-based method", x = "hunting-bag-based method") +
+         y = "count-based method", x = "removal-based method") +
     scale_x_continuous(expand = expansion(mult = c(0, 0)), 
                        limits = if (any(is.na(limits))) {
                          c(0, 1.1 * max(unlist(tmp[-1])))
@@ -258,7 +258,7 @@ count_sex_app %>%
               ungroup() %>% 
               filter(tot > 100) %>%
               mutate(`female proportion` = fem / tot, 
-                     method = "Female %\nin hunting bags") %>%
+                     method = "Female %\nin removals") %>%
               select(method, `female proportion`, tot)) %>% 
   mutate(method = as_factor(method)) %>% 
   ggplot(aes(x = method, y = `female proportion`, size = tot)) + 
@@ -380,15 +380,16 @@ counts_1 %>%
   scale_color_manual(name = "", 
                      labels = c("GB population", "FR population"), 
                      values = c_pop) +
-  scale_y_continuous(name = "adult harvest rate",
+  scale_y_continuous(name = "Culling rate index",
                      labels = scales::percent, 
                      breaks = scales::pretty_breaks(), 
                      limits = c(0, 1)) +
   annotate(geom = "text",
            x = c(ymd(19790101), ymd(20020101), ymd(20130101)),
            y = rep(.95, 3), 
-           label = c("no\nharvest", "low\nharvest", "high\nharvest"),
-           size = 4) -> harv_plot; harv_plot
+           label = c("no\nculling", "low\nculling", "high\nculling"),
+           size = 4) +
+  theme(axis.text.x = element_text(angle = 90)) -> harv_plot; harv_plot
 
 frag %>% 
   filter(age == "ad") %>% 
@@ -810,8 +811,8 @@ lambda_ds %>%
          lambda = exp(r_avg)) %>% 
   ungroup() %>% 
   mutate(kind = case_when(
-    sub_pop %>% str_detect("small") ~ "under no pressure", 
-    !(sub_pop %>% str_detect("pop")) ~ "under high\nharvest pressure", 
+    sub_pop %>% str_detect("small") ~ "under no\nculling pressure", 
+    !(sub_pop %>% str_detect("pop")) ~ "under high\nculling pressure", 
     TRUE ~ NA_character_) %>% 
       as_factor()) %>% 
   filter(!is.na(kind)) -> lambda_ds_2
@@ -948,9 +949,9 @@ ds %>%
       year(year) < 1999 ~ 1,
       year(year) >= 1999 & year(year) < 2006 ~ 2,
       year(year) >= 2006 ~ 3),  
-    label = c("no harvest",
-              "low harvest",
-              "high harvest")[rec] %>% as_factor()) %>% 
+    label = c("no",
+              "low",
+              "high")[rec] %>% as_factor()) %>% 
   group_by(rec, label) %>% 
   summarize(xmin = if_else(min(year(year)) == 1960, ymd(19500101), min(year)),
             xmax = min(ymd(20210101), max(year) + years(1))) %>% 
@@ -1009,8 +1010,7 @@ ggplot() +
   scale_x_date(breaks = seq(min(ts_seq2$year), max(ts_seq2$year), "2 years"),
                date_labels = "%Y", 
                expand = c(1e-2, 1e-2)) +
-  guides(color = guide_legend(title = "Data availability", order = 1),
-         x = guide_axis(angle = 45)) +
+  guides(color = guide_legend(title = "Data availability", order = 1)) +
   labs(x = NULL, y = NULL) +
   geom_rect(data = ts_control,
             aes(xmin = xmin, xmax = xmax, 
@@ -1023,8 +1023,9 @@ ggplot() +
                   ylim = c(NA, 14000),
                   expand = FALSE) +
   guides(fill = "none",
-         alpha = guide_legend(title = "Control pressure", order = 2)) +
-  theme(legend.position = "left") -> count_plot; count_plot
+         alpha = guide_legend(title = "Culling pressure", order = 2)) +
+  theme(legend.position = "left",
+        axis.text.x = element_text(angle = 90)) -> count_plot; count_plot
 
 ggplot() +
   geom_line(data = lambda_ds_2, 
@@ -1054,8 +1055,7 @@ ggplot() +
   scale_x_date(breaks = seq(min(ts_seq2$year), max(ts_seq2$year), "2 years"),
                date_labels = "%Y", 
                expand = c(1e-2, 1e-2)) +
-  guides(color = guide_legend(title = "Population", order = 1),
-         x = guide_axis(angle = 45)) +
+  guides(color = guide_legend(title = "Population", order = 1)) +
   labs(x = NULL, y = NULL) +
   geom_rect(data = ts_control,
             aes(xmin = xmin, xmax = xmax, 
@@ -1068,8 +1068,9 @@ ggplot() +
                   ylim = c(NA, 14000),
                   expand = FALSE) +
   guides(fill = "none",
-         alpha = guide_legend(title = "Control pressure", order = 2)) +
-  theme(legend.position = "left") -> growth_plot; growth_plot
+         alpha = guide_legend(title = "Culling pressure", order = 2)) +
+  theme(legend.position = "left", 
+        axis.text.x = element_text(angle = 90)) -> growth_plot; growth_plot
 
 ## Immature proportion and vital rates time series --------------------------
 
@@ -1100,69 +1101,74 @@ JuvOut4 %>%
     var = as_factor(var) %>% fct_relevel(c("p_juv", "survival", "productivity")),
     year = year + if_else(pop == "GB", months(8), months(5))) %>% 
   group_split(var) %>% 
-  imap(~ 
-         {tmp = .x %>%
-           ggplot(aes(x = year, y = `50%`, color = pop)) +
-           geom_pointrange(aes(ymin = `2.5%`, ymax = `97.5%`), 
-                           alpha = 0.5, linewidth = 1.5, size = 0.6) + 
-           scale_color_manual(values = c_pop) +
-           scale_x_date(breaks = str_c(1998:2019, "0101") %>% ymd(),
-                        minor_breaks = NULL,
-                        date_labels = "%Y") +
-           labs(title = c("Proportion of immatures in the population", 
-                          "Survival rate",
-                          "Recruitment rate")[.y],
-                subtitle = c("", 
-                             "Proportion of breeders still alive after one year",
-                             "Number of recruits produced per breeder")[.y],
-                x = NULL, y = NULL)
-         
-         if(.y == 1) {
-           tmp = tmp +
-             guides(color = guide_legend(title = "Population", order = 2),
-                    x = guide_axis(angle = 45)) +
-             geom_rect(data = ts_control %>% 
-                         mutate(ymin = 1),
-                       aes(xmin = xmin, xmax = xmax, 
-                           ymin = ymin, ymax = ymax, alpha = label), 
-                       fill = "#e6a91d",
-                       inherit.aes = FALSE) + 
-             scale_fill_manual(values = c_pop) + 
-             scale_alpha_manual(name = "", values = c(.3, .6, 1)) +
-             coord_cartesian(xlim = range(.x$year) + years(c(-1, 1)),
-                             ylim = c(-0.05, 1.05),
-                             expand = FALSE) + 
-             guides(fill = "none",
-                    alpha = guide_legend(title = "Control pressure", order = 1)) +
-             scale_y_continuous(
-               labels = scales::percent_format(accuracy = 1L),
-               breaks = 0:10 / 10, 
-               minor_breaks = NULL) +
-             theme(
-               legend.position = c(.05, .90),
-               legend.justification = c("left", "top"),
-               legend.direction = "horizontal",
-               legend.key.size = unit(0.5, "cm"))
-         } else {
-           tmp = tmp +
-             guides(x = guide_axis(angle = 45)) +
-             geom_rect(data = ts_control %>% 
-                         mutate(ymin = 1.143),
-                       aes(xmin = xmin, xmax = xmax, 
-                           ymin = ymin, ymax = ymax, alpha = label), 
-                       fill = "#e6a91d",
-                       inherit.aes = FALSE) + 
-             scale_fill_manual(values = c_pop) + 
-             scale_alpha_manual(name = "", values = c(.3, .6, 1)) +
-             coord_cartesian(xlim = range(.x$year) + years(c(-1, 1)),
-                             ylim = c(-0.05, 1.2),
-                             expand = FALSE) + 
-             theme(legend.position = "none") + 
-             scale_y_continuous(
-             breaks = 0:11 / 10,
-             minor_breaks = NULL)
-         } 
-         return(tmp)}) -> rate_plots; rate_plots
+  imap( ~ {
+    tmp = .x %>%
+      ggplot(aes(x = year, y = `50%`, color = pop)) +
+      geom_pointrange(aes(ymin = `2.5%`, ymax = `97.5%`), 
+                      alpha = 0.5, linewidth = 1.5, size = 0.6) + 
+      scale_color_manual(values = c_pop) +
+      scale_x_date(breaks = str_c(1998:2018, "0101") %>% ymd(),
+                   minor_breaks = NULL,
+                   date_labels = "%Y") +
+      labs(title = c("Proportion of immatures in the population", 
+                     "Survival rate",
+                     "Recruitment rate")[.y],
+           subtitle = c("", 
+                        "Proportion of breeders still alive after one year",
+                        "Number of recruits produced per breeder")[.y],
+           x = NULL, y = NULL)
+    
+    if(.y == 1) {
+      
+      tmp = tmp +
+        guides(color = guide_legend(title = "Population", order = 2)) +
+        geom_rect(data = ts_control %>% 
+                    mutate(ymin = 1),
+                  aes(xmin = xmin, xmax = xmax, 
+                      ymin = ymin, ymax = ymax, alpha = label), 
+                  fill = "#e6a91d",
+                  inherit.aes = FALSE) + 
+        scale_fill_manual(values = c_pop) + 
+        scale_alpha_manual(name = "", values = c(.3, .6, 1)) +
+        coord_cartesian(xlim = range(.x$year) + years(c(-1, 1)),
+                        ylim = c(-0.05, 1.05),
+                        expand = FALSE) + 
+        guides(fill = "none",
+               alpha = guide_legend(title = "Control pressure", order = 1)) +
+        scale_y_continuous(
+          labels = scales::percent_format(accuracy = 1L),
+          breaks = 0:10 / 10, 
+          minor_breaks = NULL) +
+        theme(
+          legend.position = c(.05, .90),
+          legend.justification = c("left", "top"),
+          legend.direction = "horizontal",
+          legend.key.size = unit(0.5, "cm"),
+          axis.text.x = element_text(angle = 90))
+      
+    } else {
+      
+      tmp = tmp +
+        geom_rect(data = ts_control %>% 
+                    mutate(ymin = 1.143),
+                  aes(xmin = xmin, xmax = xmax, 
+                      ymin = ymin, ymax = ymax, alpha = label), 
+                  fill = "#e6a91d",
+                  inherit.aes = FALSE) + 
+        scale_fill_manual(values = c_pop) + 
+        scale_alpha_manual(name = "", values = c(.3, .6, 1)) +
+        coord_cartesian(xlim = range(.x$year) + years(c(-1, 1)),
+                        ylim = c(-0.05, 1.2),
+                        expand = FALSE) + 
+        theme(
+          legend.position = "none",
+          axis.text.x = element_text(angle = 90)) + 
+        scale_y_continuous(
+          breaks = 0:11 / 10,
+          minor_breaks = NULL)
+    }
+    
+    return(tmp)}) -> rate_plots; rate_plots
 
 ## Comparison of harvested vs max growth ------------------------------
 
@@ -1171,10 +1177,10 @@ JuvOut4 %>%
          pop = if_else(par == "lambda_avg", method %>% str_sub(1, 2) %>% as_factor(), pop)) %>% 
   filter(par %>% str_ends("_avg"), !is.na(pop)) %>% 
   mutate(box = case_when(
-    method %>% str_detect("proxy|small") ~ "...under no pressure",
-    TRUE ~ "...under high\nharvest pressure") %>% 
+    method %>% str_detect("proxy|small") ~ "...under no\nculling pressure",
+    TRUE ~ "...under high\nculling pressure") %>% 
       as_factor() %>% 
-      fct_relevel("...under high\nharvest pressure", after = Inf), 
+      fct_relevel("...under high\nculling pressure", after = Inf), 
     across(par, ~ .x %>% as_factor() %>% fct_relevel("productivity_avg", after = Inf)),
     across(contains("%"), ~ if_else(method %>% str_detect("sampl"), NA_real_, .x))) %>% 
   select(-year, -method) %>% 
