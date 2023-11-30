@@ -103,11 +103,11 @@ cor_plot <- function(col, title = NULL, subtitle = NULL, limits = NA, breaks = N
 
 # Data import -----------------------------------------------------------------------
 
-read_rds("./Data/Ruddy_duck_data.rds") %>% pluck(1) %>% 
+read_rds("./Data/Ruddy_duck_data_longer_ts.rds") %>% pluck(1) %>% 
   mutate(pop = if_else(pop == "UK", "GB", pop),
          across(pop, as_factor)) %>% arrange(pop) -> frag
 
-read_rds("./Data/Ruddy_duck_data.rds") %>% pluck(2) %>% 
+read_rds("./Data/Ruddy_duck_data_longer_ts.rds") %>% pluck(2) %>% 
   mutate(pop = if_else(pop == "UK", "GB", pop),
          across(pop, as_factor)) %>% arrange(pop) -> counts
 
@@ -988,7 +988,7 @@ ds %>%
   mutate(across(sq, ~ replace_na(.x, 0)),
          label = if_else(sq != 0, "available\ndichromatic\ndata", "") %>% as_factor() %>% 
            fct_relevel("", after = Inf)) %>% 
-  filter(year(year) <= 2019) -> ts_seq2
+  filter(year(year) <= 2023) -> ts_seq2
 
 ggplot() +
   scale_y_log10(minor_breaks = NULL) +
@@ -997,15 +997,15 @@ ggplot() +
                      labels = c("GB population", "FR population")) +
   geom_line(data = ts_seq2 %>% arrange(pop, year), 
             aes(x = year, y = n_win, color = pop), linewidth = 1, alpha = .5, linetype = "dotted") +
-  geom_line(data = ts_seq2 %>% filter(sq != 0), 
-            aes(x = year, y = n_win, color = pop, group = sq), linewidth = 2, alpha = .5) + 
+  # geom_line(data = ts_seq2 %>% filter(sq != 0), 
+  #           aes(x = year, y = n_win, color = pop, group = sq), linewidth = 2, alpha = .5) + 
   geom_point(data = ts_seq2, 
              aes(x = year, y = n_win), size = 3, color = "white") +
   geom_point(data = ts_seq2, 
              aes(x = year, y = n_win, color = pop), 
              size = 2, alpha = .5) + 
-  geom_point(data = ts_seq2 %>% filter(sq != 0), 
-             aes(x = year, y = n_win, color = pop), alpha = 1) +
+  # geom_point(data = ts_seq2 %>% filter(sq != 0), 
+  #            aes(x = year, y = n_win, color = pop), alpha = 1) +
   scale_x_date(breaks = seq(min(ts_seq2$year), max(ts_seq2$year), "2 years"),
                date_labels = "%Y", 
                expand = c(1e-2, 1e-2)) +
@@ -1106,7 +1106,7 @@ JuvOut4 %>%
       geom_pointrange(aes(ymin = `2.5%`, ymax = `97.5%`), 
                       alpha = 0.5, linewidth = 1.5, size = 0.6) + 
       scale_color_manual(values = c_pop) +
-      scale_x_date(breaks = str_c(1998:2018, "0101") %>% ymd(),
+      scale_x_date(breaks = str_c(1998:2023, "0101") %>% ymd(),
                    minor_breaks = NULL,
                    date_labels = "%Y") +
       labs(title = c("Proportion of immatures in the population", 
@@ -1149,7 +1149,7 @@ JuvOut4 %>%
       
       tmp = tmp +
         geom_rect(data = ts_control %>% 
-                    mutate(ymin = 1.143),
+                    mutate(ymin = 3.443),
                   aes(xmin = xmin, xmax = xmax, 
                       ymin = ymin, ymax = ymax, alpha = label), 
                   fill = "#e6a91d",
@@ -1157,13 +1157,13 @@ JuvOut4 %>%
         scale_fill_manual(values = c_pop) + 
         scale_alpha_manual(name = "", values = c(.3, .6, 1)) +
         coord_cartesian(xlim = range(.x$year) + years(c(-1, 1)),
-                        ylim = c(-0.05, 1.2),
+                        ylim = c(-0.05, 3.5),
                         expand = FALSE) + 
         theme(
           legend.position = "none",
           axis.text.x = element_text(angle = 90)) + 
         scale_y_continuous(
-          breaks = 0:11 / 10,
+          breaks = 0:35 / 10,
           minor_breaks = NULL)
     }
     
@@ -1275,7 +1275,7 @@ list(c(8, 3),
 
 list(plo_paper, c(1:length(plo_paper)), plo_dim_paper) %>% 
   pwalk(~ ggsave(filename = str_c("plot_paper_", ..2, ".png"),
-                 path = "./Output",
+                 path = "./Output/longer_ts",
                  plot = ..1, 
                  width = ..3[1], 
                  height = ..3[2], dpi = 600))
