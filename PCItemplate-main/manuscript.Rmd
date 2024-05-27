@@ -17,12 +17,12 @@ author:
   - firstname: Adrien 
     lastname: Tableau
     affiliation: 1
-  - firstname: Alain
-    lastname: Caizergues
+  - firstname: Léonard
+    lastname: Heinry
     affiliation: 1,2,a
 lastauthor: 
-  - firstname: Carol #add last author here if more than one author for proper styling
-    lastname: Senior #can be kept empty/deleted otherwise
+  - firstname: Alain #add last author here if more than one author for proper styling
+    lastname: Caizergues #can be kept empty/deleted otherwise
     affiliation: 1,a
 address:
   - code: 1

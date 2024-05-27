@@ -84,7 +84,7 @@ cor_plot <- function(col, title = NULL, subtitle = NULL, limits = NA, breaks = N
                   width = 0, alpha = .5, linewidth = 1.2) +
     labs(title = title,
          subtitle = subtitle,
-         y = "count-based method", x = "removal-based method") +
+         y = "count-based method", x = "culling-based method") +
     scale_x_continuous(expand = expansion(mult = c(0, 0)), 
                        limits = if (any(is.na(limits))) {
                          c(0, 1.1 * max(unlist(tmp[-1])))
@@ -243,29 +243,29 @@ frag %>%
 ## intro_plot ------------------------------------------------------------------------
 
 count_sex_app %>% 
-  mutate(method = "Female %\nin counts",
+  mutate(method = "Male %\nin counts",
          tot = obs_type_mal + obs_type_fem,
-         `female proportion` = obs_type_fem / tot) %>% 
-  select(method, `female proportion`, tot) %>% 
+         `male proportion` = obs_type_mal / tot) %>% 
+  select(method, `male proportion`, tot) %>% 
   bind_rows(frag %>%  
               filter(sex != "ind") %>% 
               group_by(year, pop) %>% 
               mutate(tot = sum(shot)) %>%  
-              filter(sex == "fem") %>% 
-              mutate(fem = sum(shot)) %>% 
-              distinct(year, pop, fem, tot) %>%
+              filter(sex == "mal") %>% 
+              mutate(mal = sum(shot)) %>% 
+              distinct(year, pop, mal, tot) %>%
               ungroup() %>% 
               filter(tot > 100) %>%
-              mutate(`female proportion` = fem / tot, 
-                     method = "Female %\nin removals") %>%
-              select(method, `female proportion`, tot)) %>% 
+              mutate(`male proportion` = mal / tot, 
+                     method = "Male %\nin cullings") %>%
+              select(method, `male proportion`, tot)) %>% 
   mutate(method = as_factor(method)) %>% 
-  ggplot(aes(x = method, y = `female proportion`, size = tot)) + 
+  ggplot(aes(x = method, y = `male proportion`, size = tot)) + 
   geom_jitter(width = 0.2, alpha = .5) +
   scale_y_continuous(name = "", limits = c(0, 1), breaks = 0:10/10, labels = scales::percent) +
   guides(size = guide_legend(title = "Sample size")) +
   xlab("") + 
-  # labs(title = "Female proportion", caption = "data from GB & French Ruddy duck populations") +
+  # labs(title = "Male proportion", caption = "data from GB & French Ruddy duck populations") +
   coord_flip() -> intro_plot; intro_plot
 
 # Observed harvest rate ----------------------------------------------------------
@@ -432,9 +432,7 @@ counts_1 %>%
   group_by(pop) %>% 
   summarize(across(harvest_rate, mean))
 
-
 # Lambda formatting  --------------------------------------------------------------------------
-
 
 counts_1 %>% 
   mutate(plot1 = if_else(pop == "GB" & year(year) >= 1972 & year(year) <= 1981, 
@@ -1196,8 +1194,8 @@ avg_data %>%
                       alpha = 0.5, linewidth = 1.5, size = 0.2) +
       # geom_point(size = 1.5) +
       scale_color_manual(values = c_pop, guide = "none") +
-      labs(title = c("Average pop. growth...",
-                     "Average immature proportion...",
+      labs(title = c("Average pop. growth rate...",
+                     "Average recruit proportion...",
                      "Average survival rate...",
                      "Average recruitment rate...")[.y],
            x = NULL, y = NULL)
