@@ -84,7 +84,7 @@ cor_plot <- function(col, title = NULL, subtitle = NULL, limits = NA, breaks = N
                   width = 0, alpha = .5, linewidth = 1.2) +
     labs(title = title,
          subtitle = subtitle,
-         y = "count-based method", x = "culling-based method") +
+         y = '"apparent sex ratio" method', x = "culling-based method") +
     scale_x_continuous(expand = expansion(mult = c(0, 0)), 
                        limits = if (any(is.na(limits))) {
                          c(0, 1.1 * max(unlist(tmp[-1])))
@@ -1131,7 +1131,7 @@ JuvOut4 %>%
                         ylim = c(-0.05, 1.05),
                         expand = FALSE) + 
         guides(fill = "none",
-               alpha = guide_legend(title = "Control pressure", order = 1)) +
+               alpha = guide_legend(title = "Culling pressure", order = 1)) +
         scale_y_continuous(
           labels = scales::percent_format(accuracy = 1L),
           breaks = 0:10 / 10, 
