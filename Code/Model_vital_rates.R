@@ -268,7 +268,7 @@ count_sex_app %>%
   # labs(title = "Male proportion", caption = "data from GB & French Ruddy duck populations") +
   coord_flip() -> intro_plot; intro_plot
 
-# Observed harvest rate ----------------------------------------------------------
+# Observed culling rate ----------------------------------------------------------
 
 # estimation of lambda_max to test recruitment rate reliability
 # when ruddy ducks start to be permanently seen and growing?
@@ -363,7 +363,7 @@ frag %>%
   ungroup() %>% 
   filter(shot > 0) -> frag_uncor
 
-## harv_plot ------------------------------------------------------------------
+## cull_plot ------------------------------------------------------------------
 
 counts_1 %>% 
   filter(year(year) <= 2017) %>% 
