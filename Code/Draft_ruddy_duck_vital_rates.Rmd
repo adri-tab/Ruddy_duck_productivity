@@ -96,7 +96,7 @@ Assuming the additive property of the binomial distribution, the proportion of i
 | $C_{i, t}$            | Number of individuals counted in population $i$ in year $t$                                                |
 | $N_{i, t}$            | Size of the population $i$ in year $t$ (maximum number of individuals counted in the wintering population) |
 | *Parameter (output)*  |                                                                                                            |
-| $p(m|a)$              | Proportion of males in adults (or probability of being a male knowing it is an adult)                      |
+| $p(m|a)$              | Proportion of males among adults (or probability of being a male knowing it is an adult)                      |
 | $p(a \cap m)_{i, t}$  | Proportion of adult males in population $i$ in year $t$                                                    |
 | $p(a)_{i, t}$         | Proportion of adults in population $i$ in year $t$                                                         |
 | $p(re)_{i, t}$        | Proportion of immatures/recruits in population $i$ in year $t$                                             |
