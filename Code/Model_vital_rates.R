@@ -202,12 +202,10 @@ counts %>%
   mutate(year = year + years(1),
          killed_before_rep = killed_before_rep %>% replace_na(0),
          n_breed = count) %>% 
-  #          n_breed = count - killed_before_rep) %>%  # if reference is the breeding time
   select(year, pop, n_breed) -> count_breed
 
 counts %>% 
   mutate(n_pop = count) %>% 
-  #   mutate(n_pop = count - killed_before_rep) %>% 
   select(year, n_win = count, n_pop, pop) %>% 
   left_join(count_breed) %>% 
   left_join(count_sex_app) %>% 
@@ -265,7 +263,6 @@ count_sex_app %>%
   scale_y_continuous(name = "", limits = c(0, 1), breaks = 0:10/10, labels = scales::percent) +
   guides(size = guide_legend(title = "Sample size")) +
   xlab("") + 
-  # labs(title = "Male proportion", caption = "data from GB & French Ruddy duck populations") +
   coord_flip() -> intro_plot; intro_plot
 
 # Observed culling rate ----------------------------------------------------------
