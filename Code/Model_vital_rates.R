@@ -915,7 +915,8 @@ xy %>%
     if(x$par == "p_juv") {
       tmp = tmp + 
         theme(
-          legend.position = c(.05, .95),
+          legend.position = "inside",
+          legend.position.inside = c(.05, .95),
           legend.justification = c("left", "top")) + 
         scale_y_continuous(
           labels = scales::percent_format(accuracy = 1L),
@@ -1134,7 +1135,8 @@ JuvOut4 %>%
           breaks = 0:10 / 10, 
           minor_breaks = NULL) +
         theme(
-          legend.position = c(.05, .90),
+          legend.position = "inside",
+          legend.position.inside = c(.05, .90),
           legend.justification = c("left", "top"),
           legend.direction = "horizontal",
           legend.key.size = unit(0.5, "cm"),
