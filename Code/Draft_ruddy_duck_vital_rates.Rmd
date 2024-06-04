@@ -228,7 +228,7 @@ We used the Bayesian framework to implement all submodels presented in Materials
 The "apparent sex ratio" method successfully provided estimates and associated uncertainties for the proportion of immatures in both wintering populations. Adult survival and recruitment rates, i.e. the two components that determine the population growth rate, were also correctly estimated (Figure \@ref(fig:vital)).
 
 \setstretch{1}
-```{r vital, fig.cap = "(ref:vital)"}
+```{r vital, out.height = "90%", fig.cap = "(ref:vital)"}
 knitr::include_graphics("../Output/plot_paper_3.png")
 ```
 \setstretch{2}
@@ -246,7 +246,7 @@ Lower values and lower variability of both adult survival and recruitment rates 
 In Great Britain, the proportions of immatures derived from the counts were positively correlated with those derived from the culled individuals (Figure \@ref(fig:cor)). This result therefore supports the hypothesis that the proportion of female-like individuals in the overwintering populations is efficient for the assessment of age structure and thus productivity. The correlation was even stronger when looking at vital rates (Figure \@ref(fig:cor)), but this was expected because the two methods for estimating these vital rates had a common component, namely the population growth rate (see Equation \@ref(eq:vr)). Interestingly, a 1:1 correlation was not achieved for any of the parameters. The proportion of immatures derived from the counts is always lower than the proportion derived from the culled individuals. The discrepancy between these two estimates is due to the fact that immatures are probably more vulnerable to culling than adults and may therefore be over-represented in the culling samples. As a result, the correlation coefficients for both vital rates also differed. However, the differences between the two approaches do not call into question the ability of the "apparent sex ratio" method to capture interannual variability of the vital rates.
 
 \setstretch{1}
-```{r cor, fig.cap = "(ref:cor)"}
+```{r cor, out.height = "90%", fig.cap = "(ref:cor)"}
 knitr::include_graphics("../Output/plot_paper_4.png")
 ```
 \setstretch{2}
@@ -303,17 +303,17 @@ Tracking fluctuations of population abundance is a common tool for determining t
 
 Finally, we would like to emphasise that the main aim of our approach was to decompose population growth into its two main components, and not to provide unbiased estimates of adult survival or recruitment rates. However, if necessary, count surveys could be designed to do so, at least in theory, and for species that exhibit observable delayed dichromatism. This trait affects most species of stiff-tailed duck [@Johnsgard1996], as well as numerous other duck species, including Tufted duck, *Aythya fuligula*, Black scotter, *Melanitta nigra americana*, Common Goldeneye, *Bucephala clangula americana* [@Johnsgard1978; @Bellrose1980]. Modifying standard monitoring protocols to distinguish between male-like and female-like individuals is almost costless, but worth the effort as it would greatly increase the efficiency of conservation/management actions [@Nichols2006].
 
-\setstretch{1}
+\newpage
 
 # Appendix {.unnumbered}
 
+\setstretch{1}
 ```{r sup, fig.cap = "(ref:sup)"}
 knitr::include_graphics("../Output/plot_paper_6.png")
 ```
+\setstretch{2}
 
 \newpage
-
-\nolinenumbers
 
 # Acknowledgments {.unnumbered}
 
